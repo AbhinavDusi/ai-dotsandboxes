@@ -4,10 +4,13 @@
 #include <iostream>
 #include <vector>
 
+#include "RandomPlayer.hpp"
+#include "AIPlayer.hpp"
+
 using namespace std; 
 
 typedef vector<vector<char>> Board; 
-typedef pair<int, int> Score;
+
 typedef struct Move {
     int r1, c1, r2, c2;
 } Move; 
@@ -17,24 +20,22 @@ class Game {
     Game(int width, int height); 
     int move(int player, int move_idx);
     void print();
-    Score get_score() const { return score; }
 
     bool _finished; 
     vector<Move> _moves; 
 
     private: 
     Board _board;
-    Score score;
 };
 
 Game::Game(int width, int height) {
     _finished = false; 
-    score = make_pair(0, 0);
 
     for (int i = 0; i < 2*height-1; i++) {
         _board.push_back(vector<char>()); 
         for (int j = 0; j < 2*width-1; j++) {
-            _board.back().push_back(' ');
+            if (i%2==0 && j%2==0) _board.back().push_back('*');
+            else _board.back().push_back(' ');
         }
     }
 }

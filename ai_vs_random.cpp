@@ -8,11 +8,10 @@ using namespace std;
 
 int main() {
     Game game(10, 10);
-
-    AIPlayer player1(); 
-    RandomPlayer player2();
-
     vector<Move> moves = game._moves; 
+
+    AIPlayer player1();
+    RandomPlayer player2();
 
     /*
     while (!game._moves.empty()) {

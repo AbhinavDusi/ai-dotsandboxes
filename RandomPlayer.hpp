@@ -21,7 +21,9 @@ class RandomPlayer: public Player {
 mt19937 RandomPlayer::rng(time(nullptr));
 
 int RandomPlayer::move(Game &game) {
-    return game.move(_id, rng()%game._moves.size());
+    int scored = game.move(_id, rng()%game._moves.size()); 
+    _score += scored;
+    return scored;
 }
 
 #endif

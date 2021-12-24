@@ -22,6 +22,8 @@ class Game {
     vector<Move> _moves; 
 
     private: 
+    int get_score(int player_id) const;
+
     Board _board;
 };
 
@@ -35,19 +37,39 @@ Game::Game(int width, int height) {
             else _board.back().push_back(' ');
         }
     }
+
+
+}
+
+int Game::get_score(int player_id) {
+    int count = 0; 
+    
+    for (int i = 0; i < _board.size(); i++) {
+        for (int j = 0; j < _board.front().size(); j++) {
+            if (_board[i][j]==player_id+48) {
+                count++; 
+            }
+        }
+    }
+
+    return count; 
 }
 
 int Game::move(int player_id, int move_idx) {
     if (_finished) return 0; 
 
+    int prev_score = get_score(player_id); 
+
     Move move = _moves[move_idx]; 
     _moves.erase(_moves.begin()+move_idx);
 
-    if (_moves.size() == 0) {
-        _finished = true; 
-    }
+    
 
-    return 0;
+    int next_score = get_score(player_id);
+
+    if (_moves.empty()) _finished = true; 
+
+    return next_score-prev_score;
 }
 
 void Game::print() {

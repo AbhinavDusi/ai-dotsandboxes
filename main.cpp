@@ -7,9 +7,7 @@
 
 using namespace std;
 
-typedef pair<int, int> Score; 
-
-Score random_vs_random() {
+int random_vs_random() {
     Game game(5, 5);
 
     RandomPlayer *player1 = new RandomPlayer(1);
@@ -17,8 +15,8 @@ Score random_vs_random() {
     Player *current_player = player1; 
 
     /*
-    while (!game._moves.empty()) {
-        int scored = current_player.move(game);
+    while (!game._finished) {
+        int scored = current_player->move(game);
 
         if (scored) continue; 
         if (current_player == player1) current_player = player2;
@@ -28,11 +26,13 @@ Score random_vs_random() {
 
     game.print();
 
-    return make_pair(player1->_score, player2->_score);
+    if (player1->_score > player2->_score) return 1;
+    if (player1->_score < player2->_score) return 2;  
+    return 0; 
 }
 
 int main() {
-    Score score = random_vs_random();
+    int result = random_vs_random();
 
     return 0; 
 }

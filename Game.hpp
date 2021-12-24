@@ -4,9 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#include "RandomPlayer.hpp"
-#include "AIPlayer.hpp"
-
 using namespace std; 
 
 typedef vector<vector<char>> Board; 
@@ -18,7 +15,7 @@ typedef struct Move {
 class Game {
     public:
     Game(int width, int height); 
-    int move(int player, int move_idx);
+    int move(int player_id, int move_idx);
     void print();
 
     bool _finished; 
@@ -40,7 +37,7 @@ Game::Game(int width, int height) {
     }
 }
 
-int Game::move(int player, int move_idx) {
+int Game::move(int player_id, int move_idx) {
     if (_finished) return 0; 
 
     Move move = _moves[move_idx]; 

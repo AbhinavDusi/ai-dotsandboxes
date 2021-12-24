@@ -9,7 +9,8 @@ using namespace std;
 typedef vector<vector<char>> Board; 
 
 typedef struct Move {
-    int r1, c1, r2, c2;
+    int row, col, direction;
+    Move(int row, int col, int direction): row(row), col(col), direction(direction) {}
 } Move; 
 
 class Game {
@@ -23,6 +24,7 @@ class Game {
 
     private: 
     int get_score(int player_id) const;
+    void fill_boxes(int player_id); 
 
     Board _board;
 };
@@ -38,7 +40,28 @@ Game::Game(int width, int height) {
         }
     }
 
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (i != height-1) _moves.push_back(Move(i, j, 0));
+            if (j != width-1) _moves.push_back(Move(i, j, 1));
+        }
+    }
+}
 
+void Game::fill_boxes(int player_id) {
+    for (int i = 0; i < _board.size(); i++) {
+        for (int j = 0; j < _board.front().size(); j++) {
+            if (
+                i%2==1 && j%2==1 && _board[i][j]==' '
+                && _board[i+1][j]=='-'
+                && _board[i-1][j]=='-'
+                && _board[i][j+1]=='|'
+                && _board[i][j-1]=='|'
+            ) {
+                _board[i][j] = player_id+48;
+            }
+        }
+    }
 }
 
 int Game::get_score(int player_id) const {
@@ -63,8 +86,13 @@ int Game::move(int player_id, int move_idx) {
     Move move = _moves[move_idx]; 
     _moves.erase(_moves.begin()+move_idx);
 
+    if (move.direction == 0) {
+        _board[2*move.row+1][2*move.col] = '|';
+    } else {
+        _board[2*move.row][2*move.col+1] = '-';
+    }
 
-
+    fill_boxes(player_id);
     int next_score = get_score(player_id);
 
     if (_moves.empty()) _finished = true; 

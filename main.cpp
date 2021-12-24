@@ -7,14 +7,10 @@
 
 using namespace std;
 
-int random_vs_random() {
-    Game game(5, 5);
-
-    RandomPlayer *player1 = new RandomPlayer(1);
-    RandomPlayer *player2 = new RandomPlayer(2);
+int simulate_game(int width, int height, Player *player1, Player *player2) {
+    Game game(width, height);
     Player *current_player = player1; 
 
-    /*
     while (!game._finished) {
         int scored = current_player->move(game);
 
@@ -22,17 +18,14 @@ int random_vs_random() {
         if (current_player == player1) current_player = player2;
         else current_player = player1;
     }
-    */
 
-    game.print();
-
-    if (player1->_score > player2->_score) return 1;
-    if (player1->_score < player2->_score) return 2;  
+    if (player1->_score > player2->_score) return player1->_id;
+    if (player1->_score < player2->_score) return player2->_id;  
     return 0; 
 }
 
 int main() {
-    int result = random_vs_random();
+    int result = simulate_game(5, 5, new RandomPlayer(1), new RandomPlayer(2));
 
     return 0; 
 }

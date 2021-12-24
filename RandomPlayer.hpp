@@ -1,0 +1,4 @@
+class RandomPlayer {
+    public:
+    RandomPlayer();
+}; 

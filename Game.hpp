@@ -41,7 +41,7 @@ Game::Game(int width, int height) {
 
 }
 
-int Game::get_score(int player_id) {
+int Game::get_score(int player_id) const {
     int count = 0; 
     
     for (int i = 0; i < _board.size(); i++) {
@@ -63,7 +63,7 @@ int Game::move(int player_id, int move_idx) {
     Move move = _moves[move_idx]; 
     _moves.erase(_moves.begin()+move_idx);
 
-    
+
 
     int next_score = get_score(player_id);
 

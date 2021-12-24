@@ -16,7 +16,9 @@ class AIPlayer: public Player {
 }; 
 
 int AIPlayer::move(Game &game) {
-    return game.move(_id, 0);
+    int scored = game.move(_id, 0); 
+    _score += scored;
+    return scored;
 }
 
 #endif

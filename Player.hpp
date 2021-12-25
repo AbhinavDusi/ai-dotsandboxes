@@ -14,6 +14,8 @@ class Player {
 
     int _id; 
     int _score;
+    
+    private: 
     static mt19937 rng;
 };
 

@@ -16,29 +16,41 @@ typedef struct MinimaxNode {
 
 class MinimaxPlayer: public Player {
     public:
-    MinimaxPlayer(int id) : Player(id) {};
+    MinimaxPlayer(int id, int opp_id, int depth): Player(id), _opp_id(opp_id), _depth(depth) {};
     int move(Game &game);
+    int _opp_id;
 
     private:
-    MinimaxNode *construct_tree(MinimaxNode *node, int depth, bool max, Game game);
+    MinimaxNode construct_tree(int depth, bool max, Game game);
+
+    int _depth;
 }; 
 
-MinimaxNode *MinimaxPlayer::construct_tree(MinimaxNode *node, int depth, bool max, Game game) {
-    if (node == nullptr) *node = MinimaxNode();
+MinimaxNode MinimaxPlayer::construct_tree(int depth, bool max, Game game) {
+    MinimaxNode node = MinimaxNode();
 
-    if (depth == 0) {
-        int my_score = game.get_score(_id); 
-        int opp_score = game._filled_boxes-my_score;
-        node->val = my_score-opp_score;
-    } else {
+    if (depth == 0 || game._finished) {
+        node.val = game.get_score(_id)-game.get_score(_opp_id);
+        return node; 
+    }
 
+    node.val = max ? INT_MIN : INT_MAX;
+    int curr_id = max ? _id : _opp_id;
+
+    for (int i = 0; i < game._moves.size(); i++) {
+        Game clone = game.get_clone();
+        clone.move(curr_id, i);
+        MinimaxNode child = construct_tree(depth-1, !max, clone);
+
+        if (max) node.val = std::max(node.val, child.val);
+        else node.val = min(node.val, child.val);
     }
 
     return node; 
 }
 
 int MinimaxPlayer::move(Game &game) {
-    construct_tree(nullptr, 3, true, game);
+    MinimaxNode root = construct_tree(_depth, true, game.get_clone());
 
     int scored = game.move(_id, 0); 
     _score += scored;

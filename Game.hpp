@@ -24,7 +24,6 @@ class Game {
 
     bool _finished; 
     vector<Move> _moves; 
-    int _filled_boxes; 
 
     private: 
     void fill_boxes(int player_id); 
@@ -32,7 +31,7 @@ class Game {
     Board _board;
 };
 
-Game::Game(int width, int height): _finished(false), _filled_boxes(0) {
+Game::Game(int width, int height): _finished(false) {
     for (int i = 0; i < 2*height-1; i++) {
         _board.push_back(vector<char>()); 
         for (int j = 0; j < 2*width-1; j++) {
@@ -52,7 +51,6 @@ Game::Game(int width, int height): _finished(false), _filled_boxes(0) {
 Game Game::get_clone() const {
     Game game;
     game._finished = _finished;
-    game._filled_boxes = _filled_boxes;
     game._moves = _moves;
     game._board = _board;
     return game;
@@ -69,7 +67,6 @@ void Game::fill_boxes(int player_id) {
                 && _board[i][j-1]=='|'
             ) {
                 _board[i][j] = player_id+48;
-                _filled_boxes++;
             }
         }
     }

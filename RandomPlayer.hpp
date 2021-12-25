@@ -11,7 +11,7 @@ using namespace std;
 
 class RandomPlayer: public Player {
     public:
-    RandomPlayer(int id) : Player(id) {};
+    RandomPlayer(int id): Player(id) {};
     int move(Game &game);
 
     private:

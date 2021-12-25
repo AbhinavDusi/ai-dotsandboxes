@@ -16,22 +16,23 @@ typedef struct Move {
 class Game {
     public:
     Game(int width, int height); 
+    Game() {};
+    Game get_clone() const;
     int move(int player_id, int move_idx);
+    int get_score(int player_id) const;
     void print();
 
     bool _finished; 
     vector<Move> _moves; 
+    int _filled_boxes; 
 
     private: 
-    int get_score(int player_id) const;
     void fill_boxes(int player_id); 
 
     Board _board;
 };
 
-Game::Game(int width, int height) {
-    _finished = false; 
-
+Game::Game(int width, int height): _finished(false), _filled_boxes(0) {
     for (int i = 0; i < 2*height-1; i++) {
         _board.push_back(vector<char>()); 
         for (int j = 0; j < 2*width-1; j++) {
@@ -48,6 +49,15 @@ Game::Game(int width, int height) {
     }
 }
 
+Game Game::get_clone() const {
+    Game game;
+    game._finished = _finished;
+    game._filled_boxes = _filled_boxes;
+    game._moves = _moves;
+    game._board = _board;
+    return game;
+}
+
 void Game::fill_boxes(int player_id) {
     for (int i = 0; i < _board.size(); i++) {
         for (int j = 0; j < _board.front().size(); j++) {
@@ -59,6 +69,7 @@ void Game::fill_boxes(int player_id) {
                 && _board[i][j-1]=='|'
             ) {
                 _board[i][j] = player_id+48;
+                _filled_boxes++;
             }
         }
     }

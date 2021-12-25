@@ -3,7 +3,7 @@
 #include "Game.hpp"
 #include "Player.hpp"
 #include "RandomPlayer.hpp"
-#include "AIPlayer.hpp"
+#include "MinimaxPlayer.hpp"
 
 using namespace std;
 
@@ -26,7 +26,7 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
 
 int main() {
     //int rvr = simulate_game(5, 5, new RandomPlayer(1), new RandomPlayer(2));
-    int aivr = simulate_game(5, 5, new AIPlayer(1), new RandomPlayer(2));
+    int mvr = simulate_game(5, 5, new MinimaxPlayer(1), new RandomPlayer(2));
 
     return 0; 
 }

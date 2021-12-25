@@ -11,22 +11,23 @@ using namespace std;
 
 typedef struct MinimaxNode {
     int val;
+    int move_idx;
     MinimaxNode() {};
 } MinimaxNode; 
 
 class MinimaxPlayer: public Player {
     public:
     MinimaxPlayer(int id, int opp_id, int depth): Player(id), _opp_id(opp_id), _depth(depth) {};
-    int move(Game &game);
+    int get_move(Game &game);
     int _opp_id;
 
     private:
-    MinimaxNode construct_tree(int depth, bool max, Game game);
+    MinimaxNode construct_tree(int depth, bool maximize, Game game);
 
     int _depth;
 }; 
 
-MinimaxNode MinimaxPlayer::construct_tree(int depth, bool max, Game game) {
+MinimaxNode MinimaxPlayer::construct_tree(int depth, bool maximize, Game game) {
     MinimaxNode node = MinimaxNode();
 
     if (depth == 0 || game._finished) {
@@ -34,27 +35,30 @@ MinimaxNode MinimaxPlayer::construct_tree(int depth, bool max, Game game) {
         return node; 
     }
 
-    node.val = max ? INT_MIN : INT_MAX;
-    int curr_id = max ? _id : _opp_id;
+    node.val = maximize ? INT_MIN : INT_MAX;
+    int curr_id = maximize ? _id : _opp_id;
 
     for (int i = 0; i < game._moves.size(); i++) {
         Game clone = game.get_clone();
-        clone.move(curr_id, i);
-        MinimaxNode child = construct_tree(depth-1, !max, clone);
+        int scored = clone.move(curr_id, i);
+        MinimaxNode child = construct_tree(depth-1, scored ? maximize : !maximize, clone);
 
-        if (max) node.val = std::max(node.val, child.val);
-        else node.val = min(node.val, child.val);
+        if ((maximize && node.val<child.val) || (!maximize && node.val>child.val)) {
+            node.val = child.val;
+            node.move_idx = i;
+        }
     }
 
     return node; 
 }
 
-int MinimaxPlayer::move(Game &game) {
-    MinimaxNode root = construct_tree(_depth, true, game.get_clone());
-
-    int scored = game.move(_id, 0); 
-    _score += scored;
-    return scored;
+int MinimaxPlayer::get_move(Game &game) {
+    if (!game._started) {
+        return rng()%game._moves.size();
+    } else {
+        MinimaxNode root = construct_tree(_depth, true, game.get_clone());
+        return root.move_idx;
+    }
 }
 
 #endif

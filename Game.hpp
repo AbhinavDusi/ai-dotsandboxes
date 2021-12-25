@@ -23,6 +23,7 @@ class Game {
     void print();
 
     bool _finished; 
+    bool _started;
     vector<Move> _moves; 
 
     private: 
@@ -31,7 +32,7 @@ class Game {
     Board _board;
 };
 
-Game::Game(int width, int height): _finished(false) {
+Game::Game(int width, int height): _finished(false), _started(false) {
     for (int i = 0; i < 2*height-1; i++) {
         _board.push_back(vector<char>()); 
         for (int j = 0; j < 2*width-1; j++) {
@@ -53,6 +54,7 @@ Game Game::get_clone() const {
     game._finished = _finished;
     game._moves = _moves;
     game._board = _board;
+    game._started = _started;
     return game;
 }
 
@@ -87,6 +89,7 @@ int Game::get_score(int player_id) const {
 }
 
 int Game::move(int player_id, int move_idx) {
+    _started = true;
     if (_finished) return 0; 
 
     int prev_score = get_score(player_id); 

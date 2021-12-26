@@ -19,15 +19,16 @@ class MinimaxPlayer: public Player {
     public:
     MinimaxPlayer(int id, int opp_id, int depth): Player(id), _opp_id(opp_id), _depth(depth) {};
     int get_move(Game &game);
+
     int _opp_id;
 
     private:
-    MinimaxNode construct_tree(int depth, bool maximize, Game game);
+    MinimaxNode construct_tree(int depth, bool maximize, Game game, int alpha, int beta);
 
     int _depth;
 }; 
 
-MinimaxNode MinimaxPlayer::construct_tree(int depth, bool maximize, Game game) {
+MinimaxNode MinimaxPlayer::construct_tree(int depth, bool maximize, Game game, int alpha, int beta) {
     MinimaxNode node = MinimaxNode();
 
     if (depth == 0 || game._finished) {
@@ -41,12 +42,23 @@ MinimaxNode MinimaxPlayer::construct_tree(int depth, bool maximize, Game game) {
     for (int i = 0; i < game._moves.size(); i++) {
         Game clone = game.get_clone();
         int scored = clone.move(curr_id, i);
-        MinimaxNode child = construct_tree(depth-1, scored ? maximize : !maximize, clone);
+        MinimaxNode child = construct_tree(depth-1, scored ? maximize : !maximize, clone, alpha, beta);
 
-        if ((maximize && node.val<child.val) || (!maximize && node.val>child.val)) {
-            node.val = child.val;
-            node.move_idx = i;
+        if (maximize) {
+            if (node.val < child.val) {
+                node.val = child.val;
+                node.move_idx = i; 
+            }
+            alpha = max(alpha, child.val); 
+        } else {
+            if (node.val > child.val) {
+                node.val = child.val;
+                node.move_idx = i; 
+            }
+            beta = min(beta, child.val); 
         }
+
+        if (beta <= alpha) break;
     }
 
     return node; 
@@ -56,7 +68,7 @@ int MinimaxPlayer::get_move(Game &game) {
     if (!game._started) {
         return rng()%game._moves.size();
     } else {
-        MinimaxNode root = construct_tree(_depth, true, game.get_clone());
+        MinimaxNode root = construct_tree(_depth, true, game.get_clone(), INT_MIN, INT_MAX);
         return root.move_idx;
     }
 }

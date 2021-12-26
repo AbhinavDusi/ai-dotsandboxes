@@ -6,6 +6,8 @@
 
 #include "Game.hpp"
 
+using namespace std; 
+
 class Player {
     public:
     Player(int id) : _id(id), _score(0) {};

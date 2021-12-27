@@ -31,7 +31,7 @@ int main() {
     
 
     for (int i = 0; i < 100; i++) {
-        int mvr = simulate_game(5, 5, new MinimaxPlayer(1, 2, 3), new MinimaxPlayer(2, 1, 2));
+        int mvr = simulate_game(5, 5, new MinimaxPlayer(1, 2, 3), new MinimaxPlayer(2, 1, 3));
         if (mvr == 1) w++;
         if (mvr == 2) l++;
         if (mvr == 0) d++;

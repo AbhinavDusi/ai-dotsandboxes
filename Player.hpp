@@ -22,7 +22,8 @@ class Player {
 mt19937 Player::rng(time(nullptr));
 
 int Player::move(Game &game) {
-    int scored = game.move(_id, get_move(game)); 
+    int move_idx = !game._started ? rng()%game._moves.size() : get_move(game);
+    int scored = game.move(_id, move_idx); 
     _score += scored;
     return scored;
 }

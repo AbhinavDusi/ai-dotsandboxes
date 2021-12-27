@@ -10,7 +10,7 @@ typedef vector<vector<char>> Board;
 
 typedef struct Move {
     int row, col, direction;
-    Move(int row, int col, int direction): row(row), col(col), direction(direction) {}
+    Move(int row, int col, int direction): row(row), col(col), direction(direction) {};
 } Move; 
 
 class Game {

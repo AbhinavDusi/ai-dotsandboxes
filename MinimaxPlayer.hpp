@@ -65,12 +65,7 @@ MinimaxNode MinimaxPlayer::construct_tree(int depth, bool maximize, Game game, i
 }
 
 int MinimaxPlayer::get_move(Game &game) {
-    if (!game._started) {
-        return rng()%game._moves.size();
-    } else {
-        MinimaxNode root = construct_tree(_depth, true, game.get_clone(), INT_MIN, INT_MAX);
-        return root.move_idx;
-    }
+    return construct_tree(_depth, true, game.get_clone(), INT_MIN, INT_MAX).move_idx;
 }
 
 #endif

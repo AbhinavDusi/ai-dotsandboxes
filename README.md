@@ -25,8 +25,6 @@ future moves and choosing the optimal move by maximizing its score to a certain 
 
 The Deep Reinforced Learning Player chooses a move by 
 
-# Example Game Board
-
 # Data
 
 Comparing win rates for every combination of Players.

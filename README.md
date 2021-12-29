@@ -21,9 +21,9 @@ The Algorithmic Player chooses a move by
 The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents'
 future moves and choosing the optimal move by maximizing its score to a certain depth.
 
-## Deep Reinforced Learning Player
+## Deep Q Learning Player
 
-The Deep Reinforced Learning Player chooses a move by 
+The Deep Q Learning Player chooses a move by 
 
 # Data
 

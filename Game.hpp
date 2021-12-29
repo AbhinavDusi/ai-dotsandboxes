@@ -24,6 +24,8 @@ class Game {
 
     bool _finished; 
     bool _started;
+    int _width;
+    int _height;
     vector<Move> _moves; 
 
     private: 
@@ -32,7 +34,7 @@ class Game {
     Board _board;
 };
 
-Game::Game(int width, int height): _finished(false), _started(false) {
+Game::Game(int width, int height): _finished(false), _started(false), _width(width), _height(height) {
     for (int i = 0; i < 2*height-1; i++) {
         _board.push_back(vector<char>()); 
         for (int j = 0; j < 2*width-1; j++) {

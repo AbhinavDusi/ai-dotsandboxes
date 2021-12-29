@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "RandomPlayer.hpp"
 #include "MinimaxPlayer.hpp"
+#include "DQLPlayer.hpp"
 
 using namespace std;
 
@@ -25,13 +26,14 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
 }
 
 int main() {
+    /*
     int w = 0; 
     int l = 0;
     int d = 0; 
     
 
     for (int i = 0; i < 100; i++) {
-        int mvr = simulate_game(5, 5, new MinimaxPlayer(1, 2, 3), new MinimaxPlayer(2, 1, 3));
+        int mvr = simulate_game(6, 6, new MinimaxPlayer(1, 2, 2), new MinimaxPlayer(2, 1, 4));
         if (mvr == 1) w++;
         if (mvr == 2) l++;
         if (mvr == 0) d++;
@@ -40,6 +42,10 @@ int main() {
     cout << "Wins: " << w << endl;
     cout << "Losses: " << l << endl;
     cout << "Draws: " << d << endl;
+    */
+
+   Game game(5, 5); 
+   DRLPlayer player1(1, game);
 
     return 0; 
 }

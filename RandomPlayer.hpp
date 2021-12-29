@@ -9,7 +9,7 @@ using namespace std;
 class RandomPlayer: public Player {
     public:
     RandomPlayer(int id): Player(id) {};
-    int get_move(Game& game); 
+    int get_move(Game &game); 
 }; 
 
 int RandomPlayer::get_move(Game &game) {

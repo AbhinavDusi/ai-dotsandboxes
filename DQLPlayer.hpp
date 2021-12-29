@@ -20,8 +20,10 @@ class DQLPlayer: public Player {
 
 DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
     vector<int> topology; 
-    topology.push_back(1);
-    topology.push_back(2*game._width*game._height-game._width-game._height);
+    int total_moves = 2*game._width*game._height-game._width-game._height; 
+    topology.push_back(total_moves);
+    topology.push_back(total_moves);
+    topology.push_back(total_moves);
 
     net = new NeuralNet(topology);
 

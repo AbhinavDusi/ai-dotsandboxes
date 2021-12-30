@@ -15,7 +15,8 @@ class DQLPlayer: public Player {
     int get_move(Game &game); 
 
     private:
-    NeuralNet *net;
+    NeuralNet *policy_net;
+    NeuralNet *target_net;
 }; 
 
 DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
@@ -25,9 +26,11 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
     topology.push_back(total_moves);
     topology.push_back(total_moves);
 
-    net = new NeuralNet(topology);
-
-
+    policy_net = new NeuralNet(topology);
+    target_net = new NeuralNet(topology); 
+    target_net.load_weights(policy_net); 
+    
+    
 }
 
 int DQLPlayer::get_move(Game &game) {

@@ -72,6 +72,7 @@ class NeuralNet {
     void feed_forward(const std::vector<double>& input); 
     void back_prop(const std::vector<double>& target);
     std::vector<double> get_result() const;
+    void load_weights(NeuralNet &net);
 
     private:
     std::vector<Layer> _layers; 
@@ -130,6 +131,10 @@ std::vector<double> NeuralNet::get_result() const {
         result.push_back(_layers.back()[i]._val); 
     }
     return result; 
+}
+
+void NeuralNet::load_weights(NeuralNet &net) {
+
 }
 
 #endif 

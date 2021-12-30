@@ -45,7 +45,7 @@ int main() {
     */
 
    Game game(5, 5); 
-   DRLPlayer player1(1, game);
+   DQLPlayer player1(1, game);
 
     return 0; 
 }

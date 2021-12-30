@@ -28,7 +28,7 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
 
     policy_net = new NeuralNet(topology);
     target_net = new NeuralNet(topology); 
-    target_net.load_weights(policy_net); 
+    target_net->load_weights(*policy_net); 
     
     
 }

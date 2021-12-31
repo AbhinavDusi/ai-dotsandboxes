@@ -15,7 +15,7 @@ class DQLPlayer: public Player {
     int get_move(Game &game); 
 
     private:
-    NeuralNet *policy_net;
+    NeuralNet *policy_net; 
     NeuralNet *target_net;
 }; 
 

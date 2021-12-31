@@ -13,7 +13,6 @@ class Player {
     Player(int id) : _id(id), _score(0) {};
     int move(Game &game); 
     virtual int get_move(Game &game) = 0; 
-
     int _id; 
     int _score;
     static mt19937 rng;

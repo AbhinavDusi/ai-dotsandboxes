@@ -20,7 +20,7 @@ class Neuron {
     static double activation_function_derivative(double y) { return 1.0-y*y; }
     void calc_output_error(double target); 
     void calc_hidden_error(const Layer& next_layer);
-    void nudge_output_weights(const Layer& next_layer);
+    void nudge_output_weights(const Layer& next_layer, double alpha, double eta);
     std::vector<Connection> _output_weights; 
     double _val; 
     double _error; 
@@ -28,13 +28,9 @@ class Neuron {
     private:
     static double random() { return Neuron::rng()/(double) Neuron::rng.max(); }
     static std::mt19937 rng; 
-    static double alpha; 
-    static double eta; 
 }; 
 
 std::mt19937 Neuron::rng(time(nullptr));
-double Neuron::alpha = 0.5; 
-double Neuron::eta = 0.15; 
 
 Neuron::Neuron(int num_outputs) {
     for (int i = 0; i < num_outputs; i++) {
@@ -55,11 +51,11 @@ void Neuron::calc_hidden_error(const Layer& next_layer) {
     _error = error;
 }
 
-void Neuron::nudge_output_weights(const Layer& next_layer) {
+void Neuron::nudge_output_weights(const Layer& next_layer, double alpha, double eta) {
     for (int i = 0; i < next_layer.size()-1; i++) {
         double old_delta = _output_weights[i].delta; 
-        double new_delta = Neuron::eta*next_layer[i]._error*activation_function_derivative(next_layer[i]._val)*_val
-            +Neuron::alpha*old_delta; 
+        double new_delta = eta*next_layer[i]._error*activation_function_derivative(next_layer[i]._val)*_val
+            +alpha*old_delta; 
 
         _output_weights[i].delta = new_delta; 
         _output_weights[i].weight += new_delta; 
@@ -68,7 +64,7 @@ void Neuron::nudge_output_weights(const Layer& next_layer) {
 
 class NeuralNet {
     public:
-    NeuralNet(const std::vector<int>& topology); 
+    NeuralNet(const std::vector<int>& topology, double alpha, double eta); 
     void feed_forward(const std::vector<double>& input); 
     void back_prop(const std::vector<double>& target);
     std::vector<double> get_result() const;
@@ -76,9 +72,11 @@ class NeuralNet {
 
     private:
     std::vector<Layer> _layers; 
+    double _alpha; 
+    double _eta; 
 };
 
-NeuralNet::NeuralNet(const std::vector<int>& topology) {
+NeuralNet::NeuralNet(const std::vector<int>& topology, double alpha, double eta): _alpha(alpha), _eta(eta) {
     for (int i = 0; i < topology.size(); i++) {
         _layers.push_back(Layer());
         int num_outputs = i < topology.size()-1 ? topology[i+1] : 0;
@@ -120,7 +118,7 @@ void NeuralNet::back_prop(const std::vector<double>& target) {
 
     for (int i = 0; i < _layers.size()-1; i++) {
         for (int j = 0; j < _layers[i].size(); j++) {
-            _layers[i][j].nudge_output_weights(_layers[i+1]); 
+            _layers[i][j].nudge_output_weights(_layers[i+1], _alpha, _eta); 
         }
     }
 }
@@ -135,6 +133,8 @@ std::vector<double> NeuralNet::get_result() const {
 
 void NeuralNet::load(NeuralNet &net) {
     _layers = net._layers;
+    _alpha = net._alpha;
+    _eta = net._eta;
 }
 
 #endif 

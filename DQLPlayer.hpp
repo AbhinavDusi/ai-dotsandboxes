@@ -20,17 +20,26 @@ class DQLPlayer: public Player {
 }; 
 
 DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
-    vector<int> topology; 
+    double alpha = 0.5;
+    double eta = 0.15;
+    double gamma = 0.999; 
+    double epsilon = 0.05;
+    int update_target = 10;
+    int num_episodes = 1;
     int total_moves = 2*game._width*game._height-game._width-game._height; 
+
+    vector<int> topology; 
     topology.push_back(total_moves);
     topology.push_back(total_moves);
     topology.push_back(total_moves);
 
-    policy_net = new NeuralNet(topology);
-    target_net = new NeuralNet(topology); 
+    policy_net = new NeuralNet(topology, alpha, eta);
+    target_net = new NeuralNet(topology, alpha, eta); 
     target_net->load(*policy_net); 
     
-    
+    for (int i = 0; i < num_episodes; i++) {
+
+    }
 }
 
 int DQLPlayer::get_move(Game &game) {

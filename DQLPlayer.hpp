@@ -26,11 +26,16 @@ class DQLPlayer: public Player {
     private:
     NeuralNet *policy_net; 
     NeuralNet *target_net;
-    Experience get_random_experience() const;
+    Experience get_random_experience(double epsilon) const;
+    static void exp_decay(double *x, double x_0, double decay, int n); 
 }; 
 
-Experience DQLPlayer::get_random_experience() const {
+Experience DQLPlayer::get_random_experience(double epsilon) const {
     return Experience(0, 0, 0, 0); 
+}
+
+void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
+    *x = x_0*exp(-1*decay*n);
 }
 
 DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
@@ -38,8 +43,11 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
     double alpha = 0.5;
     double eta = 0.15;
     double gamma = 0.999; 
-    double epsilon = 1.0;
-    double epislon_decay = 0.99/(double) training_examples;
+
+    double epsilon_0 = 1.0;
+    double epsilon = epsilon_0;
+    double epsilon_decay = 0.001; 
+
     int update_target = 10;
     int total_moves = 2*game._width*game._height-game._width-game._height; 
 
@@ -56,7 +64,9 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
             target_net->load(*policy_net);
         }
         
-        Experience experience = get_random_experience();
+        exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
+
+        Experience experience = get_random_experience(epsilon);
 
         vector<double> input;
 

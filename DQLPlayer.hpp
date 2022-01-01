@@ -50,7 +50,6 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
 
     policy_net = new NeuralNet(topology, alpha, eta);
     target_net = new NeuralNet(topology, alpha, eta); 
-    target_net->load(*policy_net); 
     
     for (int i = 0; i < training_examples; i++) {
         Experience experience = get_random_experience();

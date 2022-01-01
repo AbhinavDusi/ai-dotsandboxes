@@ -52,6 +52,10 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
     target_net = new NeuralNet(topology, alpha, eta); 
     
     for (int i = 0; i < training_examples; i++) {
+        if (i%update_target == 0) {
+            target_net->load(*policy_net);
+        }
+        
         Experience experience = get_random_experience();
 
         vector<double> input;
@@ -61,10 +65,6 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
         vector<double> target;
 
         //policy_net.back_prop(target); 
-
-        if (i%update_target == 0) {
-            target_net->load(*policy_net);
-        }
     }
 }
 

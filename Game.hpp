@@ -21,7 +21,7 @@ class Game {
     int move(int player_id, int move_idx);
     int get_score(int player_id) const;
     void print();
-
+    static Game get_random_game(int width, int height); 
     bool _finished; 
     bool _started;
     int _width;
@@ -30,7 +30,6 @@ class Game {
 
     private: 
     void fill_boxes(int player_id); 
-
     Board _board;
 };
 

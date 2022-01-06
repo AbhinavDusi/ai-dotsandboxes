@@ -64,5 +64,10 @@ int main() {
     cout << "Draws: " << d << endl;
     cout << "Total Games Played: " << N << endl;
 
+    /*
+    cout << player1->get_name() << " Player 1 average time per move: " << p1->get_avg_move_time() << endl;
+    cout << player2->get_name() << " Player 2 average time per move: " << p2->get_avg_move_time() << endl;
+    */
+
     return 0; 
 }

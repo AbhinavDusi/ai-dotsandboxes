@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <random>
+#include <ctime>
 
 typedef struct Connection {
     double weight;
@@ -69,11 +70,11 @@ class NeuralNet {
     void back_prop(const std::vector<double>& target);
     std::vector<double> get_result() const;
     void load(NeuralNet &net);
+    double _alpha; 
+    double _eta; 
 
     private:
     std::vector<Layer> _layers; 
-    double _alpha; 
-    double _eta; 
 };
 
 NeuralNet::NeuralNet(const std::vector<int>& topology, double alpha, double eta): _alpha(alpha), _eta(eta) {

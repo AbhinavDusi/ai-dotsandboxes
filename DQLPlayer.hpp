@@ -31,22 +31,29 @@ class DQLPlayer: public Player {
 }; 
 
 Experience DQLPlayer::get_random_experience(double epsilon) const {
+    bool explore = rng()/(double) Neuron::rng.max() > epsilon;
+
     return Experience(0, 0, 0, 0); 
 }
 
 void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
     *x = x_0*exp(-1*decay*n);
-}
+}    
 
 DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
     int training_examples = 10; 
-    double alpha = 0.5;
-    double eta = 0.15;
-    double gamma = 0.999; 
+
+    double alpha_0 = 0.5;
+    double alpha_decay = 0.001;
+
+    double eta_0 = 0.15;
+    double eta_decay = 0.001; 
 
     double epsilon_0 = 1.0;
     double epsilon = epsilon_0;
     double epsilon_decay = 0.001; 
+
+    double gamma = 0.999; 
 
     int update_target = 10;
     int total_moves = 2*game._width*game._height-game._width-game._height; 
@@ -56,8 +63,8 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
     topology.push_back(total_moves);
     topology.push_back(total_moves);
 
-    policy_net = new NeuralNet(topology, alpha, eta);
-    target_net = new NeuralNet(topology, alpha, eta); 
+    policy_net = new NeuralNet(topology, alpha_0, eta_0);
+    target_net = new NeuralNet(topology, alpha_0, eta_0); 
     
     for (int i = 0; i < training_examples; i++) {
         if (i%update_target == 0) {
@@ -65,6 +72,8 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
         }
         
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
+        exp_decay(&(policy_net->_alpha), alpha_0, alpha_decay, i);
+        exp_decay(&(policy_net->_eta), eta_0, eta_decay, i);
 
         Experience experience = get_random_experience(epsilon);
 
@@ -75,6 +84,7 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
         vector<double> target;
 
         //policy_net.back_prop(target); 
+
     }
 }
 

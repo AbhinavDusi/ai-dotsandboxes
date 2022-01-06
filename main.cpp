@@ -51,7 +51,7 @@ int main() {
 
     cout << "Enter type of Player 2: ";
     cin >> p2_type;
-    assign_player(player1, p1_type, 2, 1, 3, width, height);
+    assign_player(player2, p2_type, 2, 1, 3, width, height);
     */
 
     int width = 5;

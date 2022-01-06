@@ -11,7 +11,7 @@ using namespace std;
 
 void assign_player(Player *player, int player_type, int id, int opp_id, int depth, int width, int height) {
     if (player_type==0) player = new RandomPlayer(id); 
-    if (player_type==id) player = new MinimaxPlayer(id, opp_id, depth); 
+    if (player_type==1) player = new MinimaxPlayer(id, opp_id, depth); 
     if (player_type==2) player = new DQLPlayer(id, width, height); 
     if (player_type==3) player = new AlgorithmicPlayer(id); 
 }

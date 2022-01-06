@@ -26,29 +26,41 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
 }
 
 int main() {
-    int N = 1; 
-    int w = 0; 
-    int l = 0;
-    int d = 0; 
+    /*
+    int width, height, N;
+    cout << "Enter width and height separated by a space: ";
+    cin >> width >> height;
+    cout << "Enter the number of games to simulate: ";
+    cin >> N; 
+
+    cout << "Random=0; Minimax=1; Deep Q Learning=2; Algorithmic=3.";
+    cout << "Enter type of Player 1: ";
+    cout << "Enter type of Player 2: ";
+    */
 
     int width = 5;
     int height = 5;
+    int N = 1;
     
     Player *player1 = new DQLPlayer(1, width, height);
     Player *player2 = new RandomPlayer(2); 
+
+    int p1 = 0; 
+    int p2 = 0;
+    int d = 0; 
     
     for (int i = 0; i < N; i++) {
         int winner;
         if (i%2 == 0) winner = simulate_game(width, height, player1, player2);
         else winner = simulate_game(width, height, player2, player1);
 
-        if (winner==player1->_id) w++;
-        if (winner==player2->_id) l++;
+        if (winner==player1->_id) p1++;
+        if (winner==player2->_id) p2++;
         if (winner==-1) d++;
     }
     
-    cout << "Wins: " << w << endl;
-    cout << "Losses: " << l << endl;
+    cout << player1->get_name() << " Player 1 wins: " << p1 << endl;
+    cout << player2->get_name() << " Player 2 wins: " << p2 << endl;
     cout << "Draws: " << d << endl;
     cout << "Total Games Played: " << N << endl;
 

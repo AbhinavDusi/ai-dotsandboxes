@@ -8,7 +8,7 @@
 
 using namespace std;
 
-pair<int, int> simulate_game(int width, int height, Player *player1, Player *player2) {
+int simulate_game(int width, int height, Player *player1, Player *player2) {
     Game game(width, height);
     Player *current_player = player1; 
 
@@ -19,8 +19,10 @@ pair<int, int> simulate_game(int width, int height, Player *player1, Player *pla
         if (current_player == player1) current_player = player2;
         else current_player = player1;
     }
-    
-    return make_pair(player1->score, player2->score); 
+
+    if (player1->_score>player2->_score) return player1->_id;
+    if (player2->_score<player2->_score) return player2->_id;
+    return -1;
 }
 
 int main() {
@@ -36,12 +38,13 @@ int main() {
     Player *player2 = new RandomPlayer(2); 
     
     for (int i = 0; i < N; i++) {
-        pair<int, int> score; 
-        if (i%2 == 0) score = simulate_game(width, height, player1, player2);
-        else score = simulate_game(width, height, player2, player1);
-        if (score.first>score.second) w++;
-        if (score.first<score.second) l++;
-        if (score.first==score.second) d++;
+        int winner;
+        if (i%2 == 0) winner = simulate_game(width, height, player1, player2);
+        else winner = simulate_game(width, height, player2, player1);
+
+        if (winner==player1->_id) w++;
+        if (winner==player2->_id) l++;
+        if (winner==-1) d++;
     }
     
     cout << "Wins: " << w << endl;

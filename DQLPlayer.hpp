@@ -69,6 +69,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     double gamma = 0.999; 
 
     int update_target = 10;
+    
     int total_moves = 2*width*height-width-height; 
 
     vector<int> topology; 

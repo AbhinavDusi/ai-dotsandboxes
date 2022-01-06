@@ -20,38 +20,34 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
         else current_player = player1;
     }
 
-    if (player1->_score > player2->_score) return player1->_id;
-    if (player1->_score < player2->_score) return player2->_id;  
-    return 0; 
+    return player1->_score > player2->_score ? player1->_id : player2->_id;
 }
 
 int main() {
-    /*
-    int N = 100; 
+    int N = 1; 
     int w = 0; 
     int l = 0;
     int d = 0; 
+
+    int width = 5;
+    int height = 5;
     
-    Player *player1 = new MinimaxPlayer(1, 2, 2);
-    Player *player2 = new MinimaxPlayer(2, 1, 4); 
+    Player *player1 = new DQLPlayer(1, width, height);
+    Player *player2 = new RandomPlayer(2); 
     
     for (int i = 0; i < N; i++) {
         int mvr = 0; 
-        if (i%2 == 0) mvr = simulate_game(6, 6, player1, player2);
-        else mvr = simulate_game(6, 6, player2, player1);
+        if (i%2 == 0) mvr = simulate_game(width, height, player1, player2);
+        else mvr = simulate_game(width, height, player2, player1);
         if (mvr == 1) w++;
         if (mvr == 2) l++;
         if (mvr == 0) d++;
     }
     
-    cout << "Total: " << N << endl;
     cout << "Wins: " << w << endl;
     cout << "Losses: " << l << endl;
     cout << "Draws: " << d << endl;
-    */
-
-   Game game(5, 5); 
-   DQLPlayer player1(1, game);
+    cout << "Total Games Played: " << N << endl;
 
     return 0; 
 }

@@ -20,7 +20,7 @@ typedef struct Experience {
 
 class DQLPlayer: public Player {
     public:
-    DQLPlayer(int id, Game &game);
+    DQLPlayer(int id, int width, int height);
     int get_move(Game &game); 
 
     private:
@@ -53,7 +53,7 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
     *x = x_0*exp(-1*decay*n);
 }    
 
-DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
+DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int training_examples = 2000; 
 
     double alpha_0 = 0.5;
@@ -69,7 +69,7 @@ DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
     double gamma = 0.999; 
 
     int update_target = 10;
-    int total_moves = 2*game._width*game._height-game._width-game._height; 
+    int total_moves = 2*width*height-width-height; 
 
     vector<int> topology; 
     topology.push_back(total_moves);

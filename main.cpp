@@ -28,7 +28,7 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
 int main() {
     /*
     int width, height, N;
-    cout << "Enter width and height separated by a space: ";
+    cout << "Enter the width and height separated by a space: ";
     cin >> width >> height;
     cout << "Enter the number of games to simulate: ";
     cin >> N; 

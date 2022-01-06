@@ -31,7 +31,9 @@ class DQLPlayer: public Player {
 }; 
 
 Experience DQLPlayer::get_random_experience(double epsilon) const {
-    bool explore = rng()/(double) Neuron::rng.max() > epsilon;
+    bool explore = rng()/(double) rng.max()<epsilon;
+
+    cout << explore << endl;
 
     return Experience(0, 0, 0, 0); 
 }
@@ -41,7 +43,7 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 }    
 
 DQLPlayer::DQLPlayer(int id, Game &game): Player(id) {
-    int training_examples = 10; 
+    int training_examples = 2000; 
 
     double alpha_0 = 0.5;
     double alpha_decay = 0.001;

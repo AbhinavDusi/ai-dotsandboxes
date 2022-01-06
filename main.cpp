@@ -32,9 +32,13 @@ int main() {
     int l = 0;
     int d = 0; 
     
-
+    Player player1 = new MinimaxPlayer(1, 2, 2);
+    Player player2 = new MinimaxPlayer(2, 1, 4); 
+    
     for (int i = 0; i < N; i++) {
-        int mvr = simulate_game(6, 6, new MinimaxPlayer(1, 2, 2), new MinimaxPlayer(2, 1, 4));
+        int mvr = 0; 
+        if (i%2 == 0) mvr = simulate_game(6, 6, player1, player2);
+        else mvr = simulate_game(6, 6, player2, player1);
         if (mvr == 1) w++;
         if (mvr == 2) l++;
         if (mvr == 0) d++;

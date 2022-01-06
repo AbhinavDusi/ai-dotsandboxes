@@ -5,8 +5,16 @@
 #include "RandomPlayer.hpp"
 #include "MinimaxPlayer.hpp"
 #include "DQLPlayer.hpp"
+#include "AlgorithmicPlayer.hpp"
 
 using namespace std;
+
+void assign_player(Player *player, int player_type, int id, int opp_id, int depth, int width, int height) {
+    if (player_type==0) player = new RandomPlayer(id); 
+    if (player_type==id) player = new MinimaxPlayer(id, opp_id, depth); 
+    if (player_type==2) player = new DQLPlayer(id, width, height); 
+    if (player_type==3) player = new AlgorithmicPlayer(id); 
+}
 
 int simulate_game(int width, int height, Player *player1, Player *player2) {
     Game game(width, height);
@@ -39,17 +47,11 @@ int main() {
 
     cout << "Enter type of Player 1: ";
     cin >> p1_type;
-    if (p1_type==0) player1 = new RandomPlayer(1); 
-    if (p1_type==1) player1 = new MinimaxPlayer(1, 2, 3); 
-    if (p1_type==2) player1 = new DQLPlayer(1, width, height); 
-    if (p1_type==3) player1 = new AlgorithmicPlayer(1); 
+    assign_player(player1, p1_type, 1, 2, 3, width, height);
 
     cout << "Enter type of Player 2: ";
     cin >> p2_type;
-    if (p2_type==0) player2 = new RandomPlayer(2); 
-    if (p2_type==1) player2 = new MinimaxPlayer(2, 1, 3); 
-    if (p2_type==2) player2 = new DQLPlayer(2, width, height); 
-    if (p2_type==3) player2 = new AlgorithmicPlayer(2); 
+    assign_player(player1, p1_type, 2, 1, 3, width, height);
     */
 
     int width = 5;

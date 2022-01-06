@@ -32,8 +32,8 @@ int main() {
     int l = 0;
     int d = 0; 
     
-    Player player1 = new MinimaxPlayer(1, 2, 2);
-    Player player2 = new MinimaxPlayer(2, 1, 4); 
+    Player *player1 = new MinimaxPlayer(1, 2, 2);
+    Player *player2 = new MinimaxPlayer(2, 1, 4); 
     
     for (int i = 0; i < N; i++) {
         int mvr = 0; 
@@ -44,7 +44,7 @@ int main() {
         if (mvr == 0) d++;
     }
     
-    cout << "Total: " << N << end;
+    cout << "Total: " << N << endl;
     cout << "Wins: " << w << endl;
     cout << "Losses: " << l << endl;
     cout << "Draws: " << d << endl;

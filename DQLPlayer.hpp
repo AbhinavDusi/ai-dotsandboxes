@@ -31,7 +31,20 @@ class DQLPlayer: public Player {
 }; 
 
 Experience DQLPlayer::get_random_experience(double epsilon) const {
+    // Get random state
+
+    // Choose action based on explore vs exploit
+
     bool explore = rng()/(double) rng.max()<epsilon;
+    if (explore) {
+        
+    } else {
+
+    }
+
+    // Get new state 
+
+    // Get reward of the action
 
     return Experience(0, 0, 0, 0); 
 }

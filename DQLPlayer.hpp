@@ -33,8 +33,6 @@ class DQLPlayer: public Player {
 Experience DQLPlayer::get_random_experience(double epsilon) const {
     bool explore = rng()/(double) rng.max()<epsilon;
 
-    cout << explore << endl;
-
     return Experience(0, 0, 0, 0); 
 }
 

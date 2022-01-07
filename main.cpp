@@ -29,7 +29,7 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
     }
 
     if (player1->_score>player2->_score) return player1->_id;
-    if (player2->_score<player2->_score) return player2->_id;
+    if (player1->_score<player2->_score) return player2->_id;
     return -1;
 }
 

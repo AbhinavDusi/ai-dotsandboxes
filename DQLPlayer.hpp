@@ -35,6 +35,7 @@ Experience DQLPlayer::get_random_experience(double epsilon) const {
 
 
     // Choose action based on explore vs exploit
+    int action = 0; 
     bool explore = rng()/(double) rng.max()<epsilon;
     if (explore) {
         

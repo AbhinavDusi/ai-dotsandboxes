@@ -22,7 +22,6 @@ class DQLPlayer: public Player {
     public:
     DQLPlayer(int id, int width, int height);
     int get_move(Game &game); 
-    string get_name() { return "Deep Q Learning"; }
 
     private:
     NeuralNet *policy_net; 
@@ -34,8 +33,8 @@ class DQLPlayer: public Player {
 Experience DQLPlayer::get_random_experience(double epsilon) const {
     // Get random state
 
+
     // Choose action based on explore vs exploit
-    int action = 0; 
     bool explore = rng()/(double) rng.max()<epsilon;
     if (explore) {
         
@@ -45,10 +44,11 @@ Experience DQLPlayer::get_random_experience(double epsilon) const {
 
     // Get new state 
 
-    // Get reward of the action
-    double reward = 0.0;
 
-    return Experience(0, action, reward, 0); 
+    // Get reward of the action
+    double reward = 0.0; 
+
+    return Experience(0, 0, reward, 0); 
 }
 
 void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
@@ -71,7 +71,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     double gamma = 0.999; 
 
     int update_target = 10;
-    
     int total_moves = 2*width*height-width-height; 
 
     vector<int> topology; 
@@ -100,7 +99,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
         vector<double> target;
 
         //policy_net.back_prop(target); 
-
     }
 }
 

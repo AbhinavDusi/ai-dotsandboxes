@@ -49,7 +49,7 @@ Experience DQLPlayer::get_random_experience(double epsilon) const {
     // Get reward of the action
     double reward = 0.0; 
 
-    return Experience(0, 0, reward, 0); 
+    return Experience(0, action, reward, 0); 
 }
 
 void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {

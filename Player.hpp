@@ -29,8 +29,8 @@ mt19937 Player::rng(time(nullptr));
 int Player::move(Game &game) {
     auto start = high_resolution_clock::now();
     int move_idx = !game._started ? rng()%game._moves.size() : get_move(game);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end-start);
     int scored = game.move(_id, move_idx); 
     _score += scored;
     _moves_taken++;

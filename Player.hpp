@@ -17,7 +17,7 @@ class Player {
     int move(Game &game); 
     virtual int get_move(Game &game) = 0; 
     virtual string get_name() = 0;
-    void get_avg_move_time() const { return _time_elapsed/_moves_taken; }
+    double get_avg_move_time() const { return _time_elapsed/_moves_taken; }
     int _id; 
     int _score;
     double _time_elapsed;

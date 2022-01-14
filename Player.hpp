@@ -4,10 +4,12 @@
 #include <ctime>
 #include <random>
 #include <string>
+#include <chrono>
 
 #include "Game.hpp"
 
 using namespace std; 
+using namespace std::chrono;
 
 class Player {
     public:
@@ -25,10 +27,14 @@ class Player {
 mt19937 Player::rng(time(nullptr));
 
 int Player::move(Game &game) {
+    auto start = high_resolution_clock::now();
     int move_idx = !game._started ? rng()%game._moves.size() : get_move(game);
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
     int scored = game.move(_id, move_idx); 
     _score += scored;
     _moves_taken++;
+    _time_elapsed += duration.count();
     return scored;
 }
 

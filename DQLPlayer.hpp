@@ -96,15 +96,21 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
         vector<double> input;
 
-        //policy_net.feed_forward(input); 
+        //policy_net->feed_forward(input); 
 
         vector<double> target;
 
-        //policy_net.back_prop(target); 
+        //policy_net->back_prop(target); 
     }
 }
 
 int DQLPlayer::get_move(Game &game) {
+    vector<double> input; 
+    
+    //policy_net->feed_forward(input); 
+
+    vector<double> result = policy_net->get_result();
+
     return 0;
 }
 

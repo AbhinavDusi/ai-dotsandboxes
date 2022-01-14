@@ -22,6 +22,7 @@ class DQLPlayer: public Player {
     public:
     DQLPlayer(int id, int width, int height);
     int get_move(Game &game); 
+    string get_name() { return "Deep Q Learning"; }
 
     private:
     NeuralNet *policy_net; 

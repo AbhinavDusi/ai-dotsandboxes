@@ -28,10 +28,11 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
         else current_player = player1;
     }
 
-    game.print();
+    int p1_score = game.get_score(player1->_id);
+    int p2_score = game.get_score(player2->_id);
 
-    if (player1->_score>player2->_score) return player1->_id;
-    if (player1->_score<player2->_score) return player2->_id;
+    if (p1_score>p2_score) return player1->_id;
+    if (p1_score<p2_score) return player2->_id;
     return -1;
 }
 
@@ -45,7 +46,7 @@ int main() {
 
     Player *player1, player2;
     int p1_type, p2_type;
-    cout << "Random=0; Minimax=1; Deep Q Learning=2; Algorithmic=3." << endl;
+    cout << "Random=0; Minimax (depth=3)=1; Deep Q Learning=2; Algorithmic=3." << endl;
 
     cout << "Enter type of Player 1: ";
     cin >> p1_type;
@@ -60,8 +61,7 @@ int main() {
     int height = 4;
     int N = 1;
     
-    //Player *player1 = new DQLPlayer(1, width, height);
-    Player *player1 = new RandomPlayer(1);
+    Player *player1 = new DQLPlayer(1, width, height);
     Player *player2 = new RandomPlayer(2); 
 
     int p1 = 0; 

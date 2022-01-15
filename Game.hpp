@@ -7,11 +7,12 @@
 
 using namespace std; 
 
-typedef vector<vector<vector<double>>> GameImage; 
+typedef vector<vector<vector<int>>> GameImage; 
 
 typedef struct Move {
     int row, col, direction;
     Move(int row, int col, int direction): row(row), col(col), direction(direction) {};
+    Move() {};
 } Move; 
 
 class Game {
@@ -30,12 +31,13 @@ class Game {
     vector<Move> _moves; 
 
     private: 
+    int completed_box(int row, int col);
     GameImage _game_image;
     unordered_map<int, int> _score;
 };
 
 Game::Game(int width, int height): _finished(false), _started(false), _width(width), _height(height) {
-    _game_image = vector<vector<vector<double>>>(height, vector<vector<double>>(width, vector<double>(5)));
+    _game_image = vector<vector<vector<int>>>(height, vector<vector<int>>(width, vector<int>(5)));
 
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -61,40 +63,70 @@ int Game::get_score(int player_id) const {
     return _score.at(player_id);
 }
 
+int Game::completed_box(int row, int col) {
+    return _game_image[row][col][0]&&_game_image[row][col][1]&&_game_image[row][col][2]&&_game_image[row][col][3];
+}
+
 int Game::move(int player_id, int move_idx) {
     _started = true;
     if (_finished) return -1; 
 
-    int prev_score = get_score(player_id); 
+    int scored = 0;
 
     Move move = _moves[move_idx]; 
     _moves.erase(_moves.begin()+move_idx);
+    _game_image[move.row][move.col][move.direction] = 1;
+    if (completed_box(move.row, move.col)) {
+        scored++;
+        _game_image[move.row][move.col][4] = player_id;
+    }
 
+    int other_row = -1, other_col = -1, other_direction = -1;
     if (move.direction==0) {
-
+        other_row = move.row-1;
+        other_col = move.col;
+        other_direction = 2;
     }
     if (move.direction==1) {
-        
+        other_row = move.row;
+        other_col = move.col+1;
+        other_direction = 3;
     }
     if (move.direction==2) {
-        
+        other_row = move.row+1;
+        other_col = move.col;
+        other_direction = 0;
     }
     if (move.direction==3) {
-        
+        other_row = move.row;
+        other_col = move.col-1;
+        other_direction = 1;
     }
-    /*
-    if (move.direction == 0) {
-        _board[2*move.row+1][2*move.col] = '|';
-    } else {
-        _board[2*move.row][2*move.col+1] = '-';
-    }
-    */
 
-    int next_score = get_score(player_id);
+    int other_move_idx = -1;
+    for (int i = 0; i < _moves.size(); i++) {
+        if (_moves[i].col==other_col && _moves[i].row==other_row && _moves[i].direction==other_direction) {
+            other_move_idx = i;
+        }
+    }
+    
+    if (other_move_idx!=-1) {
+        Move other_move = _moves[other_move_idx];
+        _moves.erase(_moves.begin()+other_move_idx);
+
+        _game_image[other_move.row][other_move.col][other_move.direction] = 1;
+        if (completed_box(other_move.row, other_move.col)) {
+            scored++;
+            _game_image[other_move.row][other_move.col][4] = player_id;
+        }
+    }
 
     if (_moves.empty()) _finished = true; 
 
-    return next_score-prev_score;
+    if (_score.find(player_id)==_score.end()) _score[player_id] = 0;
+    _score[player_id] += scored;
+
+    return scored;
 }
 
 void Game::print() {

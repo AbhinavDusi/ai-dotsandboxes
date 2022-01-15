@@ -13,13 +13,12 @@ using namespace std::chrono;
 
 class Player {
     public:
-    Player(int id) : _id(id), _score(0), _time_elapsed(0.0), _moves_taken(0) {};
+    Player(int id) : _id(id), _time_elapsed(0.0), _moves_taken(0) {};
     int move(Game &game); 
     virtual int get_move(Game &game) = 0; 
     virtual string get_name() = 0;
     double get_avg_move_time() const { return _time_elapsed/_moves_taken; }
     int _id; 
-    int _score;
     double _time_elapsed;
     int _moves_taken;
     static mt19937 rng;
@@ -33,7 +32,6 @@ int Player::move(Game &game) {
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(end-start);
     int scored = game.move(_id, move_idx); 
-    _score += scored;
     _moves_taken++;
     _time_elapsed += duration.count();
     return scored;

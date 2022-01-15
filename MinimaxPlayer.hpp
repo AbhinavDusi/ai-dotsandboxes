@@ -20,7 +20,7 @@ class MinimaxPlayer: public Player {
     MinimaxPlayer(int id, int opp_id, int depth): Player(id), _opp_id(opp_id), _depth(depth) {};
     int get_move(Game &game);
     int _opp_id;
-    string get_name() { return "Minimax"; }
+    string get_name() { return "Minimax (depth=3)"; }
 
     private:
     MinimaxNode construct_tree(int depth, bool maximize, Game game, int alpha, int beta);

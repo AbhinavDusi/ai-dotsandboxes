@@ -33,7 +33,7 @@ class DQLPlayer: public Player {
 
 Experience DQLPlayer::get_random_experience(double epsilon) const {
     // Get random state
-
+    vector<double> state;
 
     // Choose action based on explore vs exploit
     int action = 0; 
@@ -45,12 +45,12 @@ Experience DQLPlayer::get_random_experience(double epsilon) const {
     }
 
     // Get new state 
-
+    vector<double> new_state;
 
     // Get reward of the action
     double reward = 0.0; 
 
-    return Experience(vector<double>(), action, reward, vector<double>()); 
+    return Experience(state, action, reward, new_state); 
 }
 
 void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {

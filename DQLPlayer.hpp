@@ -10,11 +10,11 @@
 using namespace std;
 
 typedef struct Experience {
-    int state;
+    vector<double> state;
     int action;     
     double reward;
-    int next_state;
-    Experience(int state, int action, double reward, int next_state): 
+    vector<double> next_state;
+    Experience(vector<double> state, int action, double reward, vector<double> next_state): 
         state(state), action(action), reward(reward), next_state(next_state) {};
 } Experience;   
 
@@ -50,7 +50,7 @@ Experience DQLPlayer::get_random_experience(double epsilon) const {
     // Get reward of the action
     double reward = 0.0; 
 
-    return Experience(0, action, reward, 0); 
+    return Experience(vector<double>(), action, reward, vector<double>()); 
 }
 
 void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
@@ -73,12 +73,14 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     double gamma = 0.999; 
 
     int update_target = 10;
-    int total_moves = 2*width*height-width-height; 
+
+    int input_size = 4*width*height;
+    int output_size = 2*width*height+width+height; 
 
     vector<int> topology; 
-    topology.push_back(total_moves);
-    topology.push_back(total_moves);
-    topology.push_back(total_moves);
+    topology.push_back(input_size);
+    topology.push_back((input_size+output_size)/2);
+    topology.push_back(output_size);
 
     policy_net = new NeuralNet(topology, alpha_0, eta_0);
     target_net = new NeuralNet(topology, alpha_0, eta_0); 
@@ -94,8 +96,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
         Experience experience = get_random_experience(epsilon);
 
-        vector<double> input;
-
+        vector<double> input = experience.state;
         //policy_net->feed_forward(input); 
 
         vector<double> target;
@@ -106,7 +107,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
 int DQLPlayer::get_move(Game &game) {
     vector<double> input; 
-    
+
     //policy_net->feed_forward(input); 
 
     vector<double> result = policy_net->get_result();

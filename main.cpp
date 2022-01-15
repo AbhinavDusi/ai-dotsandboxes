@@ -28,6 +28,8 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
         else current_player = player1;
     }
 
+    game.print();
+
     if (player1->_score>player2->_score) return player1->_id;
     if (player1->_score<player2->_score) return player2->_id;
     return -1;
@@ -54,11 +56,12 @@ int main() {
     assign_player(player2, p2_type, 2, 1, 3, width, height);
     */
 
-    int width = 5;
-    int height = 5;
+    int width = 4;
+    int height = 4;
     int N = 1;
     
-    Player *player1 = new DQLPlayer(1, width, height);
+    //Player *player1 = new DQLPlayer(1, width, height);
+    Player *player1 = new RandomPlayer(1);
     Player *player2 = new RandomPlayer(2); 
 
     int p1 = 0; 
@@ -80,10 +83,10 @@ int main() {
     cout << "Draws: " << d << endl;
     cout << "Total Games Played: " << N << endl;
 
-    /*
-    cout << player1->get_name() << " Player 1 average time per move: " << p1->get_avg_move_time() << endl;
-    cout << player2->get_name() << " Player 2 average time per move: " << p2->get_avg_move_time() << endl;
-    */
+    cout << player1->get_name() << " Player 1 average time per move: " 
+        << player1->get_avg_move_time() << " microseconds." << endl;
+    cout << player2->get_name() << " Player 2 average time per move: " 
+        << player2->get_avg_move_time() << " microseconds." << endl;
 
     return 0; 
 }

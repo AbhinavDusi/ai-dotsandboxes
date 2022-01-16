@@ -10,8 +10,9 @@ using namespace std;
 typedef vector<vector<vector<int>>> GameImage; 
 
 typedef struct Move {
-    int row, col, direction;
-    Move(int row, int col, int direction): row(row), col(col), direction(direction) {};
+    int row, col, direction, idx;
+    Move(int row, int col, int direction, int idx): 
+        row(row), col(col), direction(direction), idx(idx) {};
     Move() {};
 } Move; 
 
@@ -29,22 +30,23 @@ class Game {
     int _width;
     int _height;
     vector<Move> _moves; 
+    GameImage _game_image;
 
     private: 
     int completed_box(int row, int col);
-    GameImage _game_image;
     unordered_map<int, int> _score;
 };
 
 Game::Game(int width, int height): _finished(false), _started(false), _width(width), _height(height) {
     _game_image = vector<vector<vector<int>>>(height, vector<vector<int>>(width, vector<int>(5)));
 
+    int idx = 0;
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            _moves.push_back(Move(i, j, 0)); 
-            _moves.push_back(Move(i, j, 1)); 
-            _moves.push_back(Move(i, j, 2)); 
-            _moves.push_back(Move(i, j, 3)); 
+            _moves.push_back(Move(i, j, 0, idx++)); 
+            _moves.push_back(Move(i, j, 1, idx++)); 
+            _moves.push_back(Move(i, j, 2, idx++)); 
+            _moves.push_back(Move(i, j, 3, idx++)); 
         }
     }
 }

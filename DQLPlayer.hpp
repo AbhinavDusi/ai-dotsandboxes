@@ -28,8 +28,21 @@ class DQLPlayer: public Player {
     NeuralNet *policy_net; 
     NeuralNet *target_net;
     Experience get_random_experience(double epsilon) const;
+    vector<double> flatten_game_image(Game &game);
     static void exp_decay(double *x, double x_0, double decay, int n); 
 }; 
+
+vector<double> DQLPlayer::flatten_game_image(Game &game) {
+    vector<double> flattened_image;
+    for (int i = 0; i < game._height; i++) {
+        for (int j = 0; j < game._width; j++) {
+            for (int k = 0; k < 4; k++) {
+                flattened_image.push_back(game._game_image[i][j][k]);
+            }
+        }
+    }
+    return flattened_image;
+}
 
 Experience DQLPlayer::get_random_experience(double epsilon) const {
     // Get random state
@@ -74,13 +87,11 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int update_target = 10;
 
-    int input_size = 4*width*height;
-    int output_size = 2*width*height+width+height; 
-
+    int layer_size = 4*width*height;
     vector<int> topology; 
-    topology.push_back(input_size);
-    topology.push_back((input_size+output_size)/2);
-    topology.push_back(output_size);
+    topology.push_back(layer_size);
+    topology.push_back(layer_size);
+    topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha_0, eta_0);
     target_net = new NeuralNet(topology, alpha_0, eta_0); 
@@ -106,13 +117,21 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 }
 
 int DQLPlayer::get_move(Game &game) {
-    vector<double> input; 
-
-    //policy_net->feed_forward(input); 
-
+    vector<double> input = flatten_game_image(game); 
+    policy_net->feed_forward(input); 
+    
     vector<double> result = policy_net->get_result();
 
-    return 0;
+    int move_idx = 0; 
+    double max_quality = -1;
+    for (int i = 0; i < game._moves.size(); i++) {
+        if (result[game._moves[i].idx] > max_quality) {
+            max_quality = result[game._moves[i].idx];
+            move_idx = i;
+        }
+    }
+
+    return move_idx;
 }
 
 #endif

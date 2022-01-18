@@ -22,7 +22,6 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
 
     while (!game._finished) {
         int scored = current_player->move(game);
-
         if (scored) continue; 
         if (current_player == player1) current_player = player2;
         else current_player = player1;

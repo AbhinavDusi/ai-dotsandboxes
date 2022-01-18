@@ -33,7 +33,7 @@ class Game {
     GameImage _game_image;
 
     private: 
-    int completed_box(int row, int col);
+    bool completed_box(int row, int col);
     unordered_map<int, int> _score;
 };
 
@@ -65,7 +65,7 @@ int Game::get_score(int player_id) const {
     return _score.at(player_id);
 }
 
-int Game::completed_box(int row, int col) {
+bool Game::completed_box(int row, int col) {
     return _game_image[row][col][0]&&_game_image[row][col][1]&&_game_image[row][col][2]&&_game_image[row][col][3];
 }
 
@@ -107,7 +107,7 @@ int Game::move(int player_id, int move_idx) {
 
     int other_move_idx = -1;
     for (int i = 0; i < _moves.size(); i++) {
-        if (_moves[i].col==other_col && _moves[i].row==other_row && _moves[i].direction==other_direction) {
+        if (_moves[i].col==other_col&&_moves[i].row==other_row&&_moves[i].direction==other_direction) {
             other_move_idx = i;
         }
     }

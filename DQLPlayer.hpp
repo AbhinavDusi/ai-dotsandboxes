@@ -27,12 +27,12 @@ class DQLPlayer: public Player {
     private:
     NeuralNet *policy_net; 
     NeuralNet *target_net;
-    Experience get_random_experience(double epsilon) const;
-    vector<double> flatten_game_image(Game &game);
+    Experience get_random_experience(double epsilon, int width, int height) const;
+    vector<double> flatten_game_image(Game &game) const;
     static void exp_decay(double *x, double x_0, double decay, int n); 
 }; 
 
-vector<double> DQLPlayer::flatten_game_image(Game &game) {
+vector<double> DQLPlayer::flatten_game_image(Game &game) const {
     vector<double> flattened_image;
     for (int i = 0; i < game._height; i++) {
         for (int j = 0; j < game._width; j++) {
@@ -44,11 +44,14 @@ vector<double> DQLPlayer::flatten_game_image(Game &game) {
     return flattened_image;
 }
 
-Experience DQLPlayer::get_random_experience(double epsilon) const {
-    // Get random state
-    vector<double> state;
+Experience DQLPlayer::get_random_experience(double epsilon, int width, int height) const {
+    Game game(width, height);
+    int num_moves = rng()%(2*width*height+width+height-1);
+    for (int i = 0; i < num_moves; i++) {
+        game.move(_id, rng()%game._moves.size());
+    }
+    vector<double> state = flatten_game_image(game);
 
-    // Choose action based on explore vs exploit
     int action = 0; 
     bool explore = rng()/(double) rng.max()<epsilon;
     if (explore) {
@@ -57,10 +60,8 @@ Experience DQLPlayer::get_random_experience(double epsilon) const {
 
     }
 
-    // Get new state 
     vector<double> new_state;
 
-    // Get reward of the action
     double reward = 0.0; 
 
     return Experience(state, action, reward, new_state); 
@@ -71,7 +72,7 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 }    
 
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
-    int training_examples = 2000; 
+    int training_examples = 1; 
 
     double alpha_0 = 0.5;
     double alpha_decay = 0.001;
@@ -105,7 +106,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
         exp_decay(&(policy_net->_alpha), alpha_0, alpha_decay, i);
         exp_decay(&(policy_net->_eta), eta_0, eta_decay, i);
 
-        Experience experience = get_random_experience(epsilon);
+        Experience experience = get_random_experience(epsilon, width, height);
 
         vector<double> input = experience.state;
         //policy_net->feed_forward(input); 
@@ -119,7 +120,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 int DQLPlayer::get_move(Game &game) {
     vector<double> input = flatten_game_image(game); 
     policy_net->feed_forward(input); 
-    
+
     vector<double> result = policy_net->get_result();
 
     int move_idx = 0; 

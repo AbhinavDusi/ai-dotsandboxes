@@ -27,10 +27,28 @@ class DQLPlayer: public Player {
     private:
     NeuralNet *policy_net; 
     NeuralNet *target_net;
+    int choose_action(Game &game) const;
     Experience get_random_experience(double epsilon, int width, int height) const;
     vector<double> flatten_game_image(Game &game) const;
     static void exp_decay(double *x, double x_0, double decay, int n); 
 }; 
+
+int DQLPlayer::choose_action(Game &game) const {
+    vector<double> input = flatten_game_image(game); 
+    policy_net->feed_forward(input); 
+
+    vector<double> result = policy_net->get_result();
+
+    int move_idx = 0;
+    double max_quality = -1;
+    for (int i = 0; i < game._moves.size(); i++) {
+        if (result[game._moves[i].idx] > max_quality) {
+            max_quality = result[game._moves[i].idx];
+            move_idx = i;
+        }
+    }
+    return move_idx;
+}
 
 vector<double> DQLPlayer::flatten_game_image(Game &game) const {
     vector<double> flattened_image;
@@ -55,10 +73,11 @@ Experience DQLPlayer::get_random_experience(double epsilon, int width, int heigh
     int action = 0; 
     bool explore = rng()/(double) rng.max()<epsilon;
     if (explore) {
-        
+        action = rng()%game._moves.size();
     } else {
-
+        action = choose_action(game);
     }
+    game.move(_id, action);
 
     vector<double> new_state = flatten_game_image(game);
 
@@ -118,21 +137,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 }
 
 int DQLPlayer::get_move(Game &game) {
-    vector<double> input = flatten_game_image(game); 
-    policy_net->feed_forward(input); 
-
-    vector<double> result = policy_net->get_result();
-
-    int move_idx = 0; 
-    double max_quality = -1;
-    for (int i = 0; i < game._moves.size(); i++) {
-        if (result[game._moves[i].idx] > max_quality) {
-            max_quality = result[game._moves[i].idx];
-            move_idx = i;
-        }
-    }
-
-    return move_idx;
+    return choose_action(game);
 }
 
 #endif

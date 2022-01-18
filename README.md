@@ -23,7 +23,8 @@ future moves and choosing the optimal move by maximizing its score to a certain 
 
 ## Deep Q Learning Player
 
-The Deep Q Learning Player chooses a move by 
+The Deep Q Learning Player chooses a move by using a neural network to determine the max quality move
+at each state, after being trained with thousands of training examples.
 
 # Data
 

@@ -60,7 +60,7 @@ Experience DQLPlayer::get_random_experience(double epsilon, int width, int heigh
 
     }
 
-    vector<double> new_state;
+    vector<double> new_state = flatten_game_image(game);
 
     double reward = 0.0; 
 

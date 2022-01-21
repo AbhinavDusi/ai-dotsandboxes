@@ -57,6 +57,8 @@ Game Game::get_clone() const {
     game._moves = _moves;
     game._game_image = _game_image;
     game._started = _started;
+    game._height = _height;
+    game._width = _width;
     return game;
 }
 

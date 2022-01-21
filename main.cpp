@@ -7,11 +7,13 @@
 #include "DQLPlayer.hpp"
 #include "AlgorithmicPlayer.hpp"
 
+#define MINIMAX_DEPTH 3
+
 using namespace std;
 
-void assign_player(Player *player, int player_type, int id, int opp_id, int depth, int width, int height) {
+void assign_player(Player *player, int player_type, int id, int opp_id, int width, int height) {
     if (player_type==0) player = new RandomPlayer(id); 
-    if (player_type==1) player = new MinimaxPlayer(id, opp_id, depth); 
+    if (player_type==1) player = new MinimaxPlayer(id, opp_id, MINIMAX_DEPTH); 
     if (player_type==2) player = new DQLPlayer(id, width, height); 
     if (player_type==3) player = new AlgorithmicPlayer(id); 
 }
@@ -49,19 +51,19 @@ int main() {
 
     cout << "Enter type of Player 1: ";
     cin >> p1_type;
-    assign_player(player1, p1_type, 1, 2, 3, width, height);
+    assign_player(player1, p1_type, 1, 2, width, height);
 
     cout << "Enter type of Player 2: ";
     cin >> p2_type;
-    assign_player(player2, p2_type, 2, 1, 3, width, height);
+    assign_player(player2, p2_type, 2, 1, width, height);
     */
 
     int width = 4;
     int height = 4;
-    int N = 1;
+    int N = 5;
     
-    Player *player1 = new DQLPlayer(1, width, height);
-    Player *player2 = new RandomPlayer(2); 
+    Player *player1 = new RandomPlayer(1); 
+    Player *player2 = new DQLPlayer(2, width, height);
 
     int p1 = 0; 
     int p2 = 0;

@@ -96,14 +96,14 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             if (explore) action = rng()%game._moves.size();
             else action = choose_action(game, &target_net);
 
-            double reward = game.move(action);
+            double reward = game.move(_id, action);
 
             vector<double> state_1 = flatten_game_image(game);
 
             rm.add_experience(Experience(state_0, action, reward, state_1));
 
             if (rm.can_provide_sample(minibatch_size)) {
-
+                vector<Experience> sample = rm.sample(minibatch_size);
             }
 
             state_0 = state_1;

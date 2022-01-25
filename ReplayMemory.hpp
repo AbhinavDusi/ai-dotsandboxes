@@ -17,13 +17,18 @@ class ReplayMemory {
     int _push_count;
     ReplayMemory(int capacity): _capacity(capacity) {};
     void add_experience(Experience e);
-    bool can_provide_sample(int minibatch_size) { return rm._memory.size() >= minibatch_size; }; 
+    bool can_provide_sample(int minibatch_size) { return _memory.size() >= minibatch_size; }; 
+    vector<Experience> sample(int minibatch_size);
 };
 
 void ReplayMemory::add_experience(Experience e) {
     if (_memory.size() < _capacity) _memory.push_back(e); 
     else _memory[_push_count%_capacity] = e;
     _push_count++;
+}
+
+vector<Experience> sample(int minibatch_size) {
+
 }
 
 #endif

@@ -61,7 +61,21 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     policy_net = new NeuralNet(topology, alpha_0, eta_0);
 
     for (int i = 0; i < episodes; i++) {
+        Game game(width, height);
+        vector<double> state_0 = flatten_game_image(game); 
 
+        exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
+        exp_decay(&(policy_net->_alpha), alpha_0, alpha_decay, i);
+        exp_decay(&(policy_net->_eta), eta_0, eta_decay, i);
+
+        for (int l = 0; l < 2*width*height+width+height; l++) {
+            bool explore = (double) rng()/rng.max() > epsilon; 
+            if (explore) {
+
+            } else {
+
+            }
+        }
     }
 }
 

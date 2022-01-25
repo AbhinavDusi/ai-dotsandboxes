@@ -18,7 +18,7 @@ class ReplayMemory {
     ReplayMemory(int capacity): _capacity(capacity) {};
     void add_experience(Experience e);
     bool can_provide_sample(int minibatch_size) { return _memory.size() >= minibatch_size; }; 
-    vector<Experience> sample(int minibatch_size);
+    vector<Experience> get_sample(int minibatch_size) const;
 };
 
 void ReplayMemory::add_experience(Experience e) {
@@ -27,7 +27,7 @@ void ReplayMemory::add_experience(Experience e) {
     _push_count++;
 }
 
-vector<Experience> sample(int minibatch_size) {
+vector<Experience> ReplayMemory::get_sample(int minibatch_size) const {
 
 }
 

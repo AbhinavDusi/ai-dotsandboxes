@@ -103,7 +103,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             rm.add_experience(Experience(state_0, action, reward, state_1));
 
             if (rm.can_provide_sample(minibatch_size)) {
-                vector<Experience> sample = rm.sample(minibatch_size);
+                vector<Experience> sample = rm.get_sample(minibatch_size);
             }
 
             state_0 = state_1;

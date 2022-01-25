@@ -58,10 +58,12 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 }    
 
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
-    int capacity = 100;
+    int capacity = 100000;
     ReplayMemory rm(capacity);
 
-    int episodes = 2000; 
+    int minibatch_size = 256;
+
+    int episodes = 1000; 
 
     double alpha = 0.5;
     double eta = 0.15;
@@ -81,12 +83,12 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     policy_net = new NeuralNet(topology, alpha, eta);
 
     for (int i = 0; i < episodes; i++) {
-        Game game(width, height);
-        vector<double> state_0 = flatten_game_image(game); 
-
         if (i%update_target==0) policy_net->load(*target_net);
 
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
+
+        Game game(width, height);
+        vector<double> state_0 = flatten_game_image(game);
 
         while (!game._finished) {
             bool explore = (double) rng()/rng.max() > epsilon; 
@@ -94,7 +96,17 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             if (explore) action = rng()%game._moves.size();
             else action = choose_action(game, &target_net);
 
-            game.move(action);
+            double reward = game.move(action);
+
+            vector<double> state_1 = flatten_game_image(game);
+
+            rm.add_experience(Experience(state_0, action, reward, state_1));
+
+            if (rm.can_provide_sample(minibatch_size)) {
+
+            }
+
+            state_0 = state_1;
         }
     }
 }

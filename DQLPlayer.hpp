@@ -9,6 +9,17 @@
 
 using namespace std;
 
+typedef struct Experience {
+    vector<double> state;
+    int action; 
+    double reward;
+    vector<double> new_state;
+    Experience(vector<double> state, int action, double reward, vector<double> new_state): 
+        state(state), action(action), reward(reward), new_state(new_state);
+} Experience;
+
+typedef ReplayMemory vector<Experience>;
+
 class DQLPlayer: public Player {
     public:
     DQLPlayer(int id, int width, int height);
@@ -49,6 +60,9 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 }    
 
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
+    int replay_capacity = 1000;
+    ReplayMemory rm(capacity);
+
     int training_examples = 10; 
 
     double alpha_0 = 0.5;
@@ -71,11 +85,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     target_net = new NeuralNet(topology, alpha_0, eta_0); 
     
     for (int i = 0; i < training_examples; i++) {
-        if (i%update_target == 0) target_net->load(*policy_net);
-        
-        exp_decay(&(policy_net->_alpha), alpha_0, alpha_decay, i);
-        exp_decay(&(policy_net->_eta), eta_0, eta_decay, i);
-
         Game random_game = get_random_game_state(width, height);
         vector<double> state = flatten_game_image(random_game);
         policy_net->feed_forward(state); 

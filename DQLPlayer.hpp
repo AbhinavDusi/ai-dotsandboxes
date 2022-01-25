@@ -6,19 +6,9 @@
 #include "Game.hpp"
 #include "Player.hpp"
 #include "NeuralNet.hpp"
+#include "ReplayMemory.hpp"
 
 using namespace std;
-
-typedef struct Experience {
-    vector<double> state;
-    int action; 
-    double reward;
-    vector<double> new_state;
-    Experience(vector<double> state, int action, double reward, vector<double> new_state): 
-        state(state), action(action), reward(reward), new_state(new_state);
-} Experience;
-
-typedef ReplayMemory vector<Experience>;
 
 class DQLPlayer: public Player {
     public:
@@ -28,7 +18,9 @@ class DQLPlayer: public Player {
 
     private:
     NeuralNet *policy_net; 
+    NeuralNet *target_net;
     vector<double> flatten_game_image(Game &game) const;
+    int choose_action(Game &game, NeuralNet **net);
     static void exp_decay(double *x, double x_0, double decay, int n); 
 }; 
 
@@ -44,24 +36,41 @@ vector<double> DQLPlayer::flatten_game_image(Game &game) const {
     return flattened_image;
 }
 
+int DQLPlayer::choose_action(Game &game, NeuralNet **net) {
+    vector<double> input = flatten_game_image(game); 
+    (*net)->feed_forward(input); 
+
+    vector<double> result = (*net)->get_result();
+
+    int action = 0;
+    double max_quality = -1;
+    for (int i = 0; i < game._moves.size(); i++) {
+        if (result[game._moves[i].idx] > max_quality) {
+            max_quality = result[game._moves[i].idx];
+            action = i;
+        }
+    }
+    return action;
+}
+
 void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
     *x = x_0*exp(-1*decay*n);
 }    
 
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
+    int capacity = 100;
+    ReplayMemory rm(capacity);
+
     int episodes = 2000; 
 
-    double alpha_0 = 0.5;
-    double alpha_decay = 0.001;
+    double alpha = 0.5;
+    double eta = 0.15;
 
-    double eta_0 = 0.15;
-    double eta_decay = 0.001; 
-
-    double epsilon_0 = 0.95;
+    double epsilon_0 = 0.99;
     double epsilon = epsilon_0;
     double epsilon_decay = 0.001;
 
-    double gamma = 0.999; 
+    int update_target = 10;
 
     int layer_size = 4*width*height;
     vector<int> topology; 
@@ -69,42 +78,29 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     topology.push_back(layer_size);
     topology.push_back(layer_size);
 
-    policy_net = new NeuralNet(topology, alpha_0, eta_0);
+    policy_net = new NeuralNet(topology, alpha, eta);
 
     for (int i = 0; i < episodes; i++) {
         Game game(width, height);
         vector<double> state_0 = flatten_game_image(game); 
 
+        if (i%update_target==0) policy_net->load(*target_net);
+
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
-        exp_decay(&(policy_net->_alpha), alpha_0, alpha_decay, i);
-        exp_decay(&(policy_net->_eta), eta_0, eta_decay, i);
 
-        for (int l = 0; l < 2*width*height+width+height; l++) {
+        while (!game._finished) {
             bool explore = (double) rng()/rng.max() > epsilon; 
-            if (explore) {
+            int action = 0;
+            if (explore) action = rng()%game._moves.size();
+            else action = choose_action(game, &target_net);
 
-            } else {
-
-            }
+            game.move(action);
         }
     }
 }
 
 int DQLPlayer::get_move(Game &game) {
-    vector<double> input = flatten_game_image(game); 
-    policy_net->feed_forward(input); 
-
-    vector<double> result = policy_net->get_result();
-
-    int move_idx = 0;
-    double max_quality = -1;
-    for (int i = 0; i < game._moves.size(); i++) {
-        if (result[game._moves[i].idx] > max_quality) {
-            max_quality = result[game._moves[i].idx];
-            move_idx = i;
-        }
-    }
-    return move_idx;
+    return choose_action(game, &policy_net);
 }
 
 #endif

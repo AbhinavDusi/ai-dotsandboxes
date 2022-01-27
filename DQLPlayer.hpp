@@ -94,7 +94,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             bool explore = (double) rng()/rng.max() > epsilon; 
             int action = 0;
             if (explore) action = rng()%game._moves.size();
-            else action = choose_action(game, &target_net);
+            else action = choose_action(game, &policy_net);
 
             double reward = game.move(_id, action);
 

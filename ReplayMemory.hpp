@@ -1,6 +1,10 @@
 #ifndef REPLAY_MEMORY_H
 #define REPLAY_MEMORY_H
 
+#include <vector>
+#include <random>
+#include <ctime>
+
 typedef struct Experience {
     vector<double> state_0;
     int action; 
@@ -28,7 +32,14 @@ void ReplayMemory::add_experience(Experience e) {
 }
 
 vector<Experience> ReplayMemory::get_sample(int minibatch_size) const {
-
+    vector<Experience> sample;
+    for (int i = 0; i < minibatch_size; i++) {
+        int idx = rng()%_memory.size();
+        Experience experience = _memory[idx];
+        _memory.erase(_memory.begin()+idx);
+        sample.push_back(experience);
+    }
+    return sample;
 }
 
 #endif

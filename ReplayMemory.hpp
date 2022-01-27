@@ -33,6 +33,7 @@ void ReplayMemory::add_experience(Experience e) {
 
 vector<Experience> ReplayMemory::get_sample(int minibatch_size) const {
     vector<Experience> sample;
+    mt19937 rng(time(nullptr));
     for (int i = 0; i < minibatch_size; i++) {
         int idx = rng()%_memory.size();
         Experience experience = _memory[idx];

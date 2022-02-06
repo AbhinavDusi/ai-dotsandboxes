@@ -72,6 +72,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     double epsilon = epsilon_0;
     double epsilon_decay = 0.001;
 
+    double gamma = 0.999;
+
     int update_target = 10;
 
     int layer_size = 4*width*height;
@@ -81,6 +83,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha, eta);
+    target_net = new NeuralNet(topology, alpha, eta);
 
     for (int i = 0; i < episodes; i++) {
         if (i%update_target==0) policy_net->load(*target_net);
@@ -100,13 +103,19 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
             vector<double> state_1 = flatten_game_image(game);
 
-            rm.add_experience(Experience(state_0, action, reward, state_1));
+            bool terminal = game._finished; 
+            
+            rm.add_experience(Experience(state_0, action, reward, state_1, terminal));
+            
+            state_0 = state_1;
 
             if (rm.can_provide_sample(minibatch_size)) {
                 vector<Experience> sample = rm.get_sample(minibatch_size);
-            }
+                for (int j = 0; j < minibatch_size; j++) {
+                    Experience experience = sample[j]; 
 
-            state_0 = state_1;
+                }
+            }
         }
     }
 }

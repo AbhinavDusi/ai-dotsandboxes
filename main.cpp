@@ -15,7 +15,7 @@ void assign_player(Player *player, int player_type, int id, int width, int heigh
     if (player_type==0) player = new RandomPlayer(id); 
     if (player_type==1) player = new MinimaxPlayer(id, MINIMAX_DEPTH); 
     if (player_type==2) player = new DQLPlayer(id, width, height); 
-    if (player_type==3) player = new AlgorithmicPlayer(id); 
+    if (player_type==3) player = new AlgorithmicPlayer(id, width, height); 
 }
 
 int simulate_game(int width, int height, Player *player1, Player *player2) {

@@ -65,14 +65,13 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int episodes = 1000; 
 
-    double alpha = 0.5;
-    double eta = 0.15;
+    double alpha = 0.15;
 
     double epsilon_0 = 0.99;
     double epsilon = epsilon_0;
     double epsilon_decay = 0.001;
 
-    double gamma = 0.999;
+    double gamma = 0.9;
 
     int update_target = 10;
 
@@ -82,8 +81,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     topology.push_back(layer_size);
     topology.push_back(layer_size);
 
-    policy_net = new NeuralNet(topology, alpha, eta);
-    target_net = new NeuralNet(topology, alpha, eta);
+    policy_net = new NeuralNet(topology, alpha);
+    target_net = new NeuralNet(topology, alpha);
 
     for (int i = 0; i < episodes; i++) {
         if (i%update_target==0) policy_net->load(*target_net);
@@ -97,7 +96,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             bool explore = (double) rng()/rng.max() > epsilon; 
             int action = 0;
             if (explore) action = rng()%game._moves.size();
-            else action = choose_action(game, &policy_net);
+            else action = choose_action(game, &target_net);
 
             double reward = game.move(_id, action);
 
@@ -113,6 +112,21 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                 vector<Experience> sample = rm.get_sample(minibatch_size);
                 for (int j = 0; j < minibatch_size; j++) {
                     Experience experience = sample[j]; 
+
+                    double y_j = experience.reward;
+
+                    if (!experience.terminal) {
+                        policy_net->feed_forward(experience.state_1);
+
+                        vector<double> result = policy_net->get_result();
+                        double max_quality = -1;
+                        for (double r : result) {
+                            max_quality = max(max_quality, r);
+                        }
+
+                        y_j += gamma*max_quality;
+                    }
+
 
                 }
             }

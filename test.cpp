@@ -15,18 +15,14 @@ int main() {
     topology.push_back(1);     
     
     double alpha_0 = 0.5;
-    double alpha_decay = 0.001;
+    double alpha_decay = 0.0001;
 
-    double eta_0 = 0.15;
-    double eta_decay = 0.001; 
-
-    NeuralNet net(topology, alpha_0, eta_0); 
+    NeuralNet net(topology, alpha_0); 
 
     std::mt19937 rng(time(nullptr));
 
     for (int i = 0; i < 2000; i++) {
         exp_decay(&(net._alpha), alpha_0, alpha_decay, i);
-        exp_decay(&(net._eta), eta_0, eta_decay, i);
 
         int a = rng()%2; 
         int b = rng()%2;

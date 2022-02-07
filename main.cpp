@@ -11,9 +11,9 @@
 
 using namespace std;
 
-void assign_player(Player *player, int player_type, int id, int opp_id, int width, int height) {
+void assign_player(Player *player, int player_type, int id, int width, int height) {
     if (player_type==0) player = new RandomPlayer(id); 
-    if (player_type==1) player = new MinimaxPlayer(id, opp_id, MINIMAX_DEPTH); 
+    if (player_type==1) player = new MinimaxPlayer(id, MINIMAX_DEPTH); 
     if (player_type==2) player = new DQLPlayer(id, width, height); 
     if (player_type==3) player = new AlgorithmicPlayer(id); 
 }
@@ -51,11 +51,11 @@ int main() {
 
     cout << "Enter type of Player 1: ";
     cin >> p1_type;
-    assign_player(player1, p1_type, 1, 2, width, height);
+    assign_player(player1, p1_type, 1, width, height);
 
     cout << "Enter type of Player 2: ";
     cin >> p2_type;
-    assign_player(player2, p2_type, 2, 1, width, height);
+    assign_player(player2, p2_type, 2, width, height);
     */
 
     int width = 4;

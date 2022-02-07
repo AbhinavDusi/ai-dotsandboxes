@@ -17,7 +17,7 @@ typedef struct MinimaxNode {
 
 class MinimaxPlayer: public Player {
     public:
-    MinimaxPlayer(int id, int opp_id, int depth): Player(id), _opp_id(opp_id), _depth(depth) {};
+    MinimaxPlayer(int id, int depth): Player(id), _opp_id(id == 1 ? 2 : 1), _depth(depth) {};
     int get_move(Game &game);
     int _opp_id;
     string get_name() { return "Minimax (depth=3)"; }

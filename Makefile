@@ -1,8 +1,8 @@
-$(CFLAGS): -std=c++18
-$(CPP): g++
+CLFAGS = -std=c++17
+CPP = g++
 
 all: 
-	g++ -std=c++18 -o main main.cpp
+	$(CPP) $(CFLAGS) -o main main.cpp
 
 clean: 
 	rm main

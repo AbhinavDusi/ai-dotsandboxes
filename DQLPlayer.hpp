@@ -20,7 +20,7 @@ class DQLPlayer: public Player {
     NeuralNet *policy_net; 
     NeuralNet *target_net;
     vector<double> flatten_game_image(Game &game) const;
-    int choose_action(Game &game, NeuralNet **net);
+    pair<int, double> choose_action(Game &game, NeuralNet **net);
     static void exp_decay(double *x, double x_0, double decay, int n); 
 }; 
 
@@ -36,7 +36,7 @@ vector<double> DQLPlayer::flatten_game_image(Game &game) const {
     return flattened_image;
 }
 
-int DQLPlayer::choose_action(Game &game, NeuralNet **net) {
+pair<int, double> DQLPlayer::choose_action(Game &game, NeuralNet **net) {
     vector<double> input = flatten_game_image(game); 
     (*net)->feed_forward(input); 
 
@@ -50,7 +50,7 @@ int DQLPlayer::choose_action(Game &game, NeuralNet **net) {
             action = i;
         }
     }
-    return action;
+    return make_pair(action, max_quality);
 }
 
 void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
@@ -89,26 +89,21 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
 
-        Game game(width, height);
-        vector<double> state_0 = flatten_game_image(game);
+        Game game_0(width, height);
 
-        while (!game._finished) {
+        while (!game_0._finished) {
             bool explore = (double) rng()/rng.max() > epsilon; 
             int action = 0;
-            if (explore) action = rng()%game._moves.size();
-            else action = choose_action(game, &target_net);
+            if (explore) action = rng()%game_0._moves.size();
+            else action = choose_action(game_0, &target_net).first;
+        
+            Game game_1 = game_0;
 
-            double reward = game.move(_id, action);
-
-            vector<double> state_1 = flatten_game_image(game);
-
-            bool terminal = game._finished; 
+            double reward = game_1.move(_id, action);
             
-            rm.add_experience(Experience(state_0, action, reward, state_1, terminal));
-            
-            state_0 = state_1;
+            rm.add_experience(Experience(game_0, action, reward, game_1));
 
-            double y_j = reward;
+            game_0 = game_1;
 
             if (rm.can_provide_sample(minibatch_size)) {
                 vector<Experience> sample = rm.get_sample(minibatch_size);
@@ -116,16 +111,10 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     Experience experience = sample[j]; 
 
                     double bellman = experience.reward;
-
-                    if (!experience.terminal) {
-                        target_net->feed_forward(experience.state_1);
-
-                        vector<double> result = target_net->get_result();
-                        double max_quality = -1;
-                        for (double r : result) {
-                            max_quality = max(max_quality, r);
-                        }
-
+                    
+                    bool terminal = experience.state_1._finished;
+                    if (!terminal) {
+                        double max_quality = choose_action(experience.state_1, &policy_net).second;
                         bellman += gamma*max_quality;
                     }
 
@@ -137,7 +126,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 }
 
 int DQLPlayer::get_move(Game &game) {
-    return choose_action(game, &policy_net);
+    return choose_action(game, &policy_net).first;
 }
 
 #endif

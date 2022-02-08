@@ -5,16 +5,17 @@
 #include <random>
 #include <ctime>
 
+#include "Game.hpp"
+
 using namespace std;
 
 typedef struct Experience {
-    vector<double> state_0;
+    Game state_0;
     int action; 
     double reward;
-    vector<double> state_1;
-    bool terminal;
-    Experience(vector<double> state_0, int action, double reward, vector<double> state_1, bool terminal): 
-        state_0(state_0), action(action), reward(reward), state_1(state_1), terminal(terminal) {};
+    Game state_1;
+    Experience(Game state_0, int action, double reward, Game state_1): 
+        state_0(state_0), action(action), reward(reward), state_1(state_1) {};
 } Experience;
 
 class ReplayMemory {

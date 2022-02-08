@@ -1,8 +1,10 @@
-CLFAGS = -std=c++17
-CPP = g++
+CC = g++
+CFLAGS = -std=c++17
 
-all: 
-	$(CPP) $(CFLAGS) -o main main.cpp
+all: main
+
+main:
+	$(CC) -o main main.cpp $(CFLAGS) 
 
 clean: 
 	rm main

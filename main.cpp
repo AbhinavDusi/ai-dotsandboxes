@@ -7,8 +7,6 @@
 #include "DQLPlayer.hpp"
 #include "AlgorithmicPlayer.hpp"
 
-#include "DQLPlayerSimple.hpp"
-
 #define MINIMAX_DEPTH 3
 
 using namespace std;
@@ -65,7 +63,7 @@ int main() {
     int N = 5;
     
     Player *player1 = new RandomPlayer(1); 
-    Player *player2 = new DQLPlayerSimple(2, width, height);
+    Player *player2 = new DQLPlayer(2, width, height);
 
     int p1 = 0; 
     int p2 = 0;

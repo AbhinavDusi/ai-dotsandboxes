@@ -115,18 +115,18 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                 for (int j = 0; j < minibatch_size; j++) {
                     Experience experience = sample[j]; 
 
-                    double y_j = experience.reward;
+                    double bellman = experience.reward;
 
                     if (!experience.terminal) {
-                        policy_net->feed_forward(experience.state_1);
+                        target_net->feed_forward(experience.state_1);
 
-                        vector<double> result = policy_net->get_result();
+                        vector<double> result = target_net->get_result();
                         double max_quality = -1;
                         for (double r : result) {
                             max_quality = max(max_quality, r);
                         }
 
-                        y_j += gamma*max_quality;
+                        bellman += gamma*max_quality;
                     }
 
 

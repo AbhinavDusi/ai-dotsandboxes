@@ -20,13 +20,15 @@ typedef struct Experience {
 
 class ReplayMemory {
     public:
-    vector<Experience> _memory;
-    int _capacity;
-    int _push_count;
     ReplayMemory(int capacity): _capacity(capacity) {};
     void add_experience(Experience e);
     bool can_provide_sample(int minibatch_size) { return _memory.size() >= minibatch_size; }; 
     vector<Experience> get_sample(int minibatch_size) const;
+
+    private: 
+    vector<Experience> _memory;
+    int _capacity;
+    int _push_count;
     static mt19937 rng;
 };
 

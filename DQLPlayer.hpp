@@ -115,7 +115,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     
                     bool terminal = experience.state_1._finished;
                     if (!terminal) {
-                        double max_quality = choose_action(experience.state_1, &policy_net).second;
+                        double max_quality = choose_action(experience.state_1, &target_net).second;
                         bellman += gamma*max_quality;
                     }
 

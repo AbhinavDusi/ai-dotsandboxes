@@ -4,7 +4,7 @@ CFLAGS = -std=c++17
 all: main
 
 main:
-	$(CC) -o main main.cpp $(CFLAGS) 
+	$(CC) -o bin/main src/main.cpp $(CFLAGS) 
 
 clean: 
-	rm main
+	rm bin/main

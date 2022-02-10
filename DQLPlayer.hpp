@@ -93,13 +93,14 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
         while (!game_0._finished) {
             bool explore = (double) rng()/rng.max() > epsilon; 
-            int action = 0;
-            if (explore) action = rng()%game_0._moves.size();
-            else action = choose_action(game_0, &target_net).first;
+            int action_idx = 0;
+            if (explore) action_idx = rng()%game_0._moves.size();
+            else action_idx = choose_action(game_0, &target_net).first;
+            Move action = game_0._moves[action_idx];
         
             Game game_1 = game_0;
 
-            double reward = game_1.move(_id, action);
+            double reward = game_1.move(_id, action_idx);
             
             rm.add_experience(Experience(game_0, action, reward, game_1));
 
@@ -118,7 +119,11 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                         bellman += gamma*max_quality;
                     }
 
-
+                    policy_net->feed_forward(flatten_game_image(experience.state_0));
+                    vector<double> result = policy_net->get_result();
+                    vector<double> target = result;
+                    target[experience.action.idx] = bellman;
+                    policy_net->back_prop(target);
                 }
             }
         }

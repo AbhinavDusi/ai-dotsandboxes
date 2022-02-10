@@ -11,10 +11,10 @@ using namespace std;
 
 typedef struct Experience {
     Game state_0;
-    int action; 
+    Move action; 
     double reward;
     Game state_1;
-    Experience(Game state_0, int action, double reward, Game state_1): 
+    Experience(Game state_0, Move action, double reward, Game state_1): 
         state_0(state_0), action(action), reward(reward), state_1(state_1) {};
 } Experience;
 

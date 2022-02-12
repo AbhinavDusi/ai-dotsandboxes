@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include "../lib/Game.hpp"
-#include "../lib/Player.hpp"
-#include "../lib/Random/RandomPlayer.hpp"
-#include "../lib/Minimax/MinimaxPlayer.hpp"
-#include "../lib/DQL/DQLPlayer.hpp"
-#include "../lib/Algorithmic/AlgorithmicPlayer.hpp"
+#include "../include/Game.hpp"
+#include "../include/Player.hpp"
+#include "../include/Random/RandomPlayer.hpp"
+#include "../include/Minimax/MinimaxPlayer.hpp"
+#include "../include/DQL/DQLPlayer.hpp"
+#include "../include/Algorithmic/AlgorithmicPlayer.hpp"
 
 #define MINIMAX_DEPTH 3
 

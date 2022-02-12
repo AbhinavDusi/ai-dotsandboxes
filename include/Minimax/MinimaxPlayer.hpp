@@ -3,6 +3,7 @@
 
 #include <random>
 #include <ctime>
+#include <climits>
 
 #include "../Game.hpp"
 #include "../Player.hpp"

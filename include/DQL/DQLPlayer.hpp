@@ -63,7 +63,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int minibatch_size = 256;
 
-    int episodes = 100; 
+    int episodes = 1000; 
 
     double alpha = 0.15;
 
@@ -85,6 +85,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     target_net = new NeuralNet(topology, alpha);
 
     for (int i = 0; i < episodes; i++) {
+        cout << "Episode: " << i << "\n";
+
         if (i%update_target==0) policy_net->load(*target_net);
 
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);

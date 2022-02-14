@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <ctime>
+#include <fstream>
 
 class Neuron; 
 
@@ -60,6 +61,8 @@ class NeuralNet {
     void back_prop(const std::vector<double>& target);
     std::vector<double> get_result() const;
     void load(NeuralNet &net);
+    void read(const char *filename);
+    void write(const char *filename) const;
     double _alpha; 
 
     private:
@@ -124,6 +127,26 @@ std::vector<double> NeuralNet::get_result() const {
 void NeuralNet::load(NeuralNet &net) {
     _layers = net._layers;
     _alpha = net._alpha;
+}
+
+void NeuralNet::read(const char *filename) {
+    std::ifstream in(filename);
+
+    int topology_length;
+    in >> topology_length;
+
+    std::vector<int> topology;
+    for (int i = 0; i < topology_length; i++) {
+        
+    }
+
+    in.close();
+}
+
+void NeuralNet::write(const char *filename) const {
+    std::ofstream out(filename); 
+
+    out.close();
 }
 
 #endif 

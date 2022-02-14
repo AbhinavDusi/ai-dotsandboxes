@@ -5,6 +5,7 @@
 #include <random>
 #include <ctime>
 #include <fstream>
+#include <iostream>
 
 class Neuron; 
 
@@ -57,6 +58,7 @@ void Neuron::nudge_output_weights(const Layer& next_layer, double alpha) {
 class NeuralNet {
     public:
     NeuralNet(const std::vector<int>& topology, double alpha); 
+    NeuralNet() {};
     void feed_forward(const std::vector<double>& input); 
     void back_prop(const std::vector<double>& target);
     std::vector<double> get_result() const;
@@ -131,21 +133,17 @@ void NeuralNet::load(NeuralNet &net) {
 
 void NeuralNet::read(const char *filename) {
     std::ifstream in(filename);
-
-    int topology_length;
-    in >> topology_length;
-
-    std::vector<int> topology;
-    for (int i = 0; i < topology_length; i++) {
-        
-    }
-
+    in.open(filename, ios::in);
+    in.seekg(0);
+    NeuralNet net;
+    in.read((char *) &net, sizeof(NeuralNet));
+    load(net);
     in.close();
 }
 
 void NeuralNet::write(const char *filename) const {
-    std::ofstream out(filename); 
-
+    std::ofstream out(filename, ios::app); 
+    out.write((char *) this, sizeof(NeuralNet));
     out.close();
 }
 

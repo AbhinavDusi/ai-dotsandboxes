@@ -6,6 +6,7 @@
 #include "../include/Minimax/MinimaxPlayer.hpp"
 #include "../include/DQL/DQLPlayer.hpp"
 #include "../include/Algorithmic/AlgorithmicPlayer.hpp"
+#include "../include/Human/Human.hpp"
 
 #define MINIMAX_DEPTH 3
 
@@ -16,6 +17,7 @@ void assign_player(Player *player, int player_type, int id, int width, int heigh
     if (player_type==1) player = new MinimaxPlayer(id, MINIMAX_DEPTH); 
     if (player_type==2) player = new DQLPlayer(id, width, height); 
     if (player_type==3) player = new AlgorithmicPlayer(id, width, height); 
+    if (player_type==4) player = new HumanPlayer(id);
 }
 
 int simulate_game(int width, int height, Player *player1, Player *player2) {
@@ -47,7 +49,7 @@ int main() {
 
     Player *player1, player2;
     int p1_type, p2_type;
-    cout << "Random=0; Minimax (depth=3)=1; Deep Q Learning=2; Algorithmic=3." << endl;
+    cout << "Random=0; Minimax (depth=3)=1; Deep Q Learning=2; Algorithmic=3; Human=4" << endl;
 
     cout << "Enter type of Player 1: ";
     cin >> p1_type;

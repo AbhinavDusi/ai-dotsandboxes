@@ -21,6 +21,18 @@ HumanPlayer::HumanPlayer(int id): Player(id) {
 }
 
 int HumanPlayer::get_move(Game &game) {
+    cout << "Current game: " << endl;
+    game.print();
+
+    int row, col, direction;
+    cin >> row >> col >> direction; 
+
+    for (int i = 0; i < game._moves.size(); i++) {
+        if (game._moves[i].row==row && game._moves[i].col==col && game._moves[i].direction==direction) {
+            return i;
+        }
+    }
+
     return 0;
 }
 

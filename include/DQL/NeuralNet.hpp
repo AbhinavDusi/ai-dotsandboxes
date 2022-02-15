@@ -131,10 +131,9 @@ void NeuralNet::load(NeuralNet &net) {
     _alpha = net._alpha;
 }
 
-/*
 void NeuralNet::read(const char *filename) {
     std::ifstream in(filename);
-    in.open(filename, ios::in);
+    in.open(filename, std::ios::in);
     in.seekg(0);
     NeuralNet net;
     in.read((char *) &net, sizeof(NeuralNet));
@@ -143,10 +142,9 @@ void NeuralNet::read(const char *filename) {
 }
 
 void NeuralNet::write(const char *filename) const {
-    std::ofstream out(filename, ios::app); 
+    std::ofstream out(filename, std::ios::app); 
     out.write((char *) this, sizeof(NeuralNet));
     out.close();
 }
-*/
 
 #endif 

@@ -85,7 +85,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     target_net = new NeuralNet(topology, alpha);
 
     for (int i = 0; i < episodes; i++) {
-        cout << "Episode: " << i << "\n";
+        double total_reward = 0.0; 
 
         if (i%update_target==0) policy_net->load(*target_net);
 
@@ -103,6 +103,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             Game game_1 = game_0;
 
             double reward = game_1.move(_id, action_idx);
+            total_reward += reward; 
             
             rm.add_experience(Experience(game_0, action, reward, game_1));
 
@@ -129,6 +130,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                 }
             }
         }
+
+        cout << "Episode " << i << " Total Reward: " << total_reward << "\n";
     }
 }
 

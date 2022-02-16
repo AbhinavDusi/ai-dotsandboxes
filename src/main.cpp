@@ -6,7 +6,7 @@
 #include "../include/Minimax/MinimaxPlayer.hpp"
 #include "../include/DQL/DQLPlayer.hpp"
 #include "../include/Algorithmic/AlgorithmicPlayer.hpp"
-#include "../include/Human/Human.hpp"
+#include "../include/Human/HumanPlayer.hpp"
 
 #define MINIMAX_DEPTH 3
 

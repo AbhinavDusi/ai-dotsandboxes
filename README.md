@@ -38,13 +38,13 @@ bin/main
 
 # Data
 
-Comparing win rates and move times for every combination of Players.  
-1,000 games are simulated on a 4x4 grid.
+Comparing win rates and move times for every combination of Players. 1,000 games are simulated on a 4x4 grid.
 
 ## Random vs Random
 
 ``
 Random Player 1 wins: 477  
+Test
 Random Player 2 wins: 454  
 Draws: 69  
 Total Games Played: 1000  

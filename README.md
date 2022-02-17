@@ -60,7 +60,12 @@ Random Player 2 average time per move: 0.39993 microseconds.
 ## Random vs Minimax
 
 ```
-
+Random Player 1 wins: 0  
+Minimax (depth=3) Player 2 wins: 999  
+Draws: 1  
+Total Games Played: 1000  
+Random Player 1 average time per move: 0.578145 microseconds.  
+Minimax (depth=3) Player 2 average time per move: 27987.3 microseconds.  
 ```
 
 ## Random vs Deep Q Learning
@@ -78,12 +83,7 @@ Random Player 2 average time per move: 0.39993 microseconds.
 ## Algorithmic vs Minimax
 
 ```
-Random Player 1 wins: 0  
-Minimax (depth=3) Player 2 wins: 999  
-Draws: 1  
-Total Games Played: 1000  
-Random Player 1 average time per move: 0.578145 microseconds.  
-Minimax (depth=3) Player 2 average time per move: 27987.3 microseconds.  
+
 ```
 
 ## Algorithmic vs Deep Q Learning
@@ -96,15 +96,10 @@ Minimax (depth=3) Player 2 average time per move: 27987.3 microseconds.
 
 ```
 Minimax (depth=3) Player 1 wins: 466  
-
 Minimax (depth=3) Player 2 wins: 448  
-
 Draws: 86  
-
 Total Games Played: 1000  
-
 Minimax (depth=3) Player 1 average time per move: 18674.3 microseconds.  
-
 Minimax (depth=3) Player 2 average time per move: 19091.9 microseconds.  
 ```
 

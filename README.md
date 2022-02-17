@@ -38,7 +38,9 @@ bin/main
 
 # Data
 
-Comparing win rates and move times for every combination of Players. 1,000 games are simulated on a 4x4 grid.
+Comparing win rates and move times for every combination of Players. 
+1,000 games are simulated on a 4x4 grid. 
+The player who moves first or second is swapped after every game. 
 
 ## Random vs Random
 

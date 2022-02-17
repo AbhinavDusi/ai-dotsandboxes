@@ -67,7 +67,7 @@ class NeuralNet {
     void write(const char *filename) const;
     double _alpha; 
 
-    private:
+   // private:
     std::vector<Layer> _layers; 
 };
 

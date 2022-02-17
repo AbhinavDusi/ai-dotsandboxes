@@ -86,6 +86,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     for (int i = 0; i < episodes; i++) {
         double total_reward = 0.0; 
+        double total_error = 0.0; 
 
         if (i%update_target==0) policy_net->load(*target_net);
 
@@ -125,13 +126,14 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     policy_net->feed_forward(flatten_game_image(experience.state_0));
                     vector<double> result = policy_net->get_result();
                     vector<double> target = result;
+                    total_error += abs(bellman-target[experience.action.idx]);
                     target[experience.action.idx] = bellman;
                     policy_net->back_prop(target);
                 }
             }
         }
 
-        cout << "Episode " << i << " Total Reward: " << total_reward << "\n";
+        cout << "Episode " << i << " Total Reward: " << total_reward << ", Total Error: " << total_error << "\n";
     }
 }
 

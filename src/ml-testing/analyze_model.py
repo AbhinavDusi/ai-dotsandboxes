@@ -13,4 +13,4 @@ error_ax.set_ylabel("Error")
 
 error_ax.plot(episode, error)
 
-error_fig.savefig("include/DQL/training_error.pdf")
+error_fig.savefig("src/ml-testing/training_error.pdf")

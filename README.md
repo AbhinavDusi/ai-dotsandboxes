@@ -96,10 +96,15 @@ Minimax (depth=3) Player 2 average time per move: 27987.3 microseconds.
 
 ``
 Minimax (depth=3) Player 1 wins: 466  
+
 Minimax (depth=3) Player 2 wins: 448  
+
 Draws: 86  
+
 Total Games Played: 1000  
+
 Minimax (depth=3) Player 1 average time per move: 18674.3 microseconds.  
+
 Minimax (depth=3) Player 2 average time per move: 19091.9 microseconds.  
 ``
 

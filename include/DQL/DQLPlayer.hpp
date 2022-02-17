@@ -8,6 +8,8 @@
 #include "NeuralNet.hpp"
 #include "ReplayMemory.hpp"
 
+#include <fstream>
+
 using namespace std;
 
 class DQLPlayer: public Player {
@@ -58,6 +60,10 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 }    
 
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
+    ofstream out("./include/DQL/training_output.csv");
+    out << "Episode,Error\n";
+    out.flush();
+
     int capacity = 100000;
     ReplayMemory rm(capacity);
 
@@ -85,7 +91,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     target_net = new NeuralNet(topology, alpha);
 
     for (int i = 0; i < episodes; i++) {
-        double total_reward = 0.0; 
         double total_error = 0.0; 
 
         if (i%update_target==0) policy_net->load(*target_net);
@@ -104,7 +109,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             Game game_1 = game_0;
 
             double reward = game_1.move(_id, action_idx);
-            total_reward += reward; 
             
             rm.add_experience(Experience(game_0, action, reward, game_1));
 
@@ -126,15 +130,19 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     policy_net->feed_forward(flatten_game_image(experience.state_0));
                     vector<double> result = policy_net->get_result();
                     vector<double> target = result;
-                    total_error += abs(bellman-target[experience.action.idx]);
+                    total_error += bellman-target[experience.action.idx];
                     target[experience.action.idx] = bellman;
                     policy_net->back_prop(target);
                 }
             }
         }
 
-        cout << "Episode " << i << " Total Reward: " << total_reward << ", Total Error: " << total_error << "\n";
+        cout << "Episode " << i << ", Total Error: " << total_error << "\n";
+        out << i << "," << total_error << "\n";
+        out.flush();
     }
+
+    out.close();
 }
 
 int DQLPlayer::get_move(Game &game) {

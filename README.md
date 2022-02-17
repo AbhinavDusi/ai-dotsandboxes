@@ -44,7 +44,6 @@ Comparing win rates and move times for every combination of Players. 1,000 games
 
 ``
 Random Player 1 wins: 477  
-Test
 Random Player 2 wins: 454  
 Draws: 69  
 Total Games Played: 1000  

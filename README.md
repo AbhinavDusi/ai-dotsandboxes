@@ -39,6 +39,7 @@ bin/main
 # Data
 
 Comparing win rates and move times for every combination of Players.
+1,000 games are simulated.
 
 ## Random vs Random
 

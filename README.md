@@ -39,3 +39,23 @@ bin/main
 # Data
 
 Comparing win rates and move times for every combination of Players.
+
+## Random vs Random
+
+## Random vs Algorithmic
+
+## Random vs Minimax
+
+## Random vs Deep Q Learning
+
+## Algorithmic vs Algorithmic
+
+## Algorithmic vs Minimax
+
+## Algorithmic vs Deep Q Learning
+
+## Minimax vs Minimax
+
+## Minimax vs Deep Q Learning
+
+## Deep Q Learning vs Deep Q Learning

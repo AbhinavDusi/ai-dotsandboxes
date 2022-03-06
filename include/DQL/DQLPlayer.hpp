@@ -147,7 +147,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end-start);
-    cout << "DQL Player " << _id << " training time: " << duration << " minutes.\n";
+    cout << "DQL Player " << _id << " training time: " << duration.count() << " minutes.\n";
 }
 
 int DQLPlayer::get_move(Game &game) {

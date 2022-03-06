@@ -60,14 +60,10 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 }    
 
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
-    ofstream out("./include/DQL/training_output.csv");
-    out << "Episode,Error\n";
-    out.flush();
-
     int capacity = 100000;
     ReplayMemory rm(capacity);
 
-    int minibatch_size = 256;
+    int minibatch_size = 128;
 
     int episodes = 1000; 
 
@@ -91,8 +87,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     target_net = new NeuralNet(topology, alpha);
 
     for (int i = 0; i < episodes; i++) {
-        double total_error = 0.0; 
-
         if (i%update_target==0) policy_net->load(*target_net);
 
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
@@ -130,19 +124,17 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     policy_net->feed_forward(flatten_game_image(experience.state_0));
                     vector<double> result = policy_net->get_result();
                     vector<double> target = result;
-                    total_error += bellman-target[experience.action.idx];
+                    cout << bellman << ", " << target[experience.action.idx] << endl;
+
+                    // Why is target[experience.action.idx] == 1? 
                     target[experience.action.idx] = bellman;
                     policy_net->back_prop(target);
                 }
             }
         }
 
-        cout << "Episode " << i << ", Total Error: " << total_error << "\n";
-        out << i << "," << total_error << "\n";
-        out.flush();
+        cout << "Episode " << i << "\n";
     }
-
-    out.close();
 }
 
 int DQLPlayer::get_move(Game &game) {

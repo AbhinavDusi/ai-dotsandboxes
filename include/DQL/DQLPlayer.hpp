@@ -63,7 +63,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int capacity = 100000;
     ReplayMemory rm(capacity);
 
-    int minibatch_size = 128;
+    int minibatch_size = 64;
 
     int episodes = 1000; 
 
@@ -80,7 +80,9 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(layer_size);
+    topology.push_back(2*layer_size);
+    topology.push_back(2*layer_size);
+    topology.push_back(2*layer_size);
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);
@@ -124,7 +126,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     policy_net->feed_forward(flatten_game_image(experience.state_0));
                     vector<double> result = policy_net->get_result();
                     vector<double> target = result;
-                    cout << bellman << ", " << target[experience.action.idx] << endl;
+                    //cout << bellman << ", " << target[experience.action.idx] << endl;
 
                     // Why is target[experience.action.idx] == 1? 
                     target[experience.action.idx] = bellman;

@@ -9,8 +9,10 @@
 #include "ReplayMemory.hpp"
 
 #include <fstream>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 class DQLPlayer: public Player {
     public:
@@ -60,12 +62,15 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 }    
 
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
+    auto start = high_resolution_clock::now();
+
     int capacity = 100000;
     ReplayMemory rm(capacity);
 
     int minibatch_size = 64;
 
     int episodes = 1000; 
+    bool wins[episodes];
 
     double alpha = 0.15;
 
@@ -84,6 +89,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     topology.push_back(2*layer_size);
     topology.push_back(2*layer_size);
     topology.push_back(layer_size);
+
+    // add more layer or make hidden layer 3xlayer_size
 
     policy_net = new NeuralNet(topology, alpha);
     target_net = new NeuralNet(topology, alpha);
@@ -126,17 +133,21 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     policy_net->feed_forward(flatten_game_image(experience.state_0));
                     vector<double> result = policy_net->get_result();
                     vector<double> target = result;
-                    //cout << bellman << ", " << target[experience.action.idx] << endl;
 
-                    // Why is target[experience.action.idx] == 1? 
                     target[experience.action.idx] = bellman;
                     policy_net->back_prop(target);
                 }
             }
         }
 
+        // Play a game after each episode and see win rate improvement
+        //cout << "Episode " << i << << ": " << ((double)wins/(i+1)) << "\n";
         cout << "Episode " << i << "\n";
     }
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<minutes>(end-start);
+    cout << "DQL Player " << _id << " training time: " << duration << " minutes.\n";
 }
 
 int DQLPlayer::get_move(Game &game) {

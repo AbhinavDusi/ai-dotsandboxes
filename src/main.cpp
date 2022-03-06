@@ -60,12 +60,12 @@ int main() {
     assign_player(player2, p2_type, 2, width, height);
     */
 
-    int width = 4;
-    int height = 4;
+    int width = 3;
+    int height = 3;
     int N = 1000;
     
-    Player *player1 = new MinimaxPlayer(1, MINIMAX_DEPTH);
-    Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
+    Player *player1 = new DQLPlayer(1, width, height);
+    Player *player2 = new RandomPlayer(2);
 
     //Player *player1 = new RandomPlayer(1); 
     //Player *player2 = new DQLPlayer(2, width, height);

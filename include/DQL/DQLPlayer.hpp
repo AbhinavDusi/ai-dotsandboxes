@@ -71,6 +71,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int minibatch_size = 64;
 
+    // Tradeoff between num episodes and num neurons in hidden layers?
     int episodes = 1000; 
     bool wins[episodes];
 
@@ -90,8 +91,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     topology.push_back(4*layer_size);
     topology.push_back(4*layer_size);
     topology.push_back(layer_size);
-
-    // add more layer or make hidden layer 3xlayer_size
 
     policy_net = new NeuralNet(topology, alpha);
     target_net = new NeuralNet(topology, alpha);
@@ -141,8 +140,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
-        // Play a game after each episode and see win rate improvement
-
         Game game(width, height);
         RandomPlayer *opp = new RandomPlayer(3);
         bool my_turn = false;
@@ -161,12 +158,13 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
         int won = game.get_score(_id) > game.get_score(opp->_id);
         wins[i] = won;
-        cout << "Episode " << i << ": " << won << "\n";
         
         if (i%10 == 0 && i>=10) {
             int num_wins = 0; 
             for (int j = i-10; j < i; j++) {
-                num_wins++;
+                if (wins[j]) {
+                    num_wins++;
+                }
             }
             cout << "Episode " << i << ": " << num_wins << "\n";
         }

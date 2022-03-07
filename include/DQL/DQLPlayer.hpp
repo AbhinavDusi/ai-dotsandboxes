@@ -11,6 +11,8 @@
 #include <fstream>
 #include <chrono>
 
+#include "../Random/RandomPlayer.hpp"
+
 using namespace std;
 using namespace std::chrono;
 
@@ -85,9 +87,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(2*layer_size);
-    topology.push_back(2*layer_size);
-    topology.push_back(2*layer_size);
+    topology.push_back(4*layer_size);
+    topology.push_back(4*layer_size);
     topology.push_back(layer_size);
 
     // add more layer or make hidden layer 3xlayer_size
@@ -141,8 +142,34 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
         }
 
         // Play a game after each episode and see win rate improvement
-        //cout << "Episode " << i << << ": " << ((double)wins/(i+1)) << "\n";
-        cout << "Episode " << i << "\n";
+
+        Game game(width, height);
+        RandomPlayer *opp = new RandomPlayer(3);
+        bool my_turn = false;
+
+        while (!game._finished) {
+            int scored = 0; 
+            if (my_turn) {
+                scored = move(game);
+            } else {
+                scored = opp->move(game);
+            }
+            if (scored) continue; 
+
+            my_turn = !my_turn;
+        }
+
+        int won = game.get_score(_id) > game.get_score(opp->_id);
+        wins[i] = won;
+        
+        if ((i+1)%10 == 0 && i >= 10) {
+            int num_wins = 0; 
+            for (int j = i-10; j < i; j++) {
+                num_wins++;
+            }
+            cout << "Episode " << i << ": " << ((double)num_wins/(10)) << "\n";
+        }
+        //cout << "Episode " << i << "\n";
     }
 
     auto end = high_resolution_clock::now();

@@ -163,12 +163,12 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
         wins[i] = won;
         cout << "Episode " << i << ": " << won << "\n";
         
-        if ((i+1)%10 == 0 && (i+1) >= 10) {
+        if (i%10 == 0 && i>=10) {
             int num_wins = 0; 
             for (int j = i-10; j < i; j++) {
                 num_wins++;
             }
-            cout << "Episode " << i << ": " << ((double)num_wins/(10)) << "\n";
+            cout << "Episode " << i << ": " << num_wins << "\n";
         }
     }
 

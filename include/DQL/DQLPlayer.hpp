@@ -161,6 +161,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
         int won = game.get_score(_id) > game.get_score(opp->_id);
         wins[i] = won;
+        cout << "Episode " << i << ": " << won << "\n";
         
         if ((i+1)%10 == 0 && (i+1) >= 10) {
             int num_wins = 0; 
@@ -169,7 +170,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
             cout << "Episode " << i << ": " << ((double)num_wins/(10)) << "\n";
         }
-        cout << "Episode " << i << "\n";
     }
 
     auto end = high_resolution_clock::now();

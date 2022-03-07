@@ -96,7 +96,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     target_net = new NeuralNet(topology, alpha);
 
     for (int i = 0; i < episodes; i++) {
-        if (i%update_target==0) policy_net->load(*target_net);
+        if (i%update_target==0) target_net->load(*policy_net);
 
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
 

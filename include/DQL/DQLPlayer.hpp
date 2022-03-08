@@ -112,7 +112,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             
             rm.add_experience(Experience(game_0.get_clone(), action, reward, game_1.get_clone()));
 
-            game_0 = game_1.get_clone();
+            game_0.move(_id, action_idx);
 
             if (rm.can_provide_sample(minibatch_size)) {
                 vector<Experience> sample = rm.get_sample(minibatch_size);

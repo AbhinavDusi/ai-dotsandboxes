@@ -112,7 +112,9 @@ int Game::move(int player_id, int move_idx) {
 
     int other_move_idx = -1;
     for (int i = 0; i < _moves.size(); i++) {
-        if (_moves[i].col==other_col&&_moves[i].row==other_row&&_moves[i].direction==other_direction) {
+        if (_moves[i].col==other_col
+            &&_moves[i].row==other_row
+            &&_moves[i].direction==other_direction) {
             other_move_idx = i;
         }
     }

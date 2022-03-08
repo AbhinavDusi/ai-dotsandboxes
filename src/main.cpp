@@ -60,8 +60,8 @@ int main() {
     assign_player(player2, p2_type, 2, width, height);
     */
 
-    int width = 4;
-    int height = 4;
+    int width = 3;
+    int height = 3;
     int N = 1000;
     
     Player *player1 = new DQLPlayer(1, width, height);

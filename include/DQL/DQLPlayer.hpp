@@ -110,7 +110,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
             double reward = game_1.move(_id, action_idx);
             
-            rm.add_experience(Experience(game_0, action, reward, game_1));
+            rm.add_experience(Experience(game_0.get_clone(), action, reward, game_1.get_clone()));
 
             game_0 = game_1.get_clone();
 

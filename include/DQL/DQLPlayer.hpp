@@ -43,9 +43,7 @@ vector<double> DQLPlayer::flatten_game_image(Game &game) const {
 }
 
 pair<int, double> DQLPlayer::choose_action(Game &game, NeuralNet **net) {
-    vector<double> input = flatten_game_image(game); 
-    (*net)->feed_forward(input); 
-
+    (*net)->feed_forward(flatten_game_image(game)); 
     vector<double> result = (*net)->get_result();
 
     int action = 0;
@@ -71,7 +69,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int minibatch_size = 64;
 
-    // Tradeoff between num episodes and num neurons in hidden layers?
     int episodes = 1000; 
     bool wins[episodes];
 

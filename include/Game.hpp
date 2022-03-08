@@ -68,7 +68,10 @@ int Game::get_score(int player_id) const {
 }
 
 bool Game::completed_box(int row, int col) {
-    return _game_image[row][col][0]&&_game_image[row][col][1]&&_game_image[row][col][2]&&_game_image[row][col][3];
+    return _game_image[row][col][0]
+        &&_game_image[row][col][1]
+        &&_game_image[row][col][2]
+        &&_game_image[row][col][3];
 }
 
 int Game::move(int player_id, int move_idx) {
@@ -85,27 +88,13 @@ int Game::move(int player_id, int move_idx) {
         _game_image[move.row][move.col][4] = player_id;
     }
 
-    int other_row = -1, other_col = -1, other_direction = -1;
-    if (move.direction==0) {
-        other_row = move.row-1;
-        other_col = move.col;
-        other_direction = 2;
-    }
-    if (move.direction==1) {
-        other_row = move.row;
-        other_col = move.col+1;
-        other_direction = 3;
-    }
-    if (move.direction==2) {
-        other_row = move.row+1;
-        other_col = move.col;
-        other_direction = 0;
-    }
-    if (move.direction==3) {
-        other_row = move.row;
-        other_col = move.col-1;
-        other_direction = 1;
-    }
+    int other_direction = (move.direction+2)%4;
+
+    int other_row = move.row + ((move.direction == 0) ? -1 : 0);
+    other_row = move.row + ((move.direction == 2) ? 1 : 0);
+
+    int other_col = move.col + ((move.direction == 3) ? -1 : 0);
+    other_col = move.col + ((move.direction == 1) ? 1 : 0);
 
     int other_move_idx = -1;
     for (int i = 0; i < _moves.size(); i++) {

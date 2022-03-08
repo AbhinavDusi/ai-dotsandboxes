@@ -106,13 +106,13 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             else action_idx = choose_action(game_0, &policy_net).first;
             Move action = game_0._moves[action_idx];
         
-            Game game_1 = game_0;
+            Game game_1 = game_0.get_clone();
 
             double reward = game_1.move(_id, action_idx);
             
             rm.add_experience(Experience(game_0, action, reward, game_1));
 
-            game_0 = game_1;
+            game_0 = game_1.get_clone();
 
             if (rm.can_provide_sample(minibatch_size)) {
                 vector<Experience> sample = rm.get_sample(minibatch_size);

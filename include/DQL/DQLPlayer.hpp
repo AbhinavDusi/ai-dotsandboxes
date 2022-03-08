@@ -97,20 +97,20 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
         exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
 
-        Game game_0(width, height);
+        Game game(width, height);
 
-        while (!game_0._finished) {
-            Game initial = game_0.get_clone();
+        while (!game._finished) {
+            Game initial = game.get_clone();
 
             bool explore = (double) rng()/rng.max() > epsilon; 
             int action_idx = 0;
-            if (explore) action_idx = rng()%game_0._moves.size();
-            else action_idx = choose_action(game_0, &policy_net).first;
-            Move action = game_0._moves[action_idx];
+            if (explore) action_idx = rng()%game._moves.size();
+            else action_idx = choose_action(game, &policy_net).first;
+            Move action = game._moves[action_idx];
 
-            double reward = game_0.move(_id, action_idx);
+            double reward = game.move(_id, action_idx);
 
-            Game next = game_0.get_clone();
+            Game next = game.get_clone();
             
             rm.add_experience(Experience(initial, action, reward, next));
 
@@ -136,23 +136,23 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
-        Game game(width, height);
+        Game game_test(width, height);
         RandomPlayer *opp = new RandomPlayer(3);
         bool my_turn = false;
 
-        while (!game._finished) {
+        while (!game_test._finished) {
             int scored = 0; 
             if (my_turn) {
-                scored = move(game);
+                scored = move(game_test);
             } else {
-                scored = opp->move(game);
+                scored = opp->move(game_test);
             }
             if (scored) continue; 
 
             my_turn = !my_turn;
         }
 
-        int won = game.get_score(_id) > game.get_score(opp->_id);
+        int won = game_test.get_score(_id) > game_test.get_score(opp->_id);
         wins[i] = won;
         
         if (i%10 == 0 && i>=10) {

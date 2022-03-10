@@ -7,7 +7,7 @@
 
 using namespace std; 
 
-typedef vector<vector<vector<double>>> GameImage; 
+typedef vector<vector<vector<int>>> GameImage; 
 
 typedef struct Move {
     int row, col, direction, idx;
@@ -38,7 +38,7 @@ class Game {
 };
 
 Game::Game(int width, int height): _finished(false), _started(false), _width(width), _height(height) {
-    _game_image = vector<vector<vector<double>>>(height, vector<vector<double>>(width, vector<double>(5)));
+    _game_image = vector<vector<vector<int>>>(height, vector<vector<int>>(width, vector<int>(5)));
 
     int idx = 0;
     for (int i = 0; i < height; i++) {

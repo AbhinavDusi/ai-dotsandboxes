@@ -65,10 +65,9 @@ int main() {
     int N = 1000;
     
     Player *player1 = new DQLPlayer(1, width, height);
+    // try against random where random move is move 0
     Player *player2 = new RandomPlayer(2);
-
-    //Player *player1 = new RandomPlayer(1); 
-    //Player *player2 = new DQLPlayer(2, width, height);
+    //Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
 
     int p1 = 0; 
     int p2 = 0;

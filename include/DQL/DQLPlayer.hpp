@@ -11,8 +11,6 @@
 #include <fstream>
 #include <chrono>
 
-#include "../Random/RandomPlayer.hpp"
-
 using namespace std;
 using namespace std::chrono;
 
@@ -69,8 +67,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int minibatch_size = 16;
 
+    // try 1, 10, 100, 1000 episodes
     int episodes = 1000; 
-    bool wins[episodes];
 
     double alpha = 0.001;
 
@@ -85,8 +83,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(8*layer_size);
-    topology.push_back(8*layer_size);
+    topology.push_back(4*layer_size); //8 
+    topology.push_back(4*layer_size); //8
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);
@@ -136,34 +134,10 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
-        Game game_test(width, height);
-        RandomPlayer *opp = new RandomPlayer(3);
-        bool my_turn = i%2;
-
-        while (!game_test._finished) {
-            int scored = 0; 
-            if (my_turn) {
-                scored = move(game_test);
-            } else {
-                scored = opp->move(game_test);
-            }
-            if (scored) continue; 
-
-            my_turn = !my_turn;
+        if (i%100 == 0) {
+            //Simulate 100 games vs minimax player
         }
-
-        int won = game_test.get_score(_id) > game_test.get_score(opp->_id);
-        wins[i] = won;
-        
-        if (i%10 == 0 && i>=10) {
-            int num_wins = 0; 
-            for (int j = i-10; j < i; j++) {
-                if (wins[j]) {
-                    num_wins++;
-                }
-            }
-            cout << i << "," << num_wins << "\n";
-        }
+        cout << "Episode " << i << "\n";
     }
 
     auto end = high_resolution_clock::now();

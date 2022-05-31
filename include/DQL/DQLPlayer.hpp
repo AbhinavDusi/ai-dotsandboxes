@@ -83,8 +83,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(4*layer_size); //8 
-    topology.push_back(4*layer_size); //8
+    topology.push_back(8*layer_size); //8 
+    topology.push_back(8*layer_size); //8
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);
@@ -142,7 +142,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end-start);
-    cout << "DQL Player " << _id << " training time: " << duration.count() << " minutes.\n";
+    cout << "DQL Player " << _id << " training time for " << episodes << "episodes: " 
+        << duration.count() << " minutes.\n";
 }
 
 int DQLPlayer::get_move(Game &game) {

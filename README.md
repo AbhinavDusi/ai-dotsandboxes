@@ -39,6 +39,7 @@ at each state, after being trained with thousands of episodes.
 - Exploration Rate Decay (epsilon_decay): 0.001 (Exponential Decay)
 - Discount Factor (gamma): 0.9
 - Target Update: Every 10 episodes
+- Minibatch Size: 16
 
 #### Topology
 

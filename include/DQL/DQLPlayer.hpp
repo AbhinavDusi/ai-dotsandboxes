@@ -65,11 +65,11 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int capacity = 100000;
     ReplayMemory rm(capacity);
 
-    int minibatch_size = 16;
+    int minibatch_size = 64;
 
     int episodes = 1000; 
 
-    double alpha = 0.001;
+    double alpha = 0.15;
 
     double epsilon_0 = 0.99;
     double epsilon = epsilon_0;
@@ -82,8 +82,13 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
+<<<<<<< HEAD
     topology.push_back(8*layer_size); 
     topology.push_back(8*layer_size); 
+=======
+    topology.push_back(4*layer_size);
+    topology.push_back(4*layer_size);
+>>>>>>> parent of 9dd82f5 (High win rate?)
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);
@@ -133,8 +138,38 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
+<<<<<<< HEAD
         if (i%100 == 0) {
             //Simulate 100 games vs minimax player
+=======
+        Game game_test(width, height);
+        RandomPlayer *opp = new RandomPlayer(3);
+        bool my_turn = false;
+
+        while (!game_test._finished) {
+            int scored = 0; 
+            if (my_turn) {
+                scored = move(game_test);
+            } else {
+                scored = opp->move(game_test);
+            }
+            if (scored) continue; 
+
+            my_turn = !my_turn;
+        }
+
+        int won = game_test.get_score(_id) > game_test.get_score(opp->_id);
+        wins[i] = won;
+        
+        if (i%10 == 0 && i>=10) {
+            int num_wins = 0; 
+            for (int j = i-10; j < i; j++) {
+                if (wins[j]) {
+                    num_wins++;
+                }
+            }
+            cout << "Episode " << i << ": " << num_wins << "\n";
+>>>>>>> parent of 9dd82f5 (High win rate?)
         }
         cout << "Episode " << i << "\n";
     }
@@ -146,7 +181,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 }
 
 int DQLPlayer::get_move(Game &game) {
-    //return rng()%game._moves.size();
     return choose_action(game, &policy_net).first;
 }
 

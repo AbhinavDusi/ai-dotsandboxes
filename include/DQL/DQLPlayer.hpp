@@ -67,7 +67,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int minibatch_size = 16;
 
-    // try 1, 10, 100, 1000 episodes
     int episodes = 1000; 
 
     double alpha = 0.001;
@@ -83,8 +82,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(8*layer_size); //8 
-    topology.push_back(8*layer_size); //8
+    topology.push_back(8*layer_size); 
+    topology.push_back(8*layer_size); 
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);

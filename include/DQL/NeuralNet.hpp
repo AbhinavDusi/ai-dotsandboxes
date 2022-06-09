@@ -16,7 +16,7 @@ class Neuron {
     Neuron(int num_outputs);
     static double tanh_activation(double x) { return tanh(x); }
     static double tanh_activation_derivative(double y) { return 1.0-y*y; }
-    static double relu_activaton(double x) { return x; }
+    static double relu_activation(double x) { return x; }
     static double relu_activation_derivative(double y) { return y>0; }
     void calc_output_error(double target); 
     void calc_hidden_error(const Layer& next_layer);
@@ -98,7 +98,7 @@ void NeuralNet::feed_forward(const std::vector<double>& input) {
                 weighted_sum += _layers[i][k]._val*_layers[i][k]._output_weights[j];
             }
             
-            _layers[i+1][j]._val = Neuron::relu_activaton(weighted_sum);
+            _layers[i+1][j]._val = Neuron::relu_activation(weighted_sum);
         }
     }
 }

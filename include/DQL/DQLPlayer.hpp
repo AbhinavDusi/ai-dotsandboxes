@@ -46,9 +46,11 @@ pair<int, double> DQLPlayer::choose_action(Game &game, NeuralNet **net) {
     (*net)->feed_forward(flatten_game_image(game)); 
     vector<double> result = (*net)->get_result();
 
+    /*
     for (double d : flatten_game_image(game)) cout << d << " "; cout << endl;
     for (double d : result) cout << d << " "; cout << endl;
     cout << endl;
+    */
 
     int action = 0;
     double max_quality = -1;
@@ -73,10 +75,10 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
     int minibatch_size = 16;
 
-    int episodes = 1000; 
+    int episodes = 2000; 
     bool wins[episodes];
 
-    double alpha = 0.001;
+    double alpha = 0.15;
 
     double epsilon_0 = 0.99;
     double epsilon = epsilon_0;
@@ -89,8 +91,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(2*layer_size);
-    topology.push_back(2*layer_size);
+    topology.push_back(layer_size);
+    topology.push_back(layer_size);
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);
@@ -167,8 +169,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                 }
             }
             cout << i << "," << num_wins << "\n";
-
-            //if (num_wins >= 9 && i >= 250) return;
         }
     }
 
@@ -178,7 +178,9 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 }
 
 int DQLPlayer::get_move(Game &game) {
-    return choose_action(game, &policy_net).first; 
+    int action = choose_action(game, &policy_net).first; 
+    //cout << action << endl;
+    return action; 
 }
 
 #endif

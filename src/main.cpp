@@ -65,8 +65,8 @@ int main() {
     int N = 100;
     
     Player *player1 = new DQLPlayer(1, width, height);
-    //Player *player2 = new RandomPlayer(2);
-    Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
+    Player *player2 = new RandomPlayer(2);
+    //Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
 
     int p1 = 0; 
     int p2 = 0;

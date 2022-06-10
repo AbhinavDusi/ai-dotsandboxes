@@ -26,6 +26,9 @@ int main() {
         target.push_back(a^b); 
 
         net.feed_forward(input);
+
+        std::vector<double> result = net.get_result(); 
+
         net.back_prop(target); 
     }
 

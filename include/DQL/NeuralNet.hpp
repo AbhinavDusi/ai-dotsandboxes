@@ -14,8 +14,6 @@ typedef std::vector<Neuron> Layer;
 class Neuron {
     public:
     Neuron(int num_outputs);
-    static double tanh_activation(double x) { return tanh(x); }
-    static double tanh_activation_derivative(double y) { return 1.0-y*y; }
     static double relu_activation(double x) { return x > 0 ? x : 0; }
     static double relu_activation_derivative(double y) { return y>0; }
     void calc_output_error(double target); 

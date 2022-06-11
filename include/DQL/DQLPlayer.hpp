@@ -46,12 +46,6 @@ pair<int, double> DQLPlayer::choose_action(Game &game, NeuralNet **net) {
     (*net)->feed_forward(flatten_game_image(game)); 
     vector<double> result = (*net)->get_result();
 
-    /*
-    for (double d : flatten_game_image(game)) cout << d << " "; cout << endl;
-    for (double d : result) cout << d << " "; cout << endl;
-    cout << endl;
-    */
-
     int action = 0;
     double max_quality = -1;
     for (int i = 0; i < game._moves.size(); i++) {
@@ -179,7 +173,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 
 int DQLPlayer::get_move(Game &game) {
     int action = choose_action(game, &policy_net).first; 
-    //cout << action << endl;
+    cout << action << endl;
     return action; 
 }
 

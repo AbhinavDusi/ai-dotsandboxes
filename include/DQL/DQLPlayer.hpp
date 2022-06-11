@@ -70,12 +70,12 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     auto start = high_resolution_clock::now();
 
-    int capacity = 100000;
+    int capacity = 20000;
     ReplayMemory rm(capacity);
 
     int minibatch_size = 16;
 
-    int episodes = 2000; 
+    int episodes = 1000; 
     bool wins[episodes];
 
     double alpha = 0.15;
@@ -91,8 +91,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(layer_size);
-    topology.push_back(layer_size);
+    topology.push_back(2*layer_size);
+    topology.push_back(2*layer_size);
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);

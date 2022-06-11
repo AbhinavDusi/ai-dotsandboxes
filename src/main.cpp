@@ -62,7 +62,7 @@ int main() {
 
     int width = 3;
     int height = 3;
-    int N = 100;
+    int N = 1000;
     
     Player *player1 = new DQLPlayer(1, width, height);
     Player *player2 = new RandomPlayer(2);

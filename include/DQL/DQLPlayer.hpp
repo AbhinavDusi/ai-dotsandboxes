@@ -172,9 +172,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
 }
 
 int DQLPlayer::get_move(Game &game) {
-    int action = choose_action(game, &policy_net).first; 
-    cout << action << endl;
-    return action; 
+    return choose_action(game, &policy_net).first; 
 }
 
 #endif

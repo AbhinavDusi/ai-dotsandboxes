@@ -85,8 +85,8 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(2*layer_size);
-    topology.push_back(2*layer_size);
+    topology.push_back(layer_size);
+    topology.push_back(layer_size);
     topology.push_back(layer_size);
 
     policy_net = new NeuralNet(topology, alpha);

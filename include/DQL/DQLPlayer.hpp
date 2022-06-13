@@ -136,34 +136,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
-        Game game_test(width, height);
-        RandomPlayer *opp = new RandomPlayer(3);
-        bool my_turn = i%2;
-
-        while (!game_test._finished) {
-            int scored = 0; 
-            if (my_turn) {
-                scored = move(game_test);
-            } else {
-                scored = opp->move(game_test);
-            }
-            if (scored) continue; 
-
-            my_turn = !my_turn;
-        }
-
-        int won = game_test.get_score(_id) > game_test.get_score(opp->_id);
-        wins[i] = won;
-        
-        if (i%10 == 0 && i>=10) {
-            int num_wins = 0; 
-            for (int j = i-10; j < i; j++) {
-                if (wins[j]) {
-                    num_wins++;
-                }
-            }
-            cout << i << "," << num_wins << "\n";
-        }
+        if (i%10 == 0) cout << i << endl;
     }
 
     auto end = high_resolution_clock::now();

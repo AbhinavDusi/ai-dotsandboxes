@@ -136,7 +136,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
-        if (i%10 == 0) cout << i << endl;
+        if (i % 10 == 0) cout << i << endl; 
     }
 
     auto end = high_resolution_clock::now();

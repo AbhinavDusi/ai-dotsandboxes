@@ -70,7 +70,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int minibatch_size = 16;
 
     int episodes = 1000; 
-    bool wins[episodes];
 
     double alpha = 0.15;
 

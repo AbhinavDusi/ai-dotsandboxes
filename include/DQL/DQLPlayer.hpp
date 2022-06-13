@@ -2,16 +2,12 @@
 #define DQL_PLAYER_H
 
 #include <vector>
+#include <chrono>
 
 #include "../Game.hpp"
 #include "../Player.hpp"
 #include "NeuralNet.hpp"
 #include "ReplayMemory.hpp"
-
-#include <fstream>
-#include <chrono>
-
-#include "../Random/RandomPlayer.hpp"
 
 using namespace std;
 using namespace std::chrono;

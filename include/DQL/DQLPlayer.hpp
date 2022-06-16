@@ -2,16 +2,12 @@
 #define DQL_PLAYER_H
 
 #include <vector>
+#include <chrono>
 
 #include "../Game.hpp"
 #include "../Player.hpp"
 #include "NeuralNet.hpp"
 #include "ReplayMemory.hpp"
-
-#include <fstream>
-#include <chrono>
-
-#include "../Random/RandomPlayer.hpp"
 
 using namespace std;
 using namespace std::chrono;
@@ -70,7 +66,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int minibatch_size = 16;
 
     int episodes = 1000; 
-    bool wins[episodes];
 
     double alpha = 0.15;
 
@@ -136,34 +131,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
-        Game game_test(width, height);
-        RandomPlayer *opp = new RandomPlayer(3);
-        bool my_turn = i%2;
-
-        while (!game_test._finished) {
-            int scored = 0; 
-            if (my_turn) {
-                scored = move(game_test);
-            } else {
-                scored = opp->move(game_test);
-            }
-            if (scored) continue; 
-
-            my_turn = !my_turn;
-        }
-
-        int won = game_test.get_score(_id) > game_test.get_score(opp->_id);
-        wins[i] = won;
-        
-        if (i%10 == 0 && i>=10) {
-            int num_wins = 0; 
-            for (int j = i-10; j < i; j++) {
-                if (wins[j]) {
-                    num_wins++;
-                }
-            }
-            cout << i << "," << num_wins << "\n";
-        }
+        if (i % 10 == 0) cout << i << endl; 
     }
 
     auto end = high_resolution_clock::now();

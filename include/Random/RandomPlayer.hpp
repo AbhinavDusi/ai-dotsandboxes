@@ -15,7 +15,6 @@ class RandomPlayer: public Player {
 
 int RandomPlayer::get_move(Game &game) {
     return rng()%game._moves.size();
-    //return 0;
 }
 
 #endif

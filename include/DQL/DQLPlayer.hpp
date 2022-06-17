@@ -12,15 +12,34 @@
 using namespace std;
 using namespace std::chrono;
 
+typedef struct Hyperparams {
+    int capacity;
+    int minibatch_size;
+    int episodes;
+    double alpha;
+    double epsilon_0;
+    double epsilon_decay;
+    double gamma;
+    int update_target;
+    int hidden_layer_size_factor;
+    Hyperparams(int capacity, int minibatch_size, int episodes, double alpha,
+        double epsilon_0, double epsilon_decay, double gamma, int update_target,
+        int hidden_layer_size_factor): 
+    capacity(capacity), minibatch_size(minibatch_size), episodes(episodes), alpha(alpha),
+    epsilon_0(epsilon_0), epsilon_decay(epsilon_decay), gamma(gamma), update_target(update_target),
+    hidden_layer_size_factor(hidden_layer_size_factor) {};
+} Hyperparams;
+
 class DQLPlayer: public Player {
     public:
-    DQLPlayer(int id, int width, int height);
+    DQLPlayer(int id, int width, int height, Hyperparams params);
     int get_move(Game &game); 
     string get_name() { return "Deep Q Learning"; }
 
     private:
     NeuralNet *policy_net; 
     NeuralNet *target_net;
+    Hyperparams params;
     vector<double> flatten_game_image(Game &game) const;
     pair<int, double> choose_action(Game &game, NeuralNet **net);
     static void exp_decay(double *x, double x_0, double decay, int n); 
@@ -57,20 +76,20 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
     *x = x_0*exp(-1*decay*n);
 }    
 
-DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
+DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(id) {
     auto start = high_resolution_clock::now();
 
     int capacity = 20000;
-    ReplayMemory rm(capacity);
+    ReplayMemory rm(params.capacity);
 
-    int minibatch_size = 16;
+    int minibatch_size = 2;
 
     int episodes = 1000; 
 
     double alpha = 0.15;
 
     double epsilon_0 = 0.99;
-    double epsilon = epsilon_0;
+    double epsilon = params.epsilon_0;
     double epsilon_decay = 0.001;
 
     double gamma = 0.9;
@@ -80,17 +99,17 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
     int layer_size = 4*width*height;
     vector<int> topology; 
     topology.push_back(layer_size);
-    topology.push_back(2*layer_size);
-    topology.push_back(2*layer_size);
+    topology.push_back(params.hidden_layer_size_factor*layer_size);
+    topology.push_back(params.hidden_layer_size_factor*layer_size);
     topology.push_back(layer_size);
 
-    policy_net = new NeuralNet(topology, alpha);
-    target_net = new NeuralNet(topology, alpha);
+    policy_net = new NeuralNet(topology, params.alpha);
+    target_net = new NeuralNet(topology, params.alpha);
 
-    for (int i = 0; i < episodes; i++) {
-        if (i%update_target==0) target_net->load(*policy_net);
+    for (int i = 0; i < params.episodes; i++) {
+        if (i%params.update_target==0) target_net->load(*policy_net);
 
-        exp_decay(&epsilon, epsilon_0, epsilon_decay, i);
+        exp_decay(&epsilon, params.epsilon_0, params.epsilon_decay, i);
 
         Game game(width, height);
 
@@ -122,7 +141,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
                     bool terminal = experience.state_1._finished;
                     if (!terminal) {
                         double max_quality = choose_action(experience.state_1, &target_net).second;
-                        bellman += gamma*max_quality;
+                        bellman += params.gamma*max_quality;
                     }
 
                     target[experience.action.idx] = bellman;
@@ -131,7 +150,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height): Player(id) {
             }
         }
 
-        if (i % 10 == 0) cout << i << endl; 
+        if (i % 10 == 0) cout << "Episode " << i << endl; 
     }
 
     auto end = high_resolution_clock::now();

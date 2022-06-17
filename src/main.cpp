@@ -8,14 +8,15 @@
 #include "../include/Algorithmic/AlgorithmicPlayer.hpp"
 #include "../include/Human/HumanPlayer.hpp"
 
-#define MINIMAX_DEPTH 3
+int MINIMAX_DEPTH = 3;
+Hyperparams DQL_PARAMS(20000, 2, 1000, 0.15, 0.99, 0.001, 0.9, 10, 2);
 
 using namespace std;
 
 void assign_player(Player *player, int player_type, int id, int width, int height) {
     if (player_type==0) player = new RandomPlayer(id); 
     if (player_type==1) player = new MinimaxPlayer(id, MINIMAX_DEPTH); 
-    if (player_type==2) player = new DQLPlayer(id, width, height); 
+    if (player_type==2) player = new DQLPlayer(id, width, height, DQL_PARAMS); 
     if (player_type==3) player = new AlgorithmicPlayer(id, width, height); 
     if (player_type==4) player = new HumanPlayer(id);
 }
@@ -63,8 +64,8 @@ int main() {
     int width = 4;
     int height = 4;
     int N = 1000;
-    
-    Player *player1 = new DQLPlayer(1, width, height);
+
+    Player *player1 = new DQLPlayer(1, width, height, DQL_PARAMS);
     Player *player2 = new RandomPlayer(2);
     //Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
 

@@ -3,6 +3,8 @@
 #include "../Random/RandomPlayer.hpp"
 #include "../DQL/DQLPlayer.hpp"
 
+#include <vector>
+
 using namespace std;
 
 int main() {

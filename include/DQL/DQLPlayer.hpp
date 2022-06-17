@@ -25,9 +25,9 @@ typedef struct Hyperparams {
     Hyperparams(int capacity, int minibatch_size, int episodes, double alpha,
         double epsilon_0, double epsilon_decay, double gamma, int update_target,
         int hidden_layer_size_factor): 
-    capacity(capacity), minibatch_size(minibatch_size), episodes(episodes), alpha(alpha),
-    epsilon_0(epsilon_0), epsilon_decay(epsilon_decay), gamma(gamma), update_target(update_target),
-    hidden_layer_size_factor(hidden_layer_size_factor) {};
+        capacity(capacity), minibatch_size(minibatch_size), episodes(episodes), 
+        alpha(alpha), epsilon_0(epsilon_0), epsilon_decay(epsilon_decay), gamma(gamma), 
+        update_target(update_target), hidden_layer_size_factor(hidden_layer_size_factor) {};
 } Hyperparams;
 
 class DQLPlayer: public Player {
@@ -39,7 +39,6 @@ class DQLPlayer: public Player {
     private:
     NeuralNet *policy_net; 
     NeuralNet *target_net;
-    Hyperparams params;
     vector<double> flatten_game_image(Game &game) const;
     pair<int, double> choose_action(Game &game, NeuralNet **net);
     static void exp_decay(double *x, double x_0, double decay, int n); 
@@ -79,22 +78,9 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
 DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(id) {
     auto start = high_resolution_clock::now();
 
-    int capacity = 20000;
     ReplayMemory rm(params.capacity);
 
-    int minibatch_size = 2;
-
-    int episodes = 1000; 
-
-    double alpha = 0.15;
-
-    double epsilon_0 = 0.99;
     double epsilon = params.epsilon_0;
-    double epsilon_decay = 0.001;
-
-    double gamma = 0.9;
-
-    int update_target = 10;
 
     int layer_size = 4*width*height;
     vector<int> topology; 
@@ -128,9 +114,9 @@ DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(
             
             rm.add_experience(Experience(initial, action, reward, next));
 
-            if (rm.can_provide_sample(minibatch_size)) {
-                vector<Experience> sample = rm.get_sample(minibatch_size);
-                for (int j = 0; j < minibatch_size; j++) {
+            if (rm.can_provide_sample(params.minibatch_size)) {
+                vector<Experience> sample = rm.get_sample(params.minibatch_size);
+                for (int j = 0; j < params.minibatch_size; j++) {
                     Experience experience = sample[j]; 
 
                     double bellman = experience.reward;

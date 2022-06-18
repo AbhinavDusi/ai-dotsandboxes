@@ -7,6 +7,25 @@
 
 using namespace std;
 
+int simulate_game(int width, int height, Player *player1, Player *player2) {
+    Game game(width, height);
+    Player *current_player = player1; 
+
+    while (!game._finished) {
+        int scored = current_player->move(game);
+        if (scored) continue; 
+        if (current_player == player1) current_player = player2;
+        else current_player = player1;
+    }
+
+    int p1_score = game.get_score(player1->_id);
+    int p2_score = game.get_score(player2->_id);
+
+    if (p1_score>p2_score) return player1->_id;
+    if (p1_score<p2_score) return player2->_id;
+    return -1;
+}
+
 int main() {
     int width = 4, height = 4;
 
@@ -28,4 +47,6 @@ int main() {
     vector<double> gamma_vals = {0.69,0.79,0.89,0.99};
     vector<double> update_target_vals = {5,10,20,40,80,160};
     vector<double> hidden_layer_size_factor_vals = {1,2,4,8};
+
+    return 0;
 }

@@ -136,7 +136,7 @@ DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(
             }
         }
 
-        if (i % 10 == 0) cout << "Episode " << i << endl; 
+        //if (i % 10 == 0) cout << "Episode " << i << endl; 
     }
 
     auto end = high_resolution_clock::now();

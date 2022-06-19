@@ -48,5 +48,7 @@ int main() {
     vector<double> update_target_vals = {5,10,20,40,80,160};
     vector<double> hidden_layer_size_factor_vals = {1,2,4,8};
 
+    int num_iteratons = 10;
+
     return 0;
 }

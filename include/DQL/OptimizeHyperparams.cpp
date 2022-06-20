@@ -48,7 +48,7 @@ void play_games(int width, int height, Hyperparams params, int num_iterations, i
 }
 
 int main() {
-    int width = 4, height = 4;
+    int width = 3, height = 3;
 
     int dflt_capacity = 20000;
     int dflt_minibatch_size = 16;

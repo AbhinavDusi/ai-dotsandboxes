@@ -27,13 +27,13 @@ int simulate_game(int width, int height, Player *player1, Player *player2) {
 }
 
 void play_games(int width, int height, Hyperparams params, int num_iterations, int N) {
+    int p1 = 0, p2 = 0, d = 0;
+
     for (int j = 0; j < num_iterations; j++) {
-        int p1 = 0, p2 = 0, d = 0;
+        Player *player1 = new DQLPlayer(1, width, height, params);
+        Player *player2 = new RandomPlayer(2);
 
         for (int i = 0; i < N; i++) {
-            Player *player1 = new DQLPlayer(1, width, height, params);
-            Player *player2 = new RandomPlayer(2);
-
             int winner;
             if (i%2 == 0) winner = simulate_game(width, height, player1, player2);
             else winner = simulate_game(width, height, player2, player1);
@@ -42,9 +42,11 @@ void play_games(int width, int height, Hyperparams params, int num_iterations, i
             if (winner==player2->_id) p2++;
             if (winner==-1) d++;
         }
-        
-        cout << "DQL Wins Avg: " << (p1 / (double) num_iterations) << endl;
+
+        cout << ".";   
     }
+
+    cout << "DQL Wins Avg: " << (p1 / (double) num_iterations) << endl;
 }
 
 int main() {

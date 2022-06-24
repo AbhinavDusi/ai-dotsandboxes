@@ -62,20 +62,19 @@ int main() {
     int dflt_update_target = 10;
     int dflt_hidden_layer_size_factor = 2; 
 
-    vector<int> capacity_vals = {10000,20000,40000,80000}; 
-    vector<int> minibatch_size_vals = {1,2,4,8,16,32};
-    vector<int> episodes_vals = {1000,2000,4000,8000};
-    vector<double> alpha_vals = {0.00015,0.0015,0.015,0.15};
+    vector<int> capacity_vals = {5000,10000,15000,20000}; 
+    vector<int> minibatch_size_vals = {4,6,8,10,12,14,16};
+    vector<int> episodes_vals = {500,750,1000,1250,1500};
+    vector<double> alpha_vals = {0.1, 0.125, 0.15, 0.175, 0.2};
     vector<double> epsilon_0_vals = {0.69,0.79,0.89,0.99};
-    vector<double> epsilon_decay_vals = {0.001, 0.01, 0.1};
-    vector<double> gamma_vals = {0.69,0.79,0.89,0.99};
-    vector<double> update_target_vals = {5,10,20,40,80,160};
-    vector<double> hidden_layer_size_factor_vals = {1,2,4,8};
+    vector<double> epsilon_decay_vals = {0.0001, 0.0005, 0.001, 0.0015, 0.002};
+    vector<double> gamma_vals = {0.79,0.84,0.89,0.94,0.99};
+    vector<double> update_target_vals = {1,3,5,7,9};
+    vector<double> hidden_layer_size_factor_vals = {1,2,3,4};
 
     int num_iterations = 20;
     int N = 1000;
 
-    /*
     cout << "Optimizing Capacity" << endl;
     for (int capacity_val : capacity_vals) {
         cout << "Capacity: " << capacity_val;
@@ -123,7 +122,6 @@ int main() {
         epsilon_decay_val, dflt_gamma, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
     }
-    */
 
     cout << "Optimizing Gamma" << endl;
     for (double gamma_val : gamma_vals) {

@@ -75,9 +75,10 @@ int main() {
     int num_iterations = 20;
     int N = 1000;
 
+    /*
     cout << "Optimizing Capacity" << endl;
     for (int capacity_val : capacity_vals) {
-        cout << "Capacity: " << capacity_val << ", ";
+        cout << "Capacity: " << capacity_val;
         Hyperparams params(capacity_val, dflt_minibatch_size, dflt_episodes, dflt_alpha, dflt_epsilon_0,
         dflt_epsilon_decay, dflt_gamma, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
@@ -85,7 +86,7 @@ int main() {
 
     cout << "Optimizing Minibatch Size" << endl;
     for (int minibatch_size_val : minibatch_size_vals) {
-        cout << "Minibatch Size: " << minibatch_size_val << ", ";
+        cout << "Minibatch Size: " << minibatch_size_val;
         Hyperparams params(dflt_capacity, minibatch_size_val, dflt_episodes, dflt_alpha, dflt_epsilon_0,
         dflt_epsilon_decay, dflt_gamma, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
@@ -93,7 +94,7 @@ int main() {
 
     cout << "Optimizing Episodes" << endl;
     for (int episodes_val : episodes_vals) {
-        cout << "Episodes: " << episodes_val << ", ";
+        cout << "Episodes: " << episodes_val;
         Hyperparams params(dflt_capacity, dflt_minibatch_size, episodes_val, dflt_alpha, dflt_epsilon_0,
         dflt_epsilon_decay, dflt_gamma, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
@@ -101,7 +102,7 @@ int main() {
 
     cout << "Optimizing Alpha" << endl;
     for (double alpha_val : alpha_vals) {
-        cout << "Alpha: " << alpha_val << ", ";
+        cout << "Alpha: " << alpha_val;
         Hyperparams params(dflt_capacity, dflt_minibatch_size, dflt_episodes, alpha_val, dflt_epsilon_0,
         dflt_epsilon_decay, dflt_gamma, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
@@ -109,7 +110,7 @@ int main() {
 
     cout << "Optimizing Epsilon_0" << endl;
     for (double epsilon_0_val : epsilon_0_vals) {
-        cout << "Epsilon_0: " << epsilon_0_val << ", ";
+        cout << "Epsilon_0: " << epsilon_0_val;
         Hyperparams params(dflt_capacity, dflt_minibatch_size, dflt_episodes, dflt_alpha, epsilon_0_val,
         dflt_epsilon_decay, dflt_gamma, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
@@ -117,15 +118,16 @@ int main() {
 
     cout << "Optimizing Epsilon Decay" << endl;
     for (double epsilon_decay_val : epsilon_decay_vals) {
-        cout << "Epsilon Decay: " << epsilon_decay_val << ", ";
+        cout << "Epsilon Decay: " << epsilon_decay_val;
         Hyperparams params(dflt_capacity, dflt_minibatch_size, dflt_episodes, dflt_alpha, dflt_epsilon_0,
         epsilon_decay_val, dflt_gamma, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
     }
+    */
 
     cout << "Optimizing Gamma" << endl;
     for (double gamma_val : gamma_vals) {
-        cout << "Gamma: " << gamma_val << ", ";
+        cout << "Gamma: " << gamma_val;
         Hyperparams params(dflt_capacity, dflt_minibatch_size, dflt_episodes, dflt_alpha, dflt_epsilon_0,
         dflt_epsilon_decay, gamma_val, dflt_update_target, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
@@ -133,7 +135,7 @@ int main() {
 
     cout << "Optimizing Update Target" << endl;
     for (int update_target_val : update_target_vals) {
-        cout << "Update Target: " << update_target_val << ", ";
+        cout << "Update Target: " << update_target_val;
         Hyperparams params(dflt_capacity, dflt_minibatch_size, dflt_episodes, dflt_alpha, dflt_epsilon_0,
         dflt_epsilon_decay, dflt_gamma, update_target_val, dflt_hidden_layer_size_factor);
         play_games(width, height, params, num_iterations, N);
@@ -141,7 +143,7 @@ int main() {
 
     cout << "Optimizing Hidden Layer Size Factor" << endl;
     for (int hidden_layer_size_factor_val : hidden_layer_size_factor_vals) {
-        cout << "Hidden Layer Size Factor: " << hidden_layer_size_factor_val << ", ";
+        cout << "Hidden Layer Size Factor: " << hidden_layer_size_factor_val;
         Hyperparams params(dflt_capacity, dflt_minibatch_size, dflt_episodes, dflt_alpha, dflt_epsilon_0,
         dflt_epsilon_decay, dflt_gamma, dflt_update_target, hidden_layer_size_factor_val);
         play_games(width, height, params, num_iterations, N);

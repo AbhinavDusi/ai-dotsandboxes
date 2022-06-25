@@ -69,7 +69,7 @@ int main() {
     vector<double> epsilon_0_vals = {0.69,0.79,0.89,0.99};
     vector<double> epsilon_decay_vals = {0.0001, 0.0005, 0.001, 0.0015, 0.002};
     vector<double> gamma_vals = {0.79,0.84,0.89,0.94,0.99};
-    vector<double> update_target_vals = {1,3,5,7,9};
+    vector<int> update_target_vals = {1,3,5,7,9};
     vector<double> hidden_layer_size_factor_vals = {1,2,3,4};
 
     int num_iterations = 20;

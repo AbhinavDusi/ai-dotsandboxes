@@ -1,6 +1,6 @@
 #include <unordered_map>
 
-#include "../Player.hpp"
+#include "../Player/Player.hpp"
 #include "Game.hpp"
 
 #ifndef GAME_SIMULATOR_H

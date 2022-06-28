@@ -4,9 +4,10 @@
 #include <vector>
 #include <chrono>
 
-#include "../Game/Game.hpp"
-#include "../Game/GameSimulator.hpp"
+#include "../../Game/Game.hpp"
+#include "../../Game/GameSimulator.hpp"
 #include "../Player.hpp"
+#include "../Random/RandomPlayer.hpp"
 #include "NeuralNet.hpp"
 #include "ReplayMemory.hpp"
 

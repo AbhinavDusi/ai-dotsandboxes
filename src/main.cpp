@@ -2,12 +2,12 @@
 
 #include "../include/Game/Game.hpp"
 #include "../include/Game/GameSimulator.hpp"
-#include "../include/Player.hpp"
-#include "../include/Random/RandomPlayer.hpp"
-#include "../include/Minimax/MinimaxPlayer.hpp"
-#include "../include/DQL/DQLPlayer.hpp"
-#include "../include/Algorithmic/AlgorithmicPlayer.hpp"
-#include "../include/Human/HumanPlayer.hpp"
+#include "../include/Player/Player.hpp"
+#include "../include/Player/Random/RandomPlayer.hpp"
+#include "../include/Player/Minimax/MinimaxPlayer.hpp"
+#include "../include/Player/DQL/DQLPlayer.hpp"
+#include "../include/Player/Algorithmic/AlgorithmicPlayer.hpp"
+#include "../include/Player/Human/HumanPlayer.hpp"
 
 int MINIMAX_DEPTH = 3;
 

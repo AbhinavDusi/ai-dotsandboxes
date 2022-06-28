@@ -1,7 +1,7 @@
 #ifndef ALGORITHMIC_PLAYER_H
 #define ALGORITHMIC_PLAYER_H
 
-#include "../Game/Game.hpp"
+#include "../../Game/Game.hpp"
 #include "../Player.hpp"
 
 using namespace std;

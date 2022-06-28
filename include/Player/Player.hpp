@@ -6,7 +6,7 @@
 #include <string>
 #include <chrono>
 
-#include "Game/Game.hpp"
+#include "../Game/Game.hpp"
 
 using namespace std; 
 using namespace std::chrono;

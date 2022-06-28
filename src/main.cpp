@@ -9,7 +9,7 @@
 #include "../include/Human/HumanPlayer.hpp"
 
 int MINIMAX_DEPTH = 3;
-Hyperparams DQL_PARAMS(20000, 2, 1000, 0.15, 0.99, 0.001, 0.9, 10, 2);
+Hyperparams DQL_PARAMS(5000, 8, 1000, 0.15, 0.94, 0.001, 0.89, 1, 2);
 
 using namespace std;
 
@@ -65,8 +65,35 @@ int main() {
     int height = 3;
     int N = 1000;
 
-    Player *player1 = new MinimaxPlayer(1, MINIMAX_DEPTH);
-    Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
+    DQLPlayer *dql_player;
+    int max_dql_wins = 0; 
+    for (int i = 0; i < 30; i++) {
+        cout << "Iteration: " << i << endl;
+
+        DQLPlayer *test_dql_player = new DQLPlayer(1, width, height, DQL_PARAMS); 
+        RandomPlayer *test_random_player = new RandomPlayer(2);
+
+        int num_dql_wins = 0; 
+        for (int i = 0; i < N; i++) {
+            int winner;
+            if (i%2 == 0) winner = simulate_game(width, height, test_dql_player, test_random_player);
+            else winner = simulate_game(width, height, test_random_player, test_dql_player);
+
+            if (winner==test_dql_player->_id) num_dql_wins++;
+        }
+
+        if (num_dql_wins > max_dql_wins) {
+            max_dql_wins = num_dql_wins;
+            dql_player = new DQLPlayer(1, test_dql_player);
+        }
+
+        cout << "Wins: " << num_dql_wins << endl;
+    }
+
+    cout << "Max DQL Wins: " << max_dql_wins << endl;
+
+    Player *player1 = dql_player;
+    Player *player2 = new RandomPlayer(2);
     //Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
 
     int p1 = 0; 

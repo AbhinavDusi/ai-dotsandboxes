@@ -33,24 +33,30 @@ void play_games(int width, int height, Hyperparams params, int num_iterations, i
         Player *player1 = new DQLPlayer(1, width, height, params);
         Player *player2 = new RandomPlayer(2);
 
+        int p1_game = 0; 
+        int p2_game = 0;
+
         for (int i = 0; i < N; i++) {
             int winner;
             if (i%2 == 0) winner = simulate_game(width, height, player1, player2);
             else winner = simulate_game(width, height, player2, player1);
 
-            if (winner==player1->_id) p1++;
-            if (winner==player2->_id) p2++;
+            if (winner==player1->_id) p1_game++;
+            if (winner==player2->_id) p2_game++;
             if (winner==-1) d++;
         }
 
-        cout << ".";   
+        cout << p1_game << endl;
+
+        p1+=p1_game;
+        p2+=p2_game;
     }
 
     cout << "DQL Wins Avg: " << (p1 / (double) num_iterations) << endl;
 }
 
 int main() {
-    int width = 3, height = 3;
+    /*
 
     int dflt_capacity = 20000;
     int dflt_minibatch_size = 16;
@@ -146,6 +152,15 @@ int main() {
         dflt_epsilon_decay, dflt_gamma, dflt_update_target, hidden_layer_size_factor_val);
         play_games(width, height, params, num_iterations, N);
     }
+    */
+
+   int num_iterations = 30;
+    Hyperparams params(5000, 8, 1000, 0.15, 0.94, 0.001, 0.89, 1, 2);
+    int N = 1000;
+    int width = 3;
+    int height = 3;
+
+   play_games(width, height,params,num_iterations,N);
 
     return 0;
 }

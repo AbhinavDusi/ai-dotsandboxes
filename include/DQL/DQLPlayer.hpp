@@ -33,6 +33,7 @@ typedef struct Hyperparams {
 class DQLPlayer: public Player {
     public:
     DQLPlayer(int id, int width, int height, Hyperparams params);
+    DQLPlayer(int id, DQLPlayer *dql_player);
     int get_move(Game &game); 
     string get_name() { return "Deep Q Learning"; }
 
@@ -135,13 +136,15 @@ DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(
                 }
             }
         }
-
-        //if (i % 10 == 0) cout << "Episode " << i << endl; 
     }
 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end-start);
-    // cout << "DQL Player " << _id << " training time: " << duration.count() << " minutes.\n";
+    //cout << "DQL Player " << _id << " training time: " << duration.count() << " minutes.\n";
+}
+
+DQLPlayer::DQLPlayer(int id, DQLPlayer *dql_player): Player(id) {
+    policy_net->load(*(dql_player->policy_net));
 }
 
 int DQLPlayer::get_move(Game &game) {

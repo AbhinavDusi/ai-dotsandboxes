@@ -13,7 +13,6 @@ int MINIMAX_DEPTH = 3;
 
 Hyperparams DQL_PARAMS(5000, 8, 1000, 0.15, 0.94, 0.001, 0.89, 1, 2);
 int DQL_NUM_TO_CREATE = 30;
-int DQL_PER_ITERATION = 1000;
 
 using namespace std;
 

@@ -159,11 +159,15 @@ DQLPlayer::DQLPlayer(int id, int width, int height, int num_iterations, Hyperpar
             if (winner==dql_player->_id) num_dql_wins++;
         }
 
+        cout << "Iteration " << i << " wins: " << num_dql_wins << endl;
+
         if (num_dql_wins > max_dql_wins) {
             max_dql_wins = num_dql_wins;
             best_dql_player = best_dql_player;
         }
     }
+
+    cout << "Max DQL Wins: " << max_dql_wins << endl;
 
     policy_net->load(*(best_dql_player->policy_net));
 

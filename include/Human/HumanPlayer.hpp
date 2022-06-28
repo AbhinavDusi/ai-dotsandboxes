@@ -1,7 +1,7 @@
 #ifndef HUMAN_PLAYER_H
 #define HUMAN_PLAYER_H
 
-#include "../Game.hpp"
+#include "../Game/Game.hpp"
 #include "../Player.hpp"
 
 #include <iostream>

@@ -24,7 +24,6 @@ class Game {
     int move(int player_id, int move_idx);
     int get_score(int player_id) const;
     void print();
-    static Game get_random_game(int width, int height); 
     bool _started;
     bool _finished; 
     int _width;

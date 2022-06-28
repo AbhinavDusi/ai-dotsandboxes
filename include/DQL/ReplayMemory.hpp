@@ -5,7 +5,7 @@
 #include <random>
 #include <ctime>
 
-#include "../Game.hpp"
+#include "../Game/Game.hpp"
 
 using namespace std;
 

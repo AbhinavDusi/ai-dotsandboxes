@@ -50,7 +50,7 @@ int main() {
     int height = 3;
     int N = 1000;
 
-    Player *player1 = new DQLPlayer(1, width, height, DQL_NUM_TO_CREATE, DQL_PER_ITERATION, DQL_PARAMS);
+    Player *player1 = new DQLPlayer(1, width, height, DQL_NUM_TO_CREATE, DQL_PARAMS);
     Player *player2 = new RandomPlayer(2);
     //Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
 

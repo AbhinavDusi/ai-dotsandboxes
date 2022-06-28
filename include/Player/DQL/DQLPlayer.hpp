@@ -35,7 +35,7 @@ typedef struct Hyperparams {
 class DQLPlayer: public Player {
     public:
     DQLPlayer(int id, int width, int height, Hyperparams params);
-    DQLPlayer(int id, int width, int height, int num_iterations, int per_iteration, Hyperparams params);
+    DQLPlayer(int id, int width, int height, int num_iterations, Hyperparams params);
     int get_move(Game &game); 
     string get_name() { return "Deep Q Learning"; };
 
@@ -140,11 +140,12 @@ DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(
 }
 
 
-DQLPlayer::DQLPlayer(int id, int width, int height, int num_iterations, int per_iteration, Hyperparams params): Player(id) {
+DQLPlayer::DQLPlayer(int id, int width, int height, int num_iterations, Hyperparams params): Player(id) {
     auto start = high_resolution_clock::now();
 
     DQLPlayer *best_dql_player;
     int max_dql_wins = 0; 
+    int per_iteration = 1000;
     for (int i = 0; i < num_iterations; i++) {
         DQLPlayer *dql_player = new DQLPlayer(1, width, height, params); 
         RandomPlayer *random_player = new RandomPlayer(2);

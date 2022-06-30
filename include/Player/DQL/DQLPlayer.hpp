@@ -34,7 +34,7 @@ typedef struct Hyperparams {
 
 class DQLPlayer: public Player {
     public:
-    DQLPlayer(int id, int width, int height, Hyperparams params);
+    DQLPlayer(int id, int width, int height, Hyperparams &params);
     int get_move(Game &game); 
     string get_name() { return "Deep Q Learning"; };
 
@@ -77,7 +77,7 @@ void DQLPlayer::exp_decay(double *x, double x_0, double decay, int n) {
     *x = x_0*exp(-1*decay*n);
 }    
 
-DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(id) {
+DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams &params): Player(id) {
     ReplayMemory rm(params.capacity);
 
     double epsilon = params.epsilon_0;

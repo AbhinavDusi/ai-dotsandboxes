@@ -24,22 +24,23 @@ to move, to create optimal "chains."
 The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents'
 future moves and choosing the optimal move by maximizing its score to a certain depth (implemented as a depth of 3).
 
-## Deep Q Learning Player
+## Deep Q Learning Ensemble
 
-The Deep Q Learning Player chooses a move by using a neural network to determine the max quality move
-at each state, after being trained with thousands of episodes.
+The Deep Q Learning Ensemble takes the vote of a collection of Deep Q Learning Players, with each choosing a move by using a trained neural network to determine the max quality move at each state, after being trained with thousands of episodes. 
 
 ### Training Information
 
 #### Hyperparameters
 
+- Replay Memory Capacity: 5000
+- Minibatch Size: 8
 - Number of Episodes: 1000
-- Learning Rate (alpha): 0.0001
-- Exploration Rate Start (epsilon_0): 0.99
-- Exploration Rate Decay (epsilon_decay): 0.001 (Exponential Decay)
-- Discount Factor (gamma): 0.9
-- Target Update: Every 10 episodes
-- Minibatch Size: 16
+- Learning Rate: 0.15
+- Initial Exploration Rate: 0.94
+- Exploration Rate Decay: 0.001
+- Discount Factor: 0.89
+- Target Update Frequency: 1
+- Hidden Layer Size vs Input Layer Size Factor: 2
 
 #### Topology
 
@@ -95,7 +96,7 @@ Random Player 1 average time per move: 0.111012 microseconds.
 Minimax (depth=3) Player 2 average time per move: 5356.56 microseconds.
 ```
 
-## Random vs Deep Q Learning
+## Random vs Deep Q Learning Ensemble
 
 ```
 
@@ -113,7 +114,7 @@ Minimax (depth=3) Player 2 average time per move: 5356.56 microseconds.
 
 ```
 
-## Algorithmic vs Deep Q Learning
+## Algorithmic vs Deep Q Learning Ensemble
 
 ```
 
@@ -130,13 +131,13 @@ Minimax (depth=3) Player 1 average time per move: 4375.64 microseconds.
 Minimax (depth=3) Player 2 average time per move: 4380.78 microseconds.
 ```
 
-## Minimax vs Deep Q Learning
+## Minimax vs Deep Q Learning Ensemble
 
 ```
 
 ```
 
-## Deep Q Learning vs Deep Q Learning
+## Deep Q Learning Ensemble vs Deep Q Learning Ensemble
 
 ```
 

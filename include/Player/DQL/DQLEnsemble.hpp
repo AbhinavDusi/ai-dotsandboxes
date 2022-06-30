@@ -46,8 +46,8 @@ DQLEnsemble::DQLEnsemble(int id, int N, int width, int height, Hyperparams param
 }
 
 int DQLEnsemble::get_move(Game &game) {
-    unordered_map<int, double> votes;
-
+    /* 
+    // Choose best player
     int best = 0; 
     double most_weight = 0;
     for (int i = 0; i < weights.size(); i++) {
@@ -56,8 +56,26 @@ int DQLEnsemble::get_move(Game &game) {
             best = i;
         }
     }
+    */
 
-    return ensemble[best]->get_move(game);
+    unordered_map<int, double> votes;
+
+   // Vote unweighted
+   int best_move = 0; 
+   int highest_votes = 0;
+    for (int i = 0; i < ensemble.size(); i++) {
+        int move = ensemble[i]->get_move(game);
+
+        if (!votes.count(move)) votes.insert({move, 0});
+        votes.at(move)++;
+        
+        if (votes.at(move) > highest_votes) {
+            highest_votes = votes.at(move);
+            best_move = move;
+        }
+    }
+
+    return best_move;
 }
 
 #endif

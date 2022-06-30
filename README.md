@@ -51,13 +51,13 @@ The Deep Q Learning Ensemble takes the vote of a collection of Deep Q Learning P
 #### Timing
 
 ```
-DQL Player training time for 1000 episodes: 72 minutes.
+DQL Ensemble 1 training time for 1000 episodes: 72 minutes.
 ```
 
 # To Run
 
 ```
-make all
+make
 bin/main
 ```
 

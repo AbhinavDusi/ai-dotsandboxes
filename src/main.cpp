@@ -6,20 +6,21 @@
 #include "../include/Player/Random/RandomPlayer.hpp"
 #include "../include/Player/Minimax/MinimaxPlayer.hpp"
 #include "../include/Player/DQL/DQLPlayer.hpp"
+#include "../include/Player/DQL/DQLEnsemble.hpp"
 #include "../include/Player/Algorithmic/AlgorithmicPlayer.hpp"
 #include "../include/Player/Human/HumanPlayer.hpp"
 
 int MINIMAX_DEPTH = 3;
 
 Hyperparams DQL_PARAMS(5000, 8, 1000, 0.15, 0.94, 0.001, 0.89, 1, 2);
-int DQL_NUM_TO_CREATE = 30;
+int DQL_NUM_TO_CREATE = 25;
 
 using namespace std;
 
 void assign_player(Player *player, int player_type, int id, int width, int height) {
     if (player_type==0) player = new RandomPlayer(id); 
     if (player_type==1) player = new MinimaxPlayer(id, MINIMAX_DEPTH); 
-    if (player_type==2) player = new DQLPlayer(id, width, height, DQL_PARAMS); 
+    if (player_type==2) player = new DQLEnsemble(id, width, height, DQL_NUM_TO_CREATE, DQL_PARAMS); 
     if (player_type==3) player = new AlgorithmicPlayer(id, width, height); 
     if (player_type==4) player = new HumanPlayer(id);
 }
@@ -49,15 +50,21 @@ int main() {
     int height = 3;
     int N = 1000;
 
-    Player *player1 = new DQLPlayer(1, width, height, DQL_NUM_TO_CREATE, DQL_PARAMS);
-    Player *player2 = new RandomPlayer(2);
     //Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
 
-    unordered_map<int, int> scores = GameSimulator::simulate_N_games(N, width, height, player1, player2); 
-    int p1 = scores.at(player1->_id);
-    int p2 = scores.at(player2->_id);
-    int d = scores.at(-1);
+    for (int i = 0; i < 20; i++) {
+        Player *player1 = new DQLEnsemble(1, 25, width, height, DQL_PARAMS);
+        Player *player2 = new RandomPlayer(2);
+
+        unordered_map<int, int> scores = GameSimulator::simulate_N_games(N, width, height, player1, player2); 
+        int p1 = scores.at(player1->_id);
+        int p2 = scores.at(player2->_id);
+        int d = scores.at(-1);
+
+        cout << p1 << endl;
+    }
     
+    /*
     cout << player1->get_name() << " Player 1 wins: " << p1 << endl;
     cout << player2->get_name() << " Player 2 wins: " << p2 << endl;
     cout << "Draws: " << d << endl;
@@ -67,6 +74,7 @@ int main() {
         << player1->get_avg_move_time() << " microseconds." << endl;
     cout << player2->get_name() << " Player 2 average time per move: " 
         << player2->get_avg_move_time() << " microseconds." << endl;
+    */
 
     return 0; 
 }

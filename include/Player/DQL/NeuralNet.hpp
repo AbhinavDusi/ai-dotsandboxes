@@ -4,12 +4,12 @@
 #include <vector>
 #include <random>
 #include <ctime>
-#include <fstream>
-#include <iostream>
+
+using namespace std;
 
 class Neuron; 
 
-typedef std::vector<Neuron> Layer; 
+typedef vector<Neuron> Layer; 
 
 class Neuron {
     public:
@@ -19,16 +19,16 @@ class Neuron {
     void calc_output_error(double target); 
     void calc_hidden_error(const Layer& next_layer);
     void nudge_output_weights(const Layer& next_layer, double alpha);
-    std::vector<double> _output_weights; 
+    vector<double> _output_weights; 
     double _val; 
     double _error; 
 
     private:
     static double random() { return Neuron::rng()/(double) Neuron::rng.max(); }
-    static std::mt19937 rng; 
+    static mt19937 rng; 
 }; 
 
-std::mt19937 Neuron::rng(time(nullptr));
+mt19937 Neuron::rng(time(nullptr));
 
 Neuron::Neuron(int num_outputs) {
     for (int i = 0; i < num_outputs; i++) {
@@ -57,21 +57,19 @@ void Neuron::nudge_output_weights(const Layer& next_layer, double alpha) {
 
 class NeuralNet {
     public:
-    NeuralNet(const std::vector<int>& topology, double alpha); 
+    NeuralNet(const vector<int>& topology, double alpha); 
     NeuralNet() {};
-    void feed_forward(const std::vector<double>& input); 
-    void back_prop(const std::vector<double>& target);
-    std::vector<double> get_result() const;
+    void feed_forward(const vector<double>& input); 
+    void back_prop(const vector<double>& target);
+    vector<double> get_result() const;
     void load(NeuralNet &net);
-    void read(const char *filename);
-    void write(const char *filename) const;
     double _alpha; 
 
     private:
-    std::vector<Layer> _layers; 
+    vector<Layer> _layers; 
 };
 
-NeuralNet::NeuralNet(const std::vector<int>& topology, double alpha): _alpha(alpha) {
+NeuralNet::NeuralNet(const vector<int>& topology, double alpha): _alpha(alpha) {
     for (int i = 0; i < topology.size(); i++) {
         _layers.push_back(Layer());
         int num_outputs = i < topology.size()-1 ? topology[i+1] : 0;
@@ -84,7 +82,7 @@ NeuralNet::NeuralNet(const std::vector<int>& topology, double alpha): _alpha(alp
     }
 }
 
-void NeuralNet::feed_forward(const std::vector<double>& input) {
+void NeuralNet::feed_forward(const vector<double>& input) {
     for (int i = 0; i < input.size(); i++) {
         _layers[0][i]._val = input[i];
     }
@@ -101,7 +99,7 @@ void NeuralNet::feed_forward(const std::vector<double>& input) {
     }
 }
 
-void NeuralNet::back_prop(const std::vector<double>& target) {
+void NeuralNet::back_prop(const vector<double>& target) {
     for (int i = 0; i < _layers.back().size()-1; i++) {
         _layers.back()[i].calc_output_error(target[i]);
     }
@@ -119,8 +117,8 @@ void NeuralNet::back_prop(const std::vector<double>& target) {
     }
 }
 
-std::vector<double> NeuralNet::get_result() const {
-    std::vector<double> result; 
+vector<double> NeuralNet::get_result() const {
+    vector<double> result; 
     for (int i = 0; i < _layers.back().size()-1; i++) {
         result.push_back(_layers.back()[i]._val); 
     }
@@ -130,22 +128,6 @@ std::vector<double> NeuralNet::get_result() const {
 void NeuralNet::load(NeuralNet &net) {
     _layers = net._layers;
     _alpha = net._alpha;
-}
-
-void NeuralNet::read(const char *filename) {
-    std::ifstream in(filename);
-    in.open(filename, std::ios::in);
-    in.seekg(0);
-    NeuralNet net;
-    in.read((char *) &net, sizeof(NeuralNet));
-    load(net);
-    in.close();
-}
-
-void NeuralNet::write(const char *filename) const {
-    std::ofstream out(filename, std::ios::app); 
-    out.write((char *) this, sizeof(NeuralNet));
-    out.close();
 }
 
 #endif 

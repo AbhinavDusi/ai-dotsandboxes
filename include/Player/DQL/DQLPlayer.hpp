@@ -35,7 +35,6 @@ typedef struct Hyperparams {
 class DQLPlayer: public Player {
     public:
     DQLPlayer(int id, int width, int height, Hyperparams params);
-    DQLPlayer(int id, int width, int height, int num_iterations, Hyperparams params);
     int get_move(Game &game); 
     string get_name() { return "Deep Q Learning"; };
 
@@ -137,43 +136,6 @@ DQLPlayer::DQLPlayer(int id, int width, int height, Hyperparams params): Player(
             }
         }
     }
-}
-
-
-DQLPlayer::DQLPlayer(int id, int width, int height, int num_iterations, Hyperparams params): Player(id) {
-    auto start = high_resolution_clock::now();
-
-    DQLPlayer *best_dql_player;
-    int max_dql_wins = 0; 
-    int per_iteration = 1000;
-    for (int i = 0; i < num_iterations; i++) {
-        DQLPlayer *dql_player = new DQLPlayer(1, width, height, params); 
-        RandomPlayer *random_player = new RandomPlayer(2);
-
-        int num_dql_wins = 0; 
-        for (int i = 0; i < per_iteration; i++) {
-            int winner;
-            if (i%2 == 0) winner = GameSimulator::simulate_game(width, height, dql_player, random_player);
-            else winner = GameSimulator::simulate_game(width, height, random_player, dql_player);
-
-            if (winner==dql_player->_id) num_dql_wins++;
-        }
-
-        cout << "Iteration " << i << " wins: " << num_dql_wins << endl;
-
-        if (num_dql_wins > max_dql_wins) {
-            max_dql_wins = num_dql_wins;
-            best_dql_player = best_dql_player;
-        }
-    }
-
-    cout << "Max DQL Wins: " << max_dql_wins << endl;
-
-    policy_net->load(*(best_dql_player->policy_net));
-
-    auto end = high_resolution_clock::now();
-    auto duration = duration_cast<minutes>(end-start);
-    cout << "DQL Player " << _id << " training time: " << duration.count() << " minutes.\n";
 }
 
 int DQLPlayer::get_move(Game &game) {

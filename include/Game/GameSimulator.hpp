@@ -1,10 +1,10 @@
+#ifndef GAME_SIMULATOR_H
+#define GAME_SIMULATOR_H
+
 #include <unordered_map>
 
 #include "../Player/Player.hpp"
 #include "Game.hpp"
-
-#ifndef GAME_SIMULATOR_H
-#define GAME_SIMULATOR_H
 
 using namespace std;
 

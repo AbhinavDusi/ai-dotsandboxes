@@ -58,7 +58,7 @@ int DQLEnsemble::get_move(Game &game) {
     }
     */
 
-    unordered_map<int, int> votes;
+    unordered_map<int, double> votes;
 
    // Vote unweighted
    int best_move = 0; 

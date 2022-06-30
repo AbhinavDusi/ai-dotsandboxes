@@ -72,7 +72,6 @@ The player who moves first or second is swapped after every game.
 ```
 Random Player 1 wins: 494
 Random Player 2 wins: 506
-Draws: 0
 Total Games Played: 1000
 Random Player 1 average time per move: 0.250731 microseconds.
 Random Player 2 average time per move: 0.166459 microseconds.
@@ -89,7 +88,6 @@ Random Player 2 average time per move: 0.166459 microseconds.
 ```
 Random Player 1 wins: 21
 Minimax (depth=3) Player 2 wins: 979
-Draws: 0
 Total Games Played: 1000
 Random Player 1 average time per move: 0.111012 microseconds.
 Minimax (depth=3) Player 2 average time per move: 5356.56 microseconds.
@@ -124,7 +122,6 @@ Minimax (depth=3) Player 2 average time per move: 5356.56 microseconds.
 ```
 Minimax (depth=3) Player 1 wins: 502
 Minimax (depth=3) Player 2 wins: 498
-Draws: 0
 Total Games Played: 1000
 Minimax (depth=3) Player 1 average time per move: 4375.64 microseconds.
 Minimax (depth=3) Player 2 average time per move: 4380.78 microseconds.

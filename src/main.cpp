@@ -67,7 +67,7 @@ int main() {
     /*
     cout << player1->get_name() << " Player 1 wins: " << p1 << endl;
     cout << player2->get_name() << " Player 2 wins: " << p2 << endl;
-    cout << "Draws: " << d << endl;
+    if (width*height % 2 == 0) cout << "Draws: " << d << endl;
     cout << "Total Games Played: " << N << endl;
 
     cout << player1->get_name() << " Player 1 average time per move: " 

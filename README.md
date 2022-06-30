@@ -16,13 +16,11 @@ The Random Player chooses a move by randomly selecting from the list of the vali
 
 ## Algorithmic Player
 
-The Algorithmic Player chooses a move by using the information of the grid size and whether it is the first or second player 
-to move, to create optimal "chains."
+The Algorithmic Player chooses a move by using the information of the grid size and whether it is the first or second player to move, to create optimal "chains."
 
 ## Minimax Player
 
-The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents'
-future moves and choosing the optimal move by maximizing its score to a certain depth (implemented as a depth of 3).
+The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents' future moves and choosing the optimal move by maximizing its score to a certain depth (implemented as a depth of 3).
 
 ## Deep Q Learning Ensemble
 

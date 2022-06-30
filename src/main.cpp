@@ -35,7 +35,7 @@ int main() {
 
     Player *player1, player2;
     int p1_type, p2_type;
-    cout << "Random=0; Minimax (depth=3)=1; Deep Q Learning=2; Algorithmic=3; Human=4" << endl;
+    cout << "Random=0; Minimax (depth=3)=1; Deep Q Learning Ensemble=2; Algorithmic=3; Human=4" << endl;
 
     cout << "Enter type of Player 1: ";
     cin >> p1_type;

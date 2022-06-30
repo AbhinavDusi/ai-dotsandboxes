@@ -59,9 +59,9 @@ int DQLEnsemble::get_move(Game &game) {
 
     unordered_map<int, double> votes;
 
-   // Vote unweighted
-   int best_move = 0; 
-   int highest_votes = 0;
+    // Vote unweighted
+    int best_move = 0; 
+    int highest_votes = 0;
     for (int i = 0; i < ensemble.size(); i++) {
         int move = ensemble[i]->get_move(game);
 

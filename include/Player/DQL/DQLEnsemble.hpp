@@ -46,7 +46,6 @@ DQLEnsemble::DQLEnsemble(int id, int N, int width, int height, Hyperparams &para
 
 int DQLEnsemble::get_move(Game &game) {
     unordered_map<int, double> votes;
-
     int best_move = 0; 
     int highest_votes = 0;
     for (int i = 0; i < ensemble.size(); i++) {

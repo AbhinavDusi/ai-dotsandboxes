@@ -48,12 +48,6 @@ The Deep Q Learning Ensemble takes the vote of a collection of Deep Q Learning P
 - Two hidden layers with 8 times input size
 - Output layer size corresponding to game board size
 
-#### Timing
-
-```
-DQL Ensemble 1 training time for 1000 episodes: 72 minutes.
-```
-
 # To Run
 
 ```

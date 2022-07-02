@@ -10,12 +10,12 @@
 #include "../include/Player/Algorithmic/AlgorithmicPlayer.hpp"
 #include "../include/Player/Human/HumanPlayer.hpp"
 
+using namespace std;
+
 int MINIMAX_DEPTH = 3;
 
 Hyperparams DQL_PARAMS(5000, 8, 1000, 0.15, 0.94, 0.001, 0.89, 1, 2);
 int DQL_NUM_TO_CREATE = 25;
-
-using namespace std;
 
 void assign_player(Player *player, int player_type, int id, int width, int height) {
     if (player_type==0) player = new RandomPlayer(id); 

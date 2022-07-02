@@ -5,7 +5,6 @@
 #include "../include/Player/Player.hpp"
 #include "../include/Player/Random/RandomPlayer.hpp"
 #include "../include/Player/Minimax/MinimaxPlayer.hpp"
-#include "../include/Player/DQL/DQLPlayer.hpp"
 #include "../include/Player/DQL/DQLEnsemble.hpp"
 #include "../include/Player/Algorithmic/AlgorithmicPlayer.hpp"
 #include "../include/Player/Human/HumanPlayer.hpp"

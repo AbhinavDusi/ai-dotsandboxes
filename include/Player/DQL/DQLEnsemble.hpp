@@ -41,7 +41,7 @@ DQLEnsemble::DQLEnsemble(int id, int N, int width, int height, Hyperparams &para
 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<minutes>(end-start);
-    cout << "DQL Ensemble " << _id << " training time: " << duration.count() << " minutes.\n";
+    cout << get_name() << " " << _id << " training time: " << duration.count() << " minutes.\n";
 }
 
 int DQLEnsemble::get_move(Game &game) {

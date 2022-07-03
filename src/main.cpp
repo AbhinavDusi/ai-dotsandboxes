@@ -51,7 +51,7 @@ int main() {
 
     //Player *player2 = new MinimaxPlayer(2, MINIMAX_DEPTH);
 
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 9; i++) {
         Player *player1 = new DQLEnsemble(1, 25, width, height, DQL_PARAMS);
         Player *player2 = new RandomPlayer(2);
 

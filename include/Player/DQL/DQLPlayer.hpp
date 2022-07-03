@@ -36,6 +36,7 @@ class DQLPlayer: public Player {
     public:
     DQLPlayer(int id, int width, int height, Hyperparams &params);
     int get_move(Game &game); 
+    vector<double> get_move_result(Game &game);
     string get_name() { return "Deep Q Learning"; };
 
     private:
@@ -43,6 +44,7 @@ class DQLPlayer: public Player {
     NeuralNet *target_net;
     vector<double> flatten_game_image(Game &game) const;
     pair<int, double> choose_action(Game &game, NeuralNet **net);
+    vector<double> get_choose_action_result(Game &game, NeuralNet **net);
     static void exp_decay(double *x, double x_0, double decay, int n); 
 }; 
 
@@ -56,6 +58,16 @@ vector<double> DQLPlayer::flatten_game_image(Game &game) const {
         }
     }
     return flattened_image;
+}
+
+vector<double> DQLPlayer::get_choose_action_result(Game &game, NeuralNet **net) {
+    (*net)->feed_forward(flatten_game_image(game)); 
+    vector<double> result = (*net)->get_result();
+    return result; 
+}
+
+vector<double> DQLPlayer::get_move_result(Game &game) {
+    return get_choose_action_result(game, &policy_net); 
 }
 
 pair<int, double> DQLPlayer::choose_action(Game &game, NeuralNet **net) {

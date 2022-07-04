@@ -19,7 +19,6 @@ class DQLEnsemble: public Player {
 
     private:
     vector<DQLPlayer *> ensemble;
-    vector<double> weights;
 };
 
 DQLEnsemble::DQLEnsemble(int id, int N, int width, int height, Hyperparams &params): Player(id) {

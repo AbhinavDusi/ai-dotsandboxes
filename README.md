@@ -90,7 +90,12 @@ Minimax (depth=3) Player 2 average time per move: 5356.56 microseconds.
 ## Random vs Deep Q Learning Ensemble
 
 ```
-
+Deep Q Learning Ensemble 2 training time: 53 minutes.
+Random Player 1 wins: 181
+Deep Q Learning Ensemble Player 2 wins: 819
+Total Games Played: 1000
+Random Player 1 average time per move: 0.0220504 microseconds.
+Deep Q Learning Ensemble Player 2 average time per move: 4182.78 microseconds.
 ```
 
 ## Algorithmic vs Algorithmic

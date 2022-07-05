@@ -38,14 +38,13 @@ The Deep Q Learning Ensemble takes the vote of a collection of Deep Q Learning P
 - Exploration Rate Decay: 0.001
 - Discount Factor: 0.89
 - Target Update Frequency: 1
-- Hidden Layer Size vs Input Layer Size Factor: 2
 - Number of Deep Q Learning Players in each Ensemble: 25
 
 #### Topology
 
 - Four layer neural network
 - Input layer size corresponding to game board size
-- Two hidden layers with 8 times input size
+- Two hidden layers with 2 times input size
 - Output layer size corresponding to game board size
 
 # To Run

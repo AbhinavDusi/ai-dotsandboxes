@@ -49,8 +49,8 @@ int main() {
     int height = 3;
     int N = 1000;
 
-    Player *player1 = new MinimaxPlayer(1, MINIMAX_DEPTH);
-    Player *player2 = new DQLEnsemble(2, 25, width, height, DQL_PARAMS);
+    Player *player1 = new RandomPlayer(1);
+    Player *player2 = new AlgorithmicPlayer(2, width, height);
 
     unordered_map<int, int> scores = GameSimulator::simulate_N_games(N, width, height, player1, player2); 
     int p1 = scores.at(player1->_id);

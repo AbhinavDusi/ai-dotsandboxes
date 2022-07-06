@@ -9,7 +9,7 @@ using namespace std;
 class AlgorithmicPlayer: public Player {
     public:
     AlgorithmicPlayer(int id): Player(id) {};
-    int get_move(Game& game); 
+    int get_move(Game &game); 
     string get_name() { return "Algorithmic"; }
 }; 
 

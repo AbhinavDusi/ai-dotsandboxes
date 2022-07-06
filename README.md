@@ -128,12 +128,12 @@ Minimax (depth=3) Player 2 average time per move: 4380.78 microseconds.
 ## Minimax vs Deep Q Learning Ensemble
 
 ```
-Deep Q Learning Ensemble 2 training time: 40 minutes.
-Minimax (depth=3) Player 1 wins: 931
-Deep Q Learning Ensemble Player 2 wins: 69
+Deep Q Learning Ensemble 2 training time: 44 minutes.
+Minimax (depth=3) Player 1 wins: 801
+Deep Q Learning Ensemble Player 2 wins: 199
 Total Games Played: 1000
-Minimax (depth=3) Player 1 average time per move: 6009.49 microseconds.
-Deep Q Learning Ensemble Player 2 average time per move: 3301.8 microseconds.
+Minimax (depth=3) Player 1 average time per move: 4858.96 microseconds.
+Deep Q Learning Ensemble Player 2 average time per move: 4006.28 microseconds.
 ```
 
 ## Deep Q Learning Ensemble vs Deep Q Learning Ensemble

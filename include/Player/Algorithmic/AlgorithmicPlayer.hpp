@@ -8,8 +8,7 @@ using namespace std;
 
 class AlgorithmicPlayer: public Player {
     public:
-    AlgorithmicPlayer(int id, int width, int height): 
-        Player(id), _width(width), _height(height), _first_to_move(id == 1) {};
+    AlgorithmicPlayer(int id): Player(id) {};
     int get_move(Game& game); 
     string get_name() { return "Algorithmic"; }
 
@@ -20,7 +19,8 @@ class AlgorithmicPlayer: public Player {
 }; 
 
 int AlgorithmicPlayer::get_move(Game &game) {
-    bool odd_chains = _first_to_move && (_width%2==0) && (_height%2==0); 
+    GameImage game_image = game._game_image;
+    
     return 0;
 }
 

@@ -20,7 +20,7 @@ void assign_player(Player *player, int player_type, int id, int width, int heigh
     if (player_type==0) player = new RandomPlayer(id); 
     if (player_type==1) player = new MinimaxPlayer(id, MINIMAX_DEPTH); 
     if (player_type==2) player = new DQLEnsemble(id, width, height, DQL_NUM_TO_CREATE, DQL_PARAMS); 
-    if (player_type==3) player = new AlgorithmicPlayer(id, width, height); 
+    if (player_type==3) player = new AlgorithmicPlayer(id); 
     if (player_type==4) player = new HumanPlayer(id);
 }
 
@@ -49,7 +49,7 @@ int main() {
     int height = 3;
     int N = 1000;
 
-    Player *player1 = new MinimaxPlayer(1, MINIMAX_DEPTH);
+    Player *player1 = new AlgorithmicPlayer(1);
     Player *player2 = new DQLEnsemble(2, 25, width, height, DQL_PARAMS);
 
     unordered_map<int, int> scores = GameSimulator::simulate_N_games(N, width, height, player1, player2); 

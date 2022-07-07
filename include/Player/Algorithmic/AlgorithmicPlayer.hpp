@@ -13,16 +13,24 @@ class AlgorithmicPlayer: public Player {
     string get_name() { return "Algorithmic"; }
 
     private:
+    vector<pair<int, int>> get_chain(Game &game, int x, int y) const; 
     vector<vector<pair<int, int>>> get_open_chains(Game &game) const;
     vector<vector<pair<int, int>>> get_closed_chains(Game &game) const;
 }; 
 
-vector<vector<pair<int, int>>> AlgorithmicPlayer::get_open_chains(Game &game) const {
+vector<pair<int, int>> AlgorithmicPlayer::get_chain(Game &game, int x, int y) const {
+    vector<pair<int, int>> v; 
+    return v;
+}
 
+vector<vector<pair<int, int>>> AlgorithmicPlayer::get_open_chains(Game &game) const {
+    vector<vector<pair<int, int>>> v; 
+    return v; 
 }
 
 vector<vector<pair<int, int>>> AlgorithmicPlayer::get_closed_chains(Game &game) const {
-
+    vector<vector<pair<int, int>>> v; 
+    return v;
 }
 
 int AlgorithmicPlayer::get_move(Game &game) {
@@ -32,8 +40,8 @@ int AlgorithmicPlayer::get_move(Game &game) {
     vector<vector<pair<int, int>>> closed_chains = get_closed_chains(game);
 
     int total_chained_boxes = 0; 
-    for (vector<pair<int, int>> v : open_chains) total_chained_boxes += v.size();
-    for (vector<pair<int, int>> v : closed_chains) total_chained_boxes += v.size();
+    for (auto v : open_chains) total_chained_boxes += v.size();
+    for (auto v : closed_chains) total_chained_boxes += v.size();
     bool only_chains = total_chained_boxes == game._width * game._height;
     
     return 0;

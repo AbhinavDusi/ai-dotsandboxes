@@ -16,11 +16,11 @@ The Random Player chooses a move by randomly selecting from the list of the vali
 
 ## Algorithmic Player
 
-The Algorithmic Player chooses a move by using the information of the grid size and whether it is the first or second player to move, to create optimal "chains."
+The Algorithmic Player chooses a move through the double-cross strategy. 
 
 ## Minimax Player
 
-The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents' future moves and choosing the optimal move by maximizing its score to a certain depth (implemented as a depth of 3).
+The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents' future moves and choosing the optimal move by maximizing its score to a certain depth (implemented as a depth of 3). Alpha beta pruning is for optimization. 
 
 ## Deep Q Learning Ensemble
 
@@ -147,3 +147,11 @@ Total Games Played: 1000
 Deep Q Learning Ensemble Player 1 average time per move: 3394.2 microseconds.
 Deep Q Learning Ensemble Player 2 average time per move: 3374.62 microseconds.
 ```
+
+# Future Improvements
+
+- Minimax Player could have better optimization, by taking into account symmetry and previously explored game states. 
+
+- Deep Q Learning Ensemble could be trained with better hyperparameters or learning model to achieve higher win rates. 
+
+- Algorithmic Player could employ many other strategies, such as making sacrifices, to ensure optimal play on larger boards. 

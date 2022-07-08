@@ -20,11 +20,11 @@ class MinimaxPlayer: public Player {
     public:
     MinimaxPlayer(int id, int depth): Player(id), _opp_id(id == 1 ? 2 : 1), _depth(depth) {};
     int get_move(Game &game);
-    int _opp_id;
     string get_name() { return "Minimax (depth=3)"; }
 
     private:
     MinimaxNode construct_tree(int depth, bool maximize, Game game, int alpha, int beta);
+    int _opp_id;
     int _depth;
 }; 
 

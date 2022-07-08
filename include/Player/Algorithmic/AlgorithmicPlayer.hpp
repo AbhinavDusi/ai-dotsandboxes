@@ -5,7 +5,6 @@
 #include "../Player.hpp"
 
 #include <stack>
-#include <vector>
 
 using namespace std;
 
@@ -42,25 +41,26 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
             dfs.push(make_pair(j, i));
             
             Chain c; 
-            bool contains_3_surround = false;
+            bool open_chain = false;
             while (!dfs.empty()) {
                 Box b = dfs.top(); 
                 dfs.pop(); 
                 int x = b.first, y = b.second;
+                int num_surrounding = num_surrounding_lines(game, x, y);
 
                 if (x < 0 || x > game._width-1 || y < 0 || y > game._height-1) continue;
                 if (visited[y*game._height+x]) continue;
-                if (num_surrounding_lines(game, x, y) <= 1) {
+                if (num_surrounding <= 1) {
                     Chain new_chain;
                     new_chain.push_back(make_pair(x, y));
                     not_in_chain.push_back(new_chain);
                 }
-                if (num_surrounding_lines(game, x, y) != 2 && num_surrounding_lines(game, x, y) != 3) continue;
+                if (num_surrounding != 2 && num_surrounding != 3) continue;
 
                 visited[y*game._height+x] = true;
                 c.push_back(b);
 
-                contains_3_surround = num_surrounding_lines(game, x, y) == 3 || contains_3_surround;
+                open_chain = num_surrounding == 3 || open_chain;
 
                 if (!game._game_image[y][x][0]) dfs.push(make_pair(x, y-1));
                 if (!game._game_image[y][x][1]) dfs.push(make_pair(x+1, y));
@@ -69,7 +69,7 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
             }
 
             if (!c.empty()) {
-                if (contains_3_surround) open.push_back(c);
+                if (open_chain) open.push_back(c);
                 else half_open.push_back(c);
             }
         }
@@ -93,7 +93,11 @@ int AlgorithmicPlayer::get_move(Game &game) {
     if (not_in_chain.empty()) { // All boxes are in chains
 
     } else { // Some boxes are not in chains
+        if (open_chains.empty()) { // Open chains available
 
+        } else { // No open chains
+
+        }
     }
     
     return 0;

@@ -4,6 +4,9 @@
 #include "../../Game/Game.hpp"
 #include "../Player.hpp"
 
+#include <stack>
+#include <vector>
+
 using namespace std;
 
 typedef pair<int, int> Box;
@@ -17,56 +20,64 @@ class AlgorithmicPlayer: public Player {
 
     private:
     int num_surrounding_lines(Game &game, int x, int y) const;
-    Chain get_chain(Game &game, Box b) const; 
-    vector<Chain> get_no_chains(Game &game) const;
-    vector<Chain> get_open_chains(Game &game) const;
-    vector<Chain> get_closed_chains(Game &game) const;
-    vector<vector<Chain>> get_chains(Game &game) const;
+    tuple<vector<Chain>, vector<Chain>, vector<Chain>> get_chains(Game &game) const;
 }; 
 
 int AlgorithmicPlayer::num_surrounding_lines(Game &game, int x, int y) const {
     GameImage game_image = game._game_image;
-    return game_image[x][y][0]+game_image[x][y][1]+game_image[x][y][2]+game_image[x][y][3];
+    return game_image[y][x][0]+game_image[y][x][1]+game_image[y][x][2]+game_image[y][x][3];
 }
 
-Chain AlgorithmicPlayer::get_chain(Game &game, Box b) const {
-    Chain v; 
-    return v;
-}
+tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains(Game &game) const {
+    vector<Chain> not_in_chain;
+    vector<Chain> open;
+    vector<Chain> half_open;
 
-vector<Chain> AlgorithmicPlayer::get_no_chains(Game &game) const {
-    vector<Chain> v; 
+    stack<Box> dfs;
+    bool *visited = new bool[game._width * game._height];
+    for (int i = 0; i < game._height; i++) for (int j = 0; j < game._width; j++) visited[i*game._height+j] = false;
 
-    GameImage game_image = game._game_image;
-    for (int x = 0; x < game._height; x++) {
-        for (int y = 0; y < game._width; y++) {
-            if (num_surrounding_lines(game, x, y) <= 1) {
-                Chain c;
-                c.push_back(make_pair(x, y));
-                v.push_back(c);
+    for (int i = 0; i < game._height; i++) {
+        for (int j = 0; j < game._width; j++) {
+            dfs.push(make_pair(j, i));
+            
+            Chain c; 
+            bool contains_3_surround = false;
+            while (!dfs.empty()) {
+                Box b = dfs.top(); 
+                dfs.pop(); 
+                int x = b.first, y = b.second;
+
+                if (x < 0 || x > game._width-1 || y < 0 || y > game._height-1) continue;
+                if (visited[y*game._height+x]) continue;
+                if (num_surrounding_lines(game, x, y) <= 1) {
+                    Chain new_chain;
+                    new_chain.push_back(make_pair(x, y));
+                    not_in_chain.push_back(new_chain);
+                }
+                if (num_surrounding_lines(game, x, y) != 2 && num_surrounding_lines(game, x, y) != 3) continue;
+
+                visited[y*game._height+x] = true;
+                c.push_back(b);
+
+                contains_3_surround = num_surrounding_lines(game, x, y) == 3 || contains_3_surround;
+
+                if (!game._game_image[y][x][0]) dfs.push(make_pair(x, y-1));
+                if (!game._game_image[y][x][1]) dfs.push(make_pair(x+1, y));
+                if (!game._game_image[y][x][2]) dfs.push(make_pair(x, y+1));
+                if (!game._game_image[y][x][3]) dfs.push(make_pair(x-1, y));
+            }
+
+            if (!c.empty()) {
+                if (contains_3_surround) half_open.push_back(c);
+                else open.push_back(c);
             }
         }
     }
 
-    return v; 
-}
+    delete visited;
 
-vector<Chain> AlgorithmicPlayer::get_open_chains(Game &game) const {
-    vector<Chain> v; 
-    return v; 
-}
-
-vector<Chain> AlgorithmicPlayer::get_closed_chains(Game &game) const {
-    vector<Chain> v; 
-    return v;
-}
-
-vector<vector<Chain>> AlgorithmicPlayer::get_chains(Game &game) const {
-    vector<vector<Chain>> v; 
-    v.push_back(get_no_chains(game));
-    v.push_back(get_open_chains(game));
-    v.push_back(get_closed_chains(game));
-    return v;
+    return make_tuple(not_in_chain, open, half_open); 
 }
 
 int AlgorithmicPlayer::get_move(Game &game) {
@@ -75,19 +86,13 @@ int AlgorithmicPlayer::get_move(Game &game) {
     vector<Move> moves = game._moves;
 
     auto chains = get_chains(game);
+    vector<Chain> not_in_chain = get<0>(chains);
+    vector<Chain> open_chains = get<1>(chains);
+    vector<Chain> half_open_chains = get<2>(chains);
 
-    cout << "No chains: ";
-    vector<Chain> no_chains = chains[0];
-    for (Chain c : no_chains) {
-        for (Box b : c) {
-            cout << "(" << b.first << ", " << b.second << ")";
-        }
-    }
-    cout << endl;
+    if (not_in_chain.empty()) { // All boxes are in chains
 
-    if (chains[0].empty()) { // Only chains remaining
-
-    } else { // Non-chained boxes remaining
+    } else { // Some boxes are not in chains
 
     }
     

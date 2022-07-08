@@ -2,7 +2,6 @@
 #define MINIMAX_PLAYER_H
 
 #include <random>
-#include <ctime>
 #include <climits>
 
 #include "../../Game/Game.hpp"

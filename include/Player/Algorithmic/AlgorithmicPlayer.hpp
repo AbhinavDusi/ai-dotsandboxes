@@ -69,8 +69,8 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
             }
 
             if (!c.empty()) {
-                if (contains_3_surround) half_open.push_back(c);
-                else open.push_back(c);
+                if (contains_3_surround) open.push_back(c);
+                else half_open.push_back(c);
             }
         }
     }

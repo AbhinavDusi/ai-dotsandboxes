@@ -40,13 +40,13 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
                 Box b = dfs.top(); 
                 dfs.pop(); 
                 int x = b.first, y = b.second;
-                int num_surrounding = game.num_surrounding_lines(x, y);
 
                 if (x < 0 || x > game._width-1 || y < 0 || y > game._height-1) continue;
 
                 if (visited[y*game._height+x]) continue;
                 visited[y*game._height+x] = true;
 
+                int num_surrounding = game.num_surrounding_lines(x, y);
                 if (num_surrounding <= 1) {
                     Chain new_chain;
                     new_chain.push_back(make_pair(x, y));

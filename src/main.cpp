@@ -47,7 +47,7 @@ int main() {
 
     int width = 3;
     int height = 3;
-    int N = 1;
+    int N = 1000;
 
     Player *player1 = new RandomPlayer(1);
     Player *player2 = new AlgorithmicPlayer(2);

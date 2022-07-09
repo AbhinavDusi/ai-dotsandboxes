@@ -47,9 +47,10 @@ int main() {
 
     int width = 3;
     int height = 3;
-    int N = 1000;
+    int N = 1;
 
-    Player *player1 = new RandomPlayer(1);
+    //Player *player1 = new RandomPlayer(1);
+    Player *player1 = new MinimaxPlayer(1, MINIMAX_DEPTH);
     Player *player2 = new AlgorithmicPlayer(2);
 
     unordered_map<int, int> scores = GameSimulator::simulate_N_games(N, width, height, player1, player2); 

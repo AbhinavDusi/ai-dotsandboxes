@@ -23,8 +23,9 @@ class Game {
     Game get_clone() const;
     int move(int player_id, int move_idx);
     int get_score(int player_id) const;
-    int get_move_from_rcd(int row, int col, int direction); 
-    int num_surrounding_lines(int x, int y);
+    int get_move_from_rcd(int row, int col, int direction) const; 
+    int num_surrounding_lines(int x, int y) const;
+    tuple<int, int, int> get_other(int row, int col, int direction) const;
     void print();
     bool _started;
     bool _finished; 
@@ -63,7 +64,7 @@ Game Game::get_clone() const {
     return game;
 }
 
-int Game::get_move_from_rcd(int row, int col, int direction) {
+int Game::get_move_from_rcd(int row, int col, int direction) const {
     for (int i = 0; i < _moves.size(); i++) {
         if (_moves[i].col==col
             &&_moves[i].row==row
@@ -74,7 +75,32 @@ int Game::get_move_from_rcd(int row, int col, int direction) {
     return -1;
 }
 
-int Game::num_surrounding_lines(int x, int y) {
+tuple<int, int, int> Game::get_other(int row, int col, int direction) const {
+    int other_row = -1, other_col = -1, other_direction = -1;
+    if (direction==0) {
+        other_row = row-1;
+        other_col = col;
+        other_direction = 2;
+    }
+    if (direction==1) {
+        other_row = row;
+        other_col = col+1;
+        other_direction = 3;
+    }
+    if (direction==2) {
+        other_row = row+1;
+        other_col = col;
+        other_direction = 0;
+    }
+    if (direction==3) {
+        other_row = row;
+        other_col = col-1;
+        other_direction = 1;
+    }
+    return make_tuple(other_row, other_col, other_direction);
+}
+
+int Game::num_surrounding_lines(int x, int y) const {
     return _game_image[y][x][0]+_game_image[y][x][1]+_game_image[y][x][2]+_game_image[y][x][3];
 }
 
@@ -104,27 +130,10 @@ int Game::move(int player_id, int move_idx) {
         _game_image[move.row][move.col][4] = player_id;
     }
 
-    int other_row = -1, other_col = -1, other_direction = -1;
-    if (move.direction==0) {
-        other_row = move.row-1;
-        other_col = move.col;
-        other_direction = 2;
-    }
-    if (move.direction==1) {
-        other_row = move.row;
-        other_col = move.col+1;
-        other_direction = 3;
-    }
-    if (move.direction==2) {
-        other_row = move.row+1;
-        other_col = move.col;
-        other_direction = 0;
-    }
-    if (move.direction==3) {
-        other_row = move.row;
-        other_col = move.col-1;
-        other_direction = 1;
-    }
+    auto other = get_other(move.row, move.col, move.direction);
+    int other_row = get<0>(other);
+    int other_col = get<1>(other);
+    int other_direction = get<2>(other);
 
     int other_move_idx = get_move_from_rcd(other_row, other_col, other_direction);
     if (other_move_idx!=-1) {

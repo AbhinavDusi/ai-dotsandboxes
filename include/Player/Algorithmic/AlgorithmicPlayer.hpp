@@ -103,13 +103,61 @@ int AlgorithmicPlayer::get_move(Game &game) {
             cout << "NO UNCHAINED; NO OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
             move = game.get_move_from_rcd(row, col, direction);
         } else {
+            if (half_open_chains.empty()) {
+                Chain open_chain = open_chains.front();
+                Box open_box;
+                for (Box b : open_chain) {
+                    if (game.num_surrounding_lines(b.first, b.second) == 3) {
+                        open_box = b;
+                        break;
+                    }
+                }
 
+                int row = open_box.second;
+                int col = open_box.first;
+                int direction = 0;
+                for (; direction < 4; direction++) {
+                    if (!game._game_image[row][col][direction]) break;
+                }
+
+                cout << "NO UNCHAINED; OPEN CHAINS; NO HALF OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
+
+                move = game.get_move_from_rcd(row, col, direction);
+            } else {
+                if (open_chains.size() == 1) {
+
+                } else {
+                    Chain shortest_open_chain = open_chains.front();
+                    for (Chain c : open_chains) {
+                        if (c.size() < shortest_open_chain.size()) shortest_open_chain = c;
+                    }
+
+                    Box open_box;
+                    for (Box b : shortest_open_chain) {
+                        if (game.num_surrounding_lines(b.first, b.second) == 3) {
+                            open_box = b;
+                            break;
+                        }
+                    }
+
+                    int row = open_box.second;
+                    int col = open_box.first;
+                    int direction = 0;
+                    for (; direction < 4; direction++) {
+                        if (!game._game_image[row][col][direction]) break;
+                    }
+
+                    cout << "NO UNCHAINED; OPEN CHAINS; NO HALF OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
+
+                    move = game.get_move_from_rcd(row, col, direction);         
+                }
+            }
         }
     } else { 
         if (open_chains.empty()) { 
             for (Chain unchained : not_in_chain) {
                 bool found_move = false;
-                
+
                 Box unchained_box = unchained.front();
                 int row = unchained_box.second;
                 int col = unchained_box.first;
@@ -157,7 +205,7 @@ int AlgorithmicPlayer::get_move(Game &game) {
                 if (!game._game_image[row][col][direction]) break;
             }
 
-            cout << "SOME UNCHAINED; OPEN CHAIN: Moving in " << row << ", " << col << ", " << direction << endl;
+            cout << "SOME UNCHAINED; OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
 
             move = game.get_move_from_rcd(row, col, direction);
         }

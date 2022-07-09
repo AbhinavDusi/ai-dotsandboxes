@@ -24,6 +24,7 @@ class Game {
     int move(int player_id, int move_idx);
     int get_score(int player_id) const;
     int get_move_from_rcd(int row, int col, int direction); 
+    int num_surrounding_lines(int x, int y);
     void print();
     bool _started;
     bool _finished; 
@@ -71,6 +72,10 @@ int Game::get_move_from_rcd(int row, int col, int direction) {
         }
     }
     return -1;
+}
+
+int Game::num_surrounding_lines(int x, int y) {
+    return _game_image[y][x][0]+_game_image[y][x][1]+_game_image[y][x][2]+_game_image[y][x][3];
 }
 
 int Game::get_score(int player_id) const {

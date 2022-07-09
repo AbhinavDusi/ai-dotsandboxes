@@ -18,14 +18,8 @@ class AlgorithmicPlayer: public Player {
     string get_name() { return "Algorithmic"; }
 
     private:
-    int num_surrounding_lines(Game &game, int x, int y) const;
     tuple<vector<Chain>, vector<Chain>, vector<Chain>> get_chains(Game &game) const;
 }; 
-
-int AlgorithmicPlayer::num_surrounding_lines(Game &game, int x, int y) const {
-    GameImage game_image = game._game_image;
-    return game_image[y][x][0]+game_image[y][x][1]+game_image[y][x][2]+game_image[y][x][3];
-}
 
 tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains(Game &game) const {
     vector<Chain> not_in_chain;
@@ -46,7 +40,7 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
                 Box b = dfs.top(); 
                 dfs.pop(); 
                 int x = b.first, y = b.second;
-                int num_surrounding = num_surrounding_lines(game, x, y);
+                int num_surrounding = game.num_surrounding_lines(x, y);
 
                 if (x < 0 || x > game._width-1 || y < 0 || y > game._height-1) continue;
                 if (visited[y*game._height+x]) continue;
@@ -82,25 +76,46 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
 
 int AlgorithmicPlayer::get_move(Game &game) {
     game.print();
-
-    vector<Move> moves = game._moves;
+    int move = 0;
 
     auto chains = get_chains(game);
     vector<Chain> not_in_chain = get<0>(chains);
     vector<Chain> open_chains = get<1>(chains);
     vector<Chain> half_open_chains = get<2>(chains);
 
-    if (not_in_chain.empty()) { // All boxes are in chains
+    if (not_in_chain.empty()) { 
 
-    } else { // Some boxes are not in chains
-        if (open_chains.empty()) { // Open chains available
+    } else { 
+        if (open_chains.empty()) { 
 
-        } else { // No open chains
+        } else {
+            Chain longest_chain = open_chains.front();
+            for (Chain c : open_chains) {
+                if (c.size() > longest_chain.size()) longest_chain = c;
+            }
 
+            Box open_box;
+            for (Box b : longest_chain) {
+                if (game.num_surrounding_lines(b.first, b.second) == 3) {
+                    open_box = b;
+                    break;
+                }
+            }
+
+            int row = open_box.second;
+            int col = open_box.first;
+            int direction = 0;
+            for (; direction < 4; direction++) {
+                if (!game._game_image[row][col][direction]) break;
+            }
+
+            cout << "Moving in " << row << ", " << col << ", " << direction << endl;
+
+            move = game.get_move_from_rcd(row, col, direction);
         }
     }
     
-    return 0;
+    return move == -1 ? 0 : move;
 }
 
 #endif

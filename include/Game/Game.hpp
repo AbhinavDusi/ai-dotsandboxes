@@ -23,6 +23,7 @@ class Game {
     Game get_clone() const;
     int move(int player_id, int move_idx);
     int get_score(int player_id) const;
+    int get_move_from_rcd(int row, int col, int direction); 
     void print();
     bool _started;
     bool _finished; 
@@ -59,6 +60,17 @@ Game Game::get_clone() const {
     game._height = _height;
     game._width = _width;
     return game;
+}
+
+int Game::get_move_from_rcd(int row, int col, int direction) {
+    for (int i = 0; i < _moves.size(); i++) {
+        if (_moves[i].col==col
+            &&_moves[i].row==row
+            &&_moves[i].direction==direction) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 int Game::get_score(int player_id) const {
@@ -109,15 +121,7 @@ int Game::move(int player_id, int move_idx) {
         other_direction = 1;
     }
 
-    int other_move_idx = -1;
-    for (int i = 0; i < _moves.size(); i++) {
-        if (_moves[i].col==other_col
-            &&_moves[i].row==other_row
-            &&_moves[i].direction==other_direction) {
-            other_move_idx = i;
-        }
-    }
-    
+    int other_move_idx = get_move_from_rcd(other_row, other_col, other_direction);
     if (other_move_idx!=-1) {
         Move other_move = _moves[other_move_idx];
         _moves.erase(_moves.begin()+other_move_idx);

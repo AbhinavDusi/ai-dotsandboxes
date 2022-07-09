@@ -107,50 +107,39 @@ int AlgorithmicPlayer::get_move(Game &game) {
         }
     } else { 
         if (open_chains.empty()) { 
-            Box first_unchained_box = not_in_chain.front().front();
-            int row = first_unchained_box.second;
-            int col = first_unchained_box.first;
-            int direction = 0; 
-            for (; direction < 4; direction++) {
-                if (!game._game_image[row][col][direction]) break;
-            }
-
             for (Chain unchained : not_in_chain) {
+                bool found_move = false;
+                
                 Box unchained_box = unchained.front();
-                int r = unchained_box.second;
-                int c = unchained_box.first;
-                int d = 0; 
-                for (; d < 4; d++) {
-                    if (game._game_image[r][c][d]) continue; 
+                int row = unchained_box.second;
+                int col = unchained_box.first;
+                int direction = 0; 
 
-                    auto other = game.get_other(r, c, d);
-                    int other_r = get<0>(other);
-                    int other_c = get<1>(other);
-                    int other_d = get<2>(other);
+                for (; direction < 4 && !found_move; direction++) {
+                    if (game._game_image[row][col][direction]) continue; 
 
-                    if (game.get_move_from_rcd(other_r, other_c, other_d) == -1) continue;
+                    auto other = game.get_other(row, col, direction);
+                    int other_row = get<0>(other);
+                    int other_col = get<1>(other);
+                    int other_direction = get<2>(other);
+
+                    if (game.get_move_from_rcd(other_row, other_col, other_direction) == -1) continue;
 
                     bool found = false;
                     for (Chain half_open_chain : half_open_chains) {
                         for (Box half_open_box : half_open_chain) {
-                            if (half_open_box.first == other_c && half_open_box.second == other_r) found = true;
+                            if (half_open_box.first == other_col && half_open_box.second == other_row) found = true;
                         }
                     }
-
                     if (found) continue;
-                    
-                    row = r;
-                    col = c;
-                    direction = d;
-                    goto endloop;
+
+                    move = game.get_move_from_rcd(row, col, direction);
+                    cout << "SOME UNCHAINED; NO OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
+                    found_move = true;
                 }
+
+                if (found_move) break;
             }
-
-            endloop:
-            
-            cout << "SOME UNCHAINED; NO OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
-
-            move = game.get_move_from_rcd(row, col, direction);
         } else {
             Chain open_chain = open_chains.front();
             Box open_box;

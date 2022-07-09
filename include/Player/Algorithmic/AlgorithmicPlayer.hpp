@@ -121,27 +121,28 @@ int AlgorithmicPlayer::get_move(Game &game) {
                 int c = unchained_box.first;
                 int d = 0; 
                 for (; d < 4; d++) {
-                    if (!game._game_image[r][c][d]) {
-                        auto other = game.get_other(r, c, d);
-                        int other_r = get<0>(other);
-                        int other_c = get<1>(other);
-                        int other_d = get<2>(other);
-                        if (game.get_move_from_rcd(other_r, other_c, other_d) != -1) {
-                            bool found = false;
-                            for (Chain half_open_chain : half_open_chains) {
-                                for (Box half_open_box : half_open_chain) {
-                                    if (half_open_box.first == other_c && half_open_box.second == other_r) found = true;
-                                }
-                            }
+                    if (game._game_image[r][c][d]) continue; 
 
-                            if (!found) {
-                                row = r;
-                                col = c;
-                                direction = d;
-                                goto endloop;
-                            }
+                    auto other = game.get_other(r, c, d);
+                    int other_r = get<0>(other);
+                    int other_c = get<1>(other);
+                    int other_d = get<2>(other);
+
+                    if (game.get_move_from_rcd(other_r, other_c, other_d) == -1) continue;
+
+                    bool found = false;
+                    for (Chain half_open_chain : half_open_chains) {
+                        for (Box half_open_box : half_open_chain) {
+                            if (half_open_box.first == other_c && half_open_box.second == other_r) found = true;
                         }
                     }
+
+                    if (found) continue;
+                    
+                    row = r;
+                    col = c;
+                    direction = d;
+                    goto endloop;
                 }
             }
 

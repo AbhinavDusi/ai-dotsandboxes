@@ -43,7 +43,10 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
                 int num_surrounding = game.num_surrounding_lines(x, y);
 
                 if (x < 0 || x > game._width-1 || y < 0 || y > game._height-1) continue;
+
                 if (visited[y*game._height+x]) continue;
+                visited[y*game._height+x] = true;
+
                 if (num_surrounding <= 1) {
                     Chain new_chain;
                     new_chain.push_back(make_pair(x, y));
@@ -51,7 +54,6 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
                 }
                 if (num_surrounding != 2 && num_surrounding != 3) continue;
 
-                visited[y*game._height+x] = true;
                 c.push_back(b);
 
                 open_chain = num_surrounding == 3 || open_chain;
@@ -69,7 +71,7 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
         }
     }
 
-    delete visited;
+    delete[] visited;
 
     return make_tuple(not_in_chain, open, half_open); 
 }

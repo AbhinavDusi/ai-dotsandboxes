@@ -73,6 +73,8 @@ The Minimax Player chooses a move by employing a minimax algorithm, simulating i
 
 The Deep Q Learning Ensemble takes the vote of a collection of Deep Q Learning Players, with each choosing a move by using a trained neural network to determine the max quality move at each state, after being trained with thousands of episodes. 
 
+Deep Q Learning involves feeding forward the game state to the neural network and using the Bellman Equation as a target for each state-action pair. The reward is considered to be when the agent scores a box. 
+
 ### Training Information
 
 #### Hyperparameters

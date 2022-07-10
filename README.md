@@ -67,7 +67,7 @@ The game is considered to be in these eight possible states and moves are made a
 
 ## Minimax Player
 
-The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents' future moves and choosing the optimal move by maximizing its score to a certain depth (implemented as a depth of 3). It can be thought of as taking a greedy approach. Alpha beta pruning is for optimization. 
+The Minimax Player chooses a move by employing a minimax algorithm, simulating its and its opponents' future moves and choosing the optimal move by maximizing its score to a certain depth (implemented as a depth of 3). It can be thought of as taking a greedy approach. Alpha beta pruning is used for optimization. 
 
 ## Deep Q Learning Ensemble
 

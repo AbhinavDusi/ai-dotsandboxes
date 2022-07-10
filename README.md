@@ -38,7 +38,7 @@ When taking a chain of opened boxes, the last two boxes may be left for the oppo
 
 #### Overall Strategy
 
-The game is considered to be in these eight possible states and moves accordingly (* = terminal state).
+The game is considered to be in these eight possible states and moves are made accordingly (* = terminal state).
 
 ```
 ├── There are no Unchained Boxes

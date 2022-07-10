@@ -30,7 +30,7 @@ Strings of boxes in which a move is available to take a box (Has a box(es) enclo
 
 #### Unchained Boxes
 
-Boxes that have not been taken by either player and are not art of unopened or opened chains. 
+Boxes that have not been taken by either player and are not part of unopened or opened chains. 
 
 #### Double Cross Strategy
 

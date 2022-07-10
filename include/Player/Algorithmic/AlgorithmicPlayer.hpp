@@ -19,10 +19,17 @@ class AlgorithmicPlayer: public Player {
 
     private:
     tuple<vector<Chain>, vector<Chain>, vector<Chain>> get_chains(Game &game) const;
+    int take_half_open_chain(Chain &half_open, Game &game);
+    int take_smallest_half_open(vector<Chain> &half_open_chains, Game &game);
+    int take_open_chain(Chain &open, Game &game);
+    int take_smallest_open(vector<Chain> &open_chains, Game &game);
+    int take_unchained(vector<Chain> &unchained, vector<Chain> &half_open_chains, Game &game); 
+    int double_cross(Chain &open_chain, Game &game);
+    Chain get_smallest_chain(vector<Chain> &chains) const;
 }; 
 
 tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains(Game &game) const {
-    vector<Chain> not_in_chain;
+    vector<Chain> unchained;
     vector<Chain> open;
     vector<Chain> half_open;
 
@@ -50,7 +57,7 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
                 if (num_surrounding <= 1) {
                     Chain new_chain;
                     new_chain.push_back(make_pair(x, y));
-                    not_in_chain.push_back(new_chain);
+                    unchained.push_back(new_chain);
                 }
                 if (num_surrounding != 2 && num_surrounding != 3) continue;
 
@@ -73,145 +80,158 @@ tuple<vector<Chain>, vector<Chain>, vector<Chain>> AlgorithmicPlayer::get_chains
 
     delete[] visited;
 
-    return make_tuple(not_in_chain, open, half_open); 
+    return make_tuple(unchained, open, half_open); 
+}
+
+Chain AlgorithmicPlayer::get_smallest_chain(vector<Chain> &chains) const {
+    Chain smallest_chain = chains.front();
+    for (Chain c : chains) {
+        if (c.size() < smallest_chain.size()) smallest_chain = c;
+    }
+    return smallest_chain;
+}
+
+int AlgorithmicPlayer::take_half_open_chain(Chain &half_open, Game &game) {
+    Box half_open_box = half_open.front();
+    int row = half_open_box.second;
+    int col = half_open_box.first;
+    int direction = 0;
+    for (; direction < 4; direction++) {
+        if (!game._game_image[row][col][direction]) break;
+    }
+
+    return game.get_move_from_rcd(row, col, direction);
+}
+
+int AlgorithmicPlayer::take_smallest_half_open(vector<Chain> &half_open_chains, Game &game) {
+    Chain smallest_half_open = get_smallest_chain(half_open_chains);
+    return take_half_open_chain(smallest_half_open, game);
+}
+
+int AlgorithmicPlayer::take_open_chain(Chain &open_chain, Game &game) {
+    Box open_box;
+    for (Box b : open_chain) {
+        if (game.num_surrounding_lines(b.first, b.second) == 3) {
+            open_box = b;
+            break;
+        }
+    }
+
+    int row = open_box.second;
+    int col = open_box.first;
+    int direction = 0;
+    for (; direction < 4; direction++) {
+        if (!game._game_image[row][col][direction]) break;
+    }
+
+    return game.get_move_from_rcd(row, col, direction);
+}
+
+int AlgorithmicPlayer::take_smallest_open(vector<Chain> &open_chains, Game &game) {
+    Chain smallest_open = get_smallest_chain(open_chains);
+    return take_open_chain(smallest_open, game);
+}
+
+int AlgorithmicPlayer::double_cross(Chain &open_chain, Game &game) {
+    Box half_open_box = open_chain.front();
+    Box open_box = open_chain.back();
+    for (Box b : open_chain) {
+        if (game.num_surrounding_lines(b.first, b.second) != 3) half_open_box = b;
+        else open_box = b;
+    }
+
+    int row = half_open_box.second;
+    int col = half_open_box.first;
+    int direction = 0;
+    for (; direction < 4; direction++) {
+        if (!game._game_image[row][col][direction]) {
+            auto other = game.get_other(row, col, direction);
+            int other_row = get<0>(other);
+            int other_col = get<1>(other);
+            int other_direction = get<2>(other);
+            if (other_row == open_box.second && other_col == open_box.first) continue;
+            break;
+        }
+    }
+
+    if (game.get_move_from_rcd(row, col, direction) == -1) {
+        for (direction = 0; direction < 4; direction++) {
+            if (!game._game_image[row][col][direction]) break;
+        }
+    }
+
+    return game.get_move_from_rcd(row, col, direction);
+}
+
+int AlgorithmicPlayer::take_unchained(vector<Chain> &unchained, vector<Chain> &half_open_chains, Game &game) {
+    for (Chain unchained : unchained) {
+        Box unchained_box = unchained.front();
+        int row = unchained_box.second;
+        int col = unchained_box.first;
+        int direction = 0; 
+
+        for (; direction < 4; direction++) {
+            if (game._game_image[row][col][direction]) continue; 
+
+            auto other = game.get_other(row, col, direction);
+            int other_row = get<0>(other);
+            int other_col = get<1>(other);
+            int other_direction = get<2>(other);
+
+            bool found = false;
+            for (Chain half_open_chain : half_open_chains) {
+                for (Box half_open_box : half_open_chain) {
+                    if (half_open_box.first == other_col && half_open_box.second == other_row) found = true;
+                }
+            }
+            if (found) continue;
+
+            return game.get_move_from_rcd(row, col, direction);
+        }
+    }
+
+    return 0;
 }
 
 int AlgorithmicPlayer::get_move(Game &game) {
-    game.print();
-    int move = 0;
-
     auto chains = get_chains(game);
-    vector<Chain> not_in_chain = get<0>(chains);
+    vector<Chain> unchained = get<0>(chains);
     vector<Chain> open_chains = get<1>(chains);
     vector<Chain> half_open_chains = get<2>(chains);
 
-    if (not_in_chain.empty()) { 
+    if (unchained.empty()) { 
         if (open_chains.empty()) {
-            Chain smallest_half_open = half_open_chains.front();
-            for (Chain c : half_open_chains) {
-                if (c.size() < smallest_half_open.size()) smallest_half_open = c;
-            }
-
-            Box half_open_box = smallest_half_open.front();
-            int row = half_open_box.second;
-            int col = half_open_box.first;
-            int direction = 0;
-            for (; direction < 4; direction++) {
-                if (!game._game_image[row][col][direction]) break;
-            }
-
-            cout << "NO UNCHAINED; NO OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
-            move = game.get_move_from_rcd(row, col, direction);
+            return take_smallest_half_open(half_open_chains, game);
         } else {
             if (half_open_chains.empty()) {
-                Chain open_chain = open_chains.front();
-                Box open_box;
-                for (Box b : open_chain) {
-                    if (game.num_surrounding_lines(b.first, b.second) == 3) {
-                        open_box = b;
-                        break;
-                    }
-                }
-
-                int row = open_box.second;
-                int col = open_box.first;
-                int direction = 0;
-                for (; direction < 4; direction++) {
-                    if (!game._game_image[row][col][direction]) break;
-                }
-
-                cout << "NO UNCHAINED; OPEN CHAINS; NO HALF OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
-
-                move = game.get_move_from_rcd(row, col, direction);
+                return take_open_chain(open_chains.front(), game);
             } else {
                 if (open_chains.size() == 1) {
+                    if (open_chains.front().size() == 2) {
+                        Chain smallest_half_open = get_smallest_chain(half_open_chains);
 
-                } else {
-                    Chain shortest_open_chain = open_chains.front();
-                    for (Chain c : open_chains) {
-                        if (c.size() < shortest_open_chain.size()) shortest_open_chain = c;
-                    }
-
-                    Box open_box;
-                    for (Box b : shortest_open_chain) {
-                        if (game.num_surrounding_lines(b.first, b.second) == 3) {
-                            open_box = b;
-                            break;
+                        if (smallest_half_open.size() <= 2) {
+                            return take_open_chain(open_chains.front(), game);
+                        } else {
+                            return double_cross(open_chains.front(), game);
                         }
+                    } else {
+                        return take_open_chain(open_chains.front(), game);
                     }
-
-                    int row = open_box.second;
-                    int col = open_box.first;
-                    int direction = 0;
-                    for (; direction < 4; direction++) {
-                        if (!game._game_image[row][col][direction]) break;
-                    }
-
-                    cout << "NO UNCHAINED; OPEN CHAINS; NO HALF OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
-
-                    move = game.get_move_from_rcd(row, col, direction);         
+                } else {                  
+                    return take_smallest_open(open_chains, game);    
                 }
             }
         }
     } else { 
-        if (open_chains.empty()) { 
-            for (Chain unchained : not_in_chain) {
-                bool found_move = false;
-
-                Box unchained_box = unchained.front();
-                int row = unchained_box.second;
-                int col = unchained_box.first;
-                int direction = 0; 
-
-                for (; direction < 4 && !found_move; direction++) {
-                    if (game._game_image[row][col][direction]) continue; 
-
-                    auto other = game.get_other(row, col, direction);
-                    int other_row = get<0>(other);
-                    int other_col = get<1>(other);
-                    int other_direction = get<2>(other);
-
-                    if (game.get_move_from_rcd(other_row, other_col, other_direction) == -1) continue;
-
-                    bool found = false;
-                    for (Chain half_open_chain : half_open_chains) {
-                        for (Box half_open_box : half_open_chain) {
-                            if (half_open_box.first == other_col && half_open_box.second == other_row) found = true;
-                        }
-                    }
-                    if (found) continue;
-
-                    move = game.get_move_from_rcd(row, col, direction);
-                    cout << "SOME UNCHAINED; NO OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
-                    found_move = true;
-                }
-
-                if (found_move) break;
-            }
+        if (open_chains.empty()) {
+            return take_unchained(unchained, half_open_chains, game); 
         } else {
-            Chain open_chain = open_chains.front();
-            Box open_box;
-            for (Box b : open_chain) {
-                if (game.num_surrounding_lines(b.first, b.second) == 3) {
-                    open_box = b;
-                    break;
-                }
-            }
-
-            int row = open_box.second;
-            int col = open_box.first;
-            int direction = 0;
-            for (; direction < 4; direction++) {
-                if (!game._game_image[row][col][direction]) break;
-            }
-
-            cout << "SOME UNCHAINED; OPEN CHAINS: Moving in " << row << ", " << col << ", " << direction << endl;
-
-            move = game.get_move_from_rcd(row, col, direction);
+            return take_open_chain(open_chains.front(), game);
         }
     }
-    
-    return move == -1 ? 0 : move;
+
+    return 0;
 }
 
 #endif

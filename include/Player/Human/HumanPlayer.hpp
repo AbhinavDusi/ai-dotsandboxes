@@ -16,8 +16,8 @@ class HumanPlayer: public Player {
 }; 
 
 HumanPlayer::HumanPlayer(int id): Player(id) {
-    cout << "Human Player: Choose move by typing row, col, and direction:\n" << endl;
-    cout << "0=up; 1=right; 2=down; 3=left\n" << endl;
+    cout << "Human Player: Choose move by typing row, col, and direction:" << endl;
+    cout << "0=up; 1=right; 2=down; 3=left" << endl;
     cout << "Row and col are 0-indexed" << endl;
 }
 

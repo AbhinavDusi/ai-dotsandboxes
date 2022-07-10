@@ -1,5 +1,0 @@
-make.exe --dry-run --always-make --keep-going --print-directory
-make: Entering directory 'c:/Users/Abhinav/Desktop/ai-dotsandboxes'
-g++ -o bin/main src/main.cpp -std=c++17 
-make: Leaving directory 'c:/Users/Abhinav/Desktop/ai-dotsandboxes'
- 
